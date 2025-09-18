@@ -1,0 +1,15 @@
+div {
+	display: -moz-box;
+	display: flex;
+	overflow: auto;
+}
+img {
+	display: block;
+	flex-shrink: 0;
+}
+button {
+	display: block;
+	font-size: large;
+	padding: 0.5em 5em;
+	/* border-radius: 10em; */
+}

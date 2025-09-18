@@ -1,11 +1,34 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Footer from '../components/footer.astro'
+import Metadata from '../components/common_metadata.astro'
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="common.css">
+
+		<Metadata/>
+		<title>FF Apps Archive (alpha)</title>
+	</head>
+	<body>
+		<header>
+			<h1>FF Apps Archive (alpha)</h1>
+			<search hidden>
+				<input type="search" placeholder="Search" disabled>
+			</search>
+		</header>
+		<main>
+			<p>FF Apps Archive will contain thousands of apps from the defunct Firefox Marketplace.
+			</p>
+			<p><a href="all">All Apps</a></p>
+			<p><a href="packaged">Packaged Apps</a></p>
+			<p><a href="privileged">Privileged Apps</a></p>
+			<p><a href="hosted">All Hosted Apps</a></p>
+			<p><a href="live">Live Hosted Apps</a></p>
+			<p><a href="dead">Dead Hosted Apps</a></p>
+		</main>
+		<Footer/>
+	</body>
+</html>

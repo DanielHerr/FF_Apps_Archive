@@ -1,0 +1,29 @@
+---
+import * as Content from "astro:content"
+
+import Footer from "../components/footer.astro"
+import Metadata from "../components/common_metadata.astro"
+import AppsList from "../components/apps_list.astro"
+
+let packaged = await Content.getCollection("metadata", ({ data }) => data.app_type == "packaged")
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="common.css">
+
+		<Metadata/>
+		<title>All Packaged Apps - FF Apps Archive (alpha)</title>
+	</head>
+	<body>
+		<header>
+			<h1><a href="/">All Packaged Apps - FF Apps Archive (alpha)</a></h1>
+		</header>
+		<main>
+			<AppsList apps={packaged}/>
+		</main>
+		<Footer/>
+	</body>
+</html>

@@ -1,0 +1,3 @@
+node .\build\apps_cleanup.mjs
+
+netlify deploy --dir=dist --no-build

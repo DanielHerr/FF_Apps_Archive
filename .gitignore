@@ -22,3 +22,13 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local Netlify folder
+.netlify
+
+/raw/
+/apps/
+.hintrc
+package-lock.json
+/install_test/
+/public/app/

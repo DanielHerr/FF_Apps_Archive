@@ -1,0 +1,62 @@
+---
+import * as Content from "astro:content"
+
+import Footer from "../../components/footer.astro"
+import DetailsHeader from "../../components/details_header.astro"
+import DetailsResources from "../../components/details_resources.astro"
+import Metadata from "../../components/common_metadata.astro"
+
+export async function getStaticPaths() {
+	let apps = await Content.getCollection("metadata")
+	return apps.map(app => ({
+		params: { slug: app.data.slug }, props: { app },
+	}))
+}
+
+let { app } = Astro.props
+let name = app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale]
+let manifest = app.data.app_type == "hosted" ? app.data.manifest_url : app.data.manifest_url.split("/").pop()
+let description = app.data.description ? app.data.description["en-US"] ?? app.data.description.en ?? app.data.description[app.data.default_locale] : ""
+let homepage = app.data.homepage ? app.data.homepage["en-US"] ?? app.data.homepage.en ?? app.data.homepage[app.data.default_locale] : null
+let supportemail = app.data.support_email ? app.data.support_email["en-US"] ?? app.data.support_email.en ?? app.data.support_email[app.data.default_locale] : null
+let supporturl = app.data.support_url ? app.data.support_url["en-US"] ?? app.data.support_url.en ?? app.data.support_url[app.data.default_locale] : null
+let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? app.data.release_notes.en ?? app.data.release_notes[app.data.default_locale] : null
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<DetailsResources/>
+		<link rel="icon" href={ app.data.id + "-128.png" } type="image/png">
+
+		<Metadata/>
+		<title>{ name } - FF Apps Archive (alpha)</title>
+	</head>
+	<body>
+		<DetailsHeader/>
+		<main>
+			<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
+			<h1>{ name }</h1>
+			<button id="install_button" data-manifest={ manifest }>Install</button>
+			{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
+			<br>
+			<div>
+				{ app.data.previews.map(preview => <img src={ "screenshots/" + preview.id + ".png" } alt="">) }
+			</div>
+			<p set:html={description}></p>
+			{ homepage && <p>Homepage: <a href={ homepage }>{ homepage }</a></p> }
+			<p>Developer: { app.data.author }</p>
+			<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
+			<p>Categories: { app.data.categories.join(", ") }</p>
+			{ app.data.is_offline && <p>Works Offline</p> }
+			<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
+			{ app.data.app_type != "hosted" && <p>Size: { Math.round(app.data.file_size / 1024 / 1024) } MB</p> }
+			<p>Created: { app.data.created }</p>
+			<p>Updated: { app.data.last_updated }</p>
+			<p>Version: { app.data.current_version }</p>
+			{ releasenotes && <p>Release Notes: <br> <span set:html={releasenotes}></span></p> }
+		</main>	
+		<Footer/>
+	</body>
+</html>

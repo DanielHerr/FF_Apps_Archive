@@ -1,0 +1,10 @@
+---
+const { apps } = Astro.props
+---
+<ul>
+	{ apps.map((app) => (
+		<li>
+			<a href={ "/app/" + app.id + "/" }>{ app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale] }</a>
+		</li>
+	)) }
+</ul>
