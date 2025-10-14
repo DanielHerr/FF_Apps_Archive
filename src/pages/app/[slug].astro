@@ -2,8 +2,6 @@
 import * as Content from "astro:content"
 
 import Footer from "../../components/footer.astro"
-import DetailsHeader from "../../components/details_header.astro"
-import DetailsResources from "../../components/details_resources.astro"
 import Metadata from "../../components/common_metadata.astro"
 
 export async function getStaticPaths() {
@@ -27,18 +25,22 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<DetailsResources/>
+		<link rel="stylesheet" href="/common.css">
+		<link rel="stylesheet" href="/details.css">
+		<script src="/install.js" defer></script>
 		<link rel="icon" href={ app.data.id + "-128.png" } type="image/png">
 
 		<Metadata/>
-		<title>{ name } - FF Apps Archive (alpha)</title>
+		<title>{ name } - FF Apps Archive</title>
 	</head>
 	<body>
-		<DetailsHeader/>
+		<header>
+			<h2><a href="/">FF Apps Archive (beta)</a></h2>
+		</header>
 		<main>
 			<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
 			<h1>{ name }</h1>
-			<button id="install_button" data-manifest={ manifest }>Install</button>
+			{ app.data.app_type != "privileged" && <button id="install_button" data-manifest={ manifest }>Install</button> }
 			{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
 			<br>
 			<div>

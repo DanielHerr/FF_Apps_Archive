@@ -1,0 +1,19 @@
+{
+	"name": "FFAA",
+	"description": "FF Apps Archive contains thousands of apps from the defunct Firefox Marketplace.",
+	"developer": {
+		"name": "Daniel Herr",
+		"url": "https://danielherr.software"
+	},
+	"icons": {
+		"16": "/rocket_16.png",
+		"32": "/rocket_32.png",
+		"48": "/rocket_bag_48.png",
+		"60": "/rocket_bag_60.png",
+		"64": "/rocket_bag_64.png",
+		"128": "/rocket_bag_128.png",
+		"512": "/rocket_bag_512.png"
+	},
+	"launch_path": "/",
+	"version": "1"
+}

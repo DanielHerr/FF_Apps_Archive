@@ -1,3 +1,5 @@
 node .\build\apps_cleanup.mjs
 
+$env:NODE_OPTIONS="--max-old-space-size=20000"; npx astro build
+
 netlify deploy --dir=dist --no-build

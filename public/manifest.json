@@ -1,0 +1,17 @@
+{
+	"name": "FF Apps Archive",
+	"short_name": "FFAA",
+	"description": "FF Apps Archive contains thousands of apps from the defunct Firefox Marketplace.",
+	"icons": [
+		{ "src": "/rocket_16.png", "sizes": "16x16", "type": "image/png", "purpose": "monochrome" },
+		{ "src": "/rocket_32.png", "sizes": "32x32", "type": "image/png", "purpose": "monochrome" },
+		{ "src": "/rocket_bag_48.png", "sizes": "48x48", "type": "image/png" },
+		{ "src": "/rocket_bag_60.png", "sizes": "60x60", "type": "image/png" },
+		{ "src": "/rocket_bag_64.png", "sizes": "64x64", "type": "image/png" },
+		{ "src": "/rocket_bag_128.png", "sizes": "128x128", "type": "image/png" },
+		{ "src": "/rocket_bag_512.png", "sizes": "512x512", "type": "image/png" },
+		{ "src": "/rocket_bag_512_maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+	],
+	"start_url": "/",
+	"display": "standalone"
+}

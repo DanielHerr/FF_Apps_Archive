@@ -1,4 +1,5 @@
 ---
+import Imports from "../components/common_imports.astro"
 import Footer from "../components/footer.astro"
 import Metadata from "../components/common_metadata.astro"
 import AppsList from "../components/apps_list.astro"
@@ -8,15 +9,14 @@ import { live, total } from "../utils/validateHostedApps"
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="common.css">
+		<Imports/>
 
 		<Metadata/>
-		<title>All Live Hosted Apps - FF Apps Archive (alpha)</title>
+		<title>All Live Hosted Apps - FF Apps Archive</title>
 	</head>
 	<body>
 		<header>
-			<h1><a href="/">All Live Hosted Apps - FF Apps Archive (alpha)</a></h1>
+			<h1><a href="/">All Live Hosted Apps - FF Apps Archive (beta)</a></h1>
 		</header>
 		<main>
 			<p>Found { live.length } live hosted apps out of { total } total hosted apps.</p>
