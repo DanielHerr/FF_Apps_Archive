@@ -1,0 +1,11 @@
+---
+import categories from "../categories.json" with { type: "json" }
+---
+
+<ul id="categories_list">
+	{ categories.map((category) => (
+		<li>
+			<a href={ category.slug }><img src={ "/icons/" + category.slug + ".png" } alt="">{ category.name }</a>
+		</li>
+	)) }
+</ul>

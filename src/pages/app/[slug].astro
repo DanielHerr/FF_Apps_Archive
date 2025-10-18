@@ -1,8 +1,11 @@
 ---
 import * as Content from "astro:content"
 
+import Header from "../../components/header.astro"
 import Footer from "../../components/footer.astro"
 import Metadata from "../../components/common_metadata.astro"
+
+import categories from "../../categories.json" with { type: "json" }
 
 export async function getStaticPaths() {
 	let apps = await Content.getCollection("metadata")
@@ -34,30 +37,39 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 		<title>{ name } - FF Apps Archive</title>
 	</head>
 	<body>
-		<header>
-			<h2><a href="/">FF Apps Archive (beta)</a></h2>
-		</header>
+		<Header/>
 		<main>
-			<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
-			<h1>{ name }</h1>
-			{ app.data.app_type != "privileged" && <button id="install_button" data-manifest={ manifest }>Install</button> }
-			{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
-			<br>
-			<div>
+			<header>
+				<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
+				<h2>{ name }</h2>
+				<p>Developer: { app.data.author }</p>
+				<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
+			</header>
+			<div id="action_buttons">
+				{ app.data.app_type != "privileged" && <button id="install_button" data-manifest={ manifest }>Install</button> }
+				{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
+			</div>
+			<div id="screenshots_list">
 				{ app.data.previews.map(preview => <img src={ "screenshots/" + preview.id + ".png" } alt="">) }
 			</div>
-			<p set:html={description}></p>
+			<p class="app_text_blocks" set:html={description}></p>
+			<hr>
 			{ homepage && <p>Homepage: <a href={ homepage }>{ homepage }</a></p> }
-			<p>Developer: { app.data.author }</p>
 			<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
-			<p>Categories: { app.data.categories.join(", ") }</p>
+			<p>Categories:
+				<ul>
+					{ app.data.categories.map(slug => <li><a href={ "/" + slug }>{ categories.find(c => c.slug == slug).name }</a></li>) }
+				</ul>
+			</p>
 			{ app.data.is_offline && <p>Works Offline</p> }
-			<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
 			{ app.data.app_type != "hosted" && <p>Size: { Math.round(app.data.file_size / 1024 / 1024) } MB</p> }
 			<p>Created: { app.data.created }</p>
 			<p>Updated: { app.data.last_updated }</p>
 			<p>Version: { app.data.current_version }</p>
-			{ releasenotes && <p>Release Notes: <br> <span set:html={releasenotes}></span></p> }
+			<hr>
+			{ releasenotes && <p>Release Notes: <br> <span class="app_text_blocks" set:html={releasenotes}></span></p> }
+			<hr>
+			<p>App Type: { app.data.app_type }</p>
 		</main>	
 		<Footer/>
 	</body>

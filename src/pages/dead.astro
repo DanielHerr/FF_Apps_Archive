@@ -1,24 +1,26 @@
 ---
 import Imports from "../components/common_imports.astro"
-import Footer from "../components/footer.astro"
 import Metadata from "../components/common_metadata.astro"
+import Header from "../components/header.astro"
+import Footer from "../components/footer.astro"
 import AppsList from "../components/apps_list.astro"
-import { dead, total } from "../utils/validateHostedApps"
+
+import { dead, total } from "../validateHostedApps.js"
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<Imports/>
-
 		<Metadata/>
 		<title>All Dead Hosted Apps - FF Apps Archive</title>
 	</head>
 	<body>
-		<header>
-			<h1><a href="/">All Dead Hosted Apps - FF Apps Archive (beta)</a></h1>
-		</header>
+		<Header/>
 		<main>
+			<header>
+				<h2>All Dead Hosted Apps</h2>
+			</header>
 			<p>Found { dead.length } dead hosted apps out of { total } total hosted apps.</p>
 			<AppsList apps={ dead }/>
 		</main>

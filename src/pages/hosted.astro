@@ -2,27 +2,28 @@
 import * as Content from "astro:content"
 
 import Imports from "../components/common_imports.astro"
-import Footer from "../components/footer.astro"
 import Metadata from "../components/common_metadata.astro"
+import Header from "../components/header.astro"
+import Footer from "../components/footer.astro"
 import AppsList from "../components/apps_list.astro"
 
-let apps = await Content.getCollection("metadata", ({ data }) => data.app_type == "hosted")
+let hosted = await Content.getCollection("metadata", ({ data }) => data.app_type == "hosted")
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<Imports/>
-
 		<Metadata/>
 		<title>All Hosted Apps - FF Apps Archive</title>
 	</head>
 	<body>
-		<header>
-			<h1><a href="/">All Hosted Apps - FF Apps Archive (beta)</a></h1>
-		</header>
+		<Header/>
 		<main>
-			<AppsList apps={ apps }/>
+			<header>
+				<h2>All Hosted Apps</h2>
+			</header>
+			<AppsList apps={ hosted }/>
 		</main>
 		<Footer/>
 	</body>

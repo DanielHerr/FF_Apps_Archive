@@ -1,9 +1,10 @@
 ---
-const { apps } = Astro.props
+const { apps, images } = Astro.props
 ---
-<ul>
+<ul id="apps_list">
 	{ apps.map((app) => (
 		<li>
+			{ images && <img src={ "/app/" + app.id + "/" + app.data.id + "-128.png" } alt="" width="32" height="32" loading="lazy"> }
 			<a href={ "/app/" + app.id + "/" }>{ app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale] }</a>
 		</li>
 	)) }

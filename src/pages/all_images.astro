@@ -2,9 +2,8 @@
 import * as Content from "astro:content"
 
 import Imports from "../components/common_imports.astro"
-import Metadata from "../components/common_metadata.astro"
-import Header from "../components/header.astro"
 import Footer from "../components/footer.astro"
+import Metadata from "../components/common_metadata.astro"
 import AppsList from "../components/apps_list.astro"
 
 let apps = await Content.getCollection("metadata")
@@ -14,16 +13,16 @@ let apps = await Content.getCollection("metadata")
 <html lang="en">
 	<head>
 		<Imports/>
+
 		<Metadata/>
 		<title>All Apps - FF Apps Archive</title>
 	</head>
 	<body>
-		<Header/>
+		<header>
+			<h1><a href="/">All Apps - FF Apps Archive (beta)</a></h1>
+		</header>
 		<main>
-			<header>
-				<h2>All Apps</h2>
-			</header>
-			<AppsList apps={ apps }/>
+			<AppsList apps={ apps } images/>
 		</main>
 		<Footer/>
 	</body>

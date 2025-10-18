@@ -2,8 +2,9 @@
 import * as Content from "astro:content"
 
 import Imports from "../components/common_imports.astro"
-import Footer from "../components/footer.astro"
 import Metadata from "../components/common_metadata.astro"
+import Header from "../components/header.astro"
+import Footer from "../components/footer.astro"
 import AppsList from "../components/apps_list.astro"
 
 let privileged = await Content.getCollection("metadata", ({ data }) => data.app_type == "privileged")
@@ -13,15 +14,15 @@ let privileged = await Content.getCollection("metadata", ({ data }) => data.app_
 <html lang="en">
 	<head>
 		<Imports/>
-
 		<Metadata/>
 		<title>All Privileged Apps - FF Apps Archive</title>
 	</head>
 	<body>
-		<header>
-			<h1><a href="/">All Privileged Apps - FF Apps Archive (beta)</a></h1>
-		</header>
+		<Header/>
 		<main>
+			<header>
+				<h2>All Privileged Apps</h2>
+			</header>
 			<AppsList apps={ privileged }/>
 		</main>
 		<Footer/>

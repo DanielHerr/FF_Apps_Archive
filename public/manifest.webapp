@@ -6,13 +6,13 @@
 		"url": "https://danielherr.software"
 	},
 	"icons": {
-		"16": "/rocket_16.png",
-		"32": "/rocket_32.png",
-		"48": "/rocket_bag_48.png",
-		"60": "/rocket_bag_60.png",
-		"64": "/rocket_bag_64.png",
-		"128": "/rocket_bag_128.png",
-		"512": "/rocket_bag_512.png"
+		"16": "/icons/rocket_16.png",
+		"32": "/icons/rocket_32.png",
+		"48": "/icons/rocket_bag_48.png",
+		"60": "/icons/rocket_bag_60.png",
+		"64": "/icons/rocket_bag_64.png",
+		"128": "/icons/rocket_bag_128.png",
+		"512": "/icons/rocket_bag_512.png"
 	},
 	"launch_path": "/",
 	"version": "1"

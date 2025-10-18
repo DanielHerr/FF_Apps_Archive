@@ -1,15 +1,31 @@
-div {
+h1 {
+	font-size: x-large;
+}
+h2 {
+	font-size: xx-large;
+}
+#screenshots_list {
 	display: -moz-box;
 	display: flex;
 	overflow: auto;
+	clear: both;
 }
 img {
 	display: block;
 	flex-shrink: 0;
+	max-width: 100%;
 }
-button {
+#action_buttons > * {
 	display: block;
+	width: 100%;
 	font-size: large;
-	padding: 0.5em 5em;
-	/* border-radius: 10em; */
+	padding: 0.5em 2em;
+	margin-bottom: 1em;
+	border: thin solid lightgrey;
+	border-radius: 10em;
+	text-align: center;
+	text-decoration: none;
+}
+.app_text_blocks {
+	white-space: pre-wrap;
 }
