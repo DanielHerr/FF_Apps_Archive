@@ -1,11 +1,25 @@
 ---
-const { apps, images } = Astro.props
+import categories from "../categories.json" with { type: "json" }
+
+const { apps } = Astro.props
 ---
 <ul id="apps_list">
 	{ apps.map((app) => (
 		<li>
-			{ images && <img src={ "/app/" + app.id + "/" + app.data.id + "-128.png" } alt="" width="32" height="32" loading="lazy"> }
-			<a href={ "/app/" + app.id + "/" }>{ app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale] }</a>
+			<a href={ "/app/" + app.id + "/" }>
+				<img class="icon" src={ "/app/" + app.id + "/" + app.data.id + "-128.png" } alt="" width="64" height="64" loading="lazy">
+				<div class="primary">
+					<h3 class="name">{ app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale] }</h3>
+					<span class="author">{ app.data.author }</span>
+				</div>
+				<div class="secondary">
+					<span class="rating">Rating: { app.data.ratings.average } ({ app.data.ratings.count })</span>
+					<span class="type">{ app.data.app_type }</span>
+					<ul class="categories">
+						{ app.data.categories.map(slug => <li>{ categories.find(c => c.slug == slug).name }</li>) }
+					</ul>
+				</div>
+			</a>
 		</li>
 	)) }
 </ul>

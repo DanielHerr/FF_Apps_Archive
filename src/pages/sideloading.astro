@@ -1,0 +1,91 @@
+---
+import * as Content from "astro:content"
+
+import Header from "../components/header.astro"
+import Footer from "../components/footer.astro"
+import Imports from "../components/common_imports.astro"
+import Metadata from "../components/common_metadata.astro"
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<Imports/>
+		<Metadata/>
+		<title>Sideloading - FF Apps Archive</title>
+	</head>
+	<body>
+		<Header/>
+		<main>
+			<header>
+				<h2>Firefox OS v1.2+ Sideloading Instructions</h2>
+			</header>
+
+<ol>
+	<li>Download an old version of Firefox on Windows, Linux, or Mac which has WebIDE, such as <a href="https://ftp.mozilla.org/pub/firefox/releases/45.9.0esr/">v45 ESR.</a></li>
+
+	<li>Enable ADB and Devtools debugging on Firefox OS device in Developer settings</li>
+
+	<li>Choose one of the following options:
+		<ol>
+			<li>
+				Option 1: ADB Helper Firefox extension
+				<ol>
+					<li><a href="https://archive.mozilla.org/pub/labs/fxos-simulator/adb-helper/">Download ADB Helper extension</a></li>
+
+					<li>Run Firefox and navigate to "about:config"</li>
+
+					<li>Search for "xpinstall.signatures.required" and switch to false</li>
+
+					<li>Restart Firefox and open Addons page</li>
+
+					<li>Use the addons menu to install extension from file or drag onto page</li>
+
+					<li>Open WebIDE from the Developers entry in the Firefox menu</li>
+
+					<li>Select Firefox OS device under USB Devices</li>
+				</ol>
+			</li>
+
+			<li>
+				Option 2: ADB system tool installation
+				<ol>
+					<li>Install ADB using your package manager using a terminal or command prompt
+<br>
+Debian/Ubuntu Linux:
+<br>
+<code>sudo apt install adb</code>
+<br>
+Windows 10/11:
+<br>
+<code>winget install Google.PlatformTools</code></li>
+
+					<li>Setup forwarding:
+						<br>
+<code>adb forward tcp:6000 localfilesystem:/data/local/debugger-socket</code>
+</li>
+
+					<li>Open WebIDE from the Developers entry in the Firefox menu</li>
+
+					<li>Select Remote Runtime and enter <code>localhost:6000</code></li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+
+	<li>Approve debugging connection on Firefox OS device</li>
+
+	<li>Open Packaged App and select desired extracted app</li>
+
+	<li>Install and Run desired app</li>
+</ol>
+
+<p>On Windows you may need to install drivers.
+	On the Fx0 this can be done by enabling "Install PC programs" in device settings on the Fx0 then running the executable inside the mounted storage drive.
+	<a href="https://developer.android.com/studio/run/oem-usb">Drivers for other models may be found online.</a>
+	If you can’t get recognized by ADB and can’t find drivers, try using Linux.
+</p>
+		</main>	
+		<Footer/>
+	</body>
+</html>

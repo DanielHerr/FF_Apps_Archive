@@ -1,17 +1,16 @@
 ---
 import * as Content from "astro:content"
 
-import Header from "../components/header.astro"
-import Footer from "../components/footer.astro"
-import Metadata from "../components/common_metadata.astro"
-import AppsList from "../components/apps_list.astro"
+import Header from "../../components/header.astro"
+import Footer from "../../components/footer.astro"
+import Metadata from "../../components/common_metadata.astro"
+import AppsList from "../../components/apps_list.astro"
 
-import categories from "../categories.json" with { type: "json" }
+import categories from "../../categories.json" with { type: "json" }
 
 export async function getStaticPaths() {
-	return categories.map(category => ({
-		params: { category: category.slug }, props: { category },
-})) }
+	return categories.map(category => ({ params: { category: category.slug }, props: { category } }))
+}
 
 let { category } = Astro.props
 
@@ -23,6 +22,7 @@ let apps = await Content.getCollection("metadata", ({ data }) => data.categories
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="/common.css">
+		<link rel="stylesheet" href="/lists.css">
 		<link rel="icon" href={ "/icons/" + category.slug + ".png" } type="image/png">
 
 		<Metadata/>

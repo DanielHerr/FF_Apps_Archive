@@ -30,7 +30,8 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="/common.css">
 		<link rel="stylesheet" href="/details.css">
-		<script src="/install.js" defer></script>
+		<script src="/install.js" defer nomodule></script>
+		<script src="/install.mjs" type="module"></script>
 		<link rel="icon" href={ app.data.id + "-128.png" } type="image/png">
 
 		<Metadata/>
