@@ -7,6 +7,7 @@ import Metadata from "../../components/common_metadata.astro"
 import AppsList from "../../components/apps_list.astro"
 
 import categories from "../../categories.json" with { type: "json" }
+import { live } from "../../validate_hosted_apps.js"
 
 export async function getStaticPaths() {
 	return categories.map(category => ({ params: { category: category.slug }, props: { category } }))
@@ -14,7 +15,9 @@ export async function getStaticPaths() {
 
 let { category } = Astro.props
 
-let apps = await Content.getCollection("metadata", ({ data }) => data.categories.includes(category.slug))
+let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+let apps = packaged.concat(live).filter(app => app.data.categories.includes(category.slug))
+
 ---
 
 <!doctype html>

@@ -7,7 +7,10 @@ import Header from "../../components/header.astro"
 import Footer from "../../components/footer.astro"
 import AppsList from "../../components/apps_list.astro"
 
-let apps = await Content.getCollection("metadata")
+import { live } from "../../validate_hosted_apps.js"
+
+let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+let apps = packaged.concat(live)
 ---
 
 <!doctype html>

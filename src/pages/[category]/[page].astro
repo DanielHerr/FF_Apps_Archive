@@ -8,6 +8,7 @@ import Footer from "../../components/footer.astro"
 import AppsList from "../../components/apps_list.astro"
 
 import categories from "../../categories.json" with { type: "json" }
+import { live } from "../../validate_hosted_apps.js"
 
 const characters = [ "1", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
 
@@ -24,7 +25,9 @@ export async function getStaticPaths() {
 
 let { category, page } = Astro.params
 
-let apps = await Content.getCollection("metadata", function(app) {
+let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+
+let apps = packaged.concat(live).filter(function(app) {
 	if(! app.data.categories.includes(category)) {
 		return false
 	}

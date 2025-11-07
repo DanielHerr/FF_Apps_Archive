@@ -1,13 +1,11 @@
 ---
-import * as Content from "astro:content"
-
 import Imports from "../../components/common_imports.astro"
 import Metadata from "../../components/common_metadata.astro"
 import Header from "../../components/header.astro"
 import Footer from "../../components/footer.astro"
 import AppsList from "../../components/apps_list.astro"
 
-let hosted = await Content.getCollection("metadata", ({ data }) => data.app_type == "hosted")
+import { live } from "../../validate_hosted_apps.js"
 ---
 
 <!doctype html>
@@ -24,7 +22,7 @@ let hosted = await Content.getCollection("metadata", ({ data }) => data.app_type
 			<header>
 				<h2>All Hosted Apps</h2>
 			</header>
-			<AppsList apps={ hosted }/>
+			<AppsList apps={ live }/>
 		</main>
 		<Footer/>
 	</body>

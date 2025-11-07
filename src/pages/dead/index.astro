@@ -5,7 +5,7 @@ import Header from "../../components/header.astro"
 import Footer from "../../components/footer.astro"
 import AppsList from "../../components/apps_list.astro"
 
-import { dead, total } from "../../validateHostedApps.js"
+import { dead } from "../../validate_hosted_apps.js"
 ---
 
 <!doctype html>
@@ -22,7 +22,6 @@ import { dead, total } from "../../validateHostedApps.js"
 			<header>
 				<h2>All Dead Hosted Apps</h2>
 			</header>
-			<p>Found { dead.length } dead hosted apps out of { total } total hosted apps.</p>
 			<AppsList apps={ dead }/>
 		</main>
 		<Footer/>
