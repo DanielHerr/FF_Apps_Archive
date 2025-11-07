@@ -59,7 +59,7 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 			<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
 			<p>Categories:
 				<ul>
-					{ app.data.categories.map(slug => <li><a href={ "/" + slug }>{ categories.find(c => c.slug == slug).name }</a></li>) }
+					{ app.data.categories.map(slug => <li><a href={ "/" + slug + "/1" }>{ categories.find(c => c.slug == slug).name }</a></li>) }
 				</ul>
 			</p>
 			{ app.data.is_offline && <p>Works Offline</p> }

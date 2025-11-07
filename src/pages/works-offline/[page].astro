@@ -1,0 +1,88 @@
+---
+import * as Content from "astro:content"
+
+import Imports from "../../components/common_imports.astro"
+import Metadata from "../../components/common_metadata.astro"
+import Header from "../../components/header.astro"
+import Footer from "../../components/footer.astro"
+import AppsList from "../../components/apps_list.astro"
+
+import { live } from "../../validate_hosted_apps.js"
+
+const characters = [ "1", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
+
+export async function getStaticPaths() {
+	const characters = [ "1", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
+	return characters.map(page => ({
+		params: { page },
+})) }
+
+let { page } = Astro.params
+
+let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+
+let apps = packaged.concat(live).filter(function(app) {
+	if(! app.data.is_offline) {
+		return false
+	}
+	let name = app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale]
+	let starting = name[0].toUpperCase()
+	if(! characters.includes(starting)) {
+		starting = "1"
+	}
+	return starting == page
+})
+
+const aIndex = 1
+let currentIndex = characters.indexOf(page)
+let prev = currentIndex > 0 ? characters[currentIndex - 1] : null
+let next = currentIndex < characters.length - 1 ? characters[currentIndex + 1] : null
+let cluster = []
+if(prev && characters.indexOf(prev) > aIndex) {
+	cluster.push(prev)
+}
+if(characters.indexOf(page) > aIndex) {
+	cluster.push(page)
+}
+if(next && characters.indexOf(next) > aIndex) {
+	cluster.push(next)
+}
+let display = [characters[0], characters[1]]
+if(cluster.length > 0) {
+  display.push("...")
+  display = [...display, ...cluster]
+}
+if(! cluster.includes("Z")) {
+  display.push("...")
+  display.push("Z")
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<Imports/>
+		<link rel="stylesheet" href="/lists.css">
+		<Metadata/>
+		<title>Page { page } - Works Offline - FF Apps Archive</title>
+		<link rel="canonical" href="/works-offline/">
+	</head>
+	<body>
+		<Header/>
+		<main>
+			<header>
+				<h2>Works Offline - Page { page }</h2>
+			</header>
+			<nav aria-label="Pagination">
+				<a href="/works-offline/">{ "View All" }</a>
+        { display.map((item) => item === "..." ? " ..." : <a href={ "../" + item } aria-current={item === page ? "page" : null} rel={item === prev ? "prev" : (item === next ? "next" : null)}>{item}</a>) }
+			</nav>
+			<AppsList apps={ apps }/>
+			<nav aria-label="Pagination">
+				<a href="/works-offline/">{ "View All" }</a>
+        { display.map((item) => item === "..." ? " ..." : <a href={ "../" + item } aria-current={item === page ? "page" : null} rel={item === prev ? "prev" : (item === next ? "next" : null)}>{item}</a>) }
+			</nav>
+		</main>
+		<Footer/>
+	</body>
+</html>
