@@ -1,0 +1,57 @@
+---
+import * as Content from "astro:content";
+
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import Imports from "../components/common_imports.astro";
+import Metadata from "../components/common_metadata.astro";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<Imports />
+		<link rel="stylesheet" href="/contact.css" />
+		<Metadata />
+		<title>Contact - FF Apps Archive</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<header>
+				<h2>Contact</h2>
+			</header>
+			<form name="FFAA Contact" method="post" action="/Contacted" netlify>
+				<label>
+					Name:
+					<input type="text" name="name" required>
+				</label><br>
+				<fieldset>
+					<legend>What is the nature of this message?</legend>
+					<label>
+						<input type="radio" name="reason" value="copyright">copyright claim
+					</label>
+					<label>
+						<input type="radio" name="reason" value="feedback">feedback
+					</label>
+					<label>
+						<input type="radio" name="reason" value="questions">questions
+					</label>
+					<label>
+						<input type="radio" name="reason" value="other">other
+					</label>
+				</fieldset>
+				<label>
+					Message<br>
+					<textarea name="message" required></textarea>
+				</label><br>
+			</form>
+			<label>
+				Email:
+				<input type="email" name="email" required>
+			</label><br>
+			<button type="submit">Submit Message</button>
+		</main>
+		<Footer/>
+	</body>
+</html>

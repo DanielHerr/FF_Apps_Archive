@@ -1,0 +1,197 @@
+---
+let { current } = Astro.props
+---
+
+<nav aria-label="Pagination">
+	<a href="../">{ "View All" }</a>
+	<!--<div>
+		Horizontal List Pagination
+		<ol>
+			<li class={current === "1" ? "current" : ""}><a href="../1">1</a></li>
+			<li class={current === "A" ? "current" : ""}><a href="../A">A</a></li>
+			<li class={current === "B" ? "current" : ""}><a href="../B">B</a></li>
+			<li class={current === "C" ? "current" : ""}><a href="../C">C</a></li>
+			<li class={current === "D" ? "current" : ""}><a href="../D">D</a></li>
+			<li class={current === "E" ? "current" : ""}><a href="../E">E</a></li>
+			<li class={current === "F" ? "current" : ""}><a href="../F">F</a></li>
+			<li class={current === "G" ? "current" : ""}><a href="../G">G</a></li>
+			<li class={current === "H" ? "current" : ""}><a href="../H">H</a></li>
+			<li class={current === "I" ? "current" : ""}><a href="../I">I</a></li>
+			<li class={current === "J" ? "current" : ""}><a href="../J">J</a></li>
+			<li class={current === "K" ? "current" : ""}><a href="../K">K</a></li>
+			<li class={current === "L" ? "current" : ""}><a href="../L">L</a></li>
+			<li class={current === "M" ? "current" : ""}><a href="../M">M</a></li>
+			<li class={current === "N" ? "current" : ""}><a href="../N">N</a></li>
+			<li class={current === "O" ? "current" : ""}><a href="../O">O</a></li>
+			<li class={current === "P" ? "current" : ""}><a href="../P">P</a></li>
+			<li class={current === "Q" ? "current" : ""}><a href="../Q">Q</a></li>
+			<li class={current === "R" ? "current" : ""}><a href="../R">R</a></li>
+			<li class={current === "S" ? "current" : ""}><a href="../S">S</a></li>
+			<li class={current === "T" ? "current" : ""}><a href="../T">T</a></li>
+			<li class={current === "U" ? "current" : ""}><a href="../U">U</a></li>
+			<li class={current === "V" ? "current" : ""}><a href="../V">V</a></li>
+			<li class={current === "W" ? "current" : ""}><a href="../W">W</a></li>
+			<li class={current === "X" ? "current" : ""}><a href="../X">X</a></li>
+			<li class={current === "Y" ? "current" : ""}><a href="../Y">Y</a></li>
+			<li class={current === "Z" ? "current" : ""}><a href="../Z">Z</a></li>
+		</ol>
+	</div>
+	<label>Native Select Pagination
+		<select class="native_select">
+			<option selected={current === "1"}>1</option>
+			<option selected={current === "A"}>A</option>
+			<option selected={current === "B"}>B</option>
+			<option selected={current === "C"}>C</option>
+			<option selected={current === "D"}>D</option>
+			<option selected={current === "E"}>E</option>
+			<option selected={current === "F"}>F</option>
+			<option selected={current === "G"}>G</option>
+			<option selected={current === "H"}>H</option>
+			<option selected={current === "I"}>I</option>
+			<option selected={current === "J"}>J</option>
+			<option selected={current === "K"}>K</option>
+			<option selected={current === "L"}>L</option>
+			<option selected={current === "M"}>M</option>
+			<option selected={current === "N"}>N</option>
+			<option selected={current === "O"}>O</option>
+			<option selected={current === "P"}>P</option>
+			<option selected={current === "Q"}>Q</option>
+			<option selected={current === "R"}>R</option>
+			<option selected={current === "S"}>S</option>
+			<option selected={current === "T"}>T</option>
+			<option selected={current === "U"}>U</option>
+			<option selected={current === "V"}>V</option>
+			<option selected={current === "W"}>W</option>
+			<option selected={current === "X"}>X</option>
+			<option selected={current === "Y"}>Y</option>
+			<option selected={current === "Z"}>Z</option>
+		</select>
+	</label>
+	<label>Custom Select Pagination
+		<select class="custom_select">
+			<option selected={current === "1"}><a href="../1">1</a></option>
+			<option selected={current === "A"}><a href="../A">A</a></option>
+			<option selected={current === "B"}><a href="../B">B</a></option>
+			<option selected={current === "C"}><a href="../C">C</a></option>
+			<option selected={current === "D"}><a href="../D">D</a></option>
+			<option selected={current === "E"}><a href="../E">E</a></option>
+			<option selected={current === "F"}><a href="../F">F</a></option>
+			<option selected={current === "G"}><a href="../G">G</a></option>
+			<option selected={current === "H"}><a href="../H">H</a></option>
+			<option selected={current === "I"}><a href="../I">I</a></option>
+			<option selected={current === "J"}><a href="../J">J</a></option>
+			<option selected={current === "K"}><a href="../K">K</a></option>
+			<option selected={current === "L"}><a href="../L">L</a></option>
+			<option selected={current === "M"}><a href="../M">M</a></option>
+			<option selected={current === "N"}><a href="../N">N</a></option>
+			<option selected={current === "O"}><a href="../O">O</a></option>
+			<option selected={current === "P"}><a href="../P">P</a></option>
+			<option selected={current === "Q"}><a href="../Q">Q</a></option>
+			<option selected={current === "R"}><a href="../R">R</a></option>
+			<option selected={current === "S"}><a href="../S">S</a></option>
+			<option selected={current === "T"}><a href="../T">T</a></option>
+			<option selected={current === "U"}><a href="../U">U</a></option>
+			<option selected={current === "V"}><a href="../V">V</a></option>
+			<option selected={current === "W"}><a href="../W">W</a></option>
+			<option selected={current === "X"}><a href="../X">X</a></option>
+			<option selected={current === "Y"}><a href="../Y">Y</a></option>
+			<option selected={current === "Z"}><a href="../Z">Z</a></option>
+		</select>
+	</label>
+	<details class="details">
+		<summary>Details Pagination</summary>
+		<ol>
+			<li class={current === "1" ? "current" : ""}><a href="../1">1</a></li>
+			<li class={current === "A" ? "current" : ""}><a href="../A">A</a></li>
+			<li class={current === "B" ? "current" : ""}><a href="../B">B</a></li>
+			<li class={current === "C" ? "current" : ""}><a href="../C">C</a></li>
+			<li class={current === "D" ? "current" : ""}><a href="../D">D</a></li>
+			<li class={current === "E" ? "current" : ""}><a href="../E">E</a></li>
+			<li class={current === "F" ? "current" : ""}><a href="../F">F</a></li>
+			<li class={current === "G" ? "current" : ""}><a href="../G">G</a></li>
+			<li class={current === "H" ? "current" : ""}><a href="../H">H</a></li>
+			<li class={current === "I" ? "current" : ""}><a href="../I">I</a></li>
+			<li class={current === "J" ? "current" : ""}><a href="../J">J</a></li>
+			<li class={current === "K" ? "current" : ""}><a href="../K">K</a></li>
+			<li class={current === "L" ? "current" : ""}><a href="../L">L</a></li>
+			<li class={current === "M" ? "current" : ""}><a href="../M">M</a></li>
+			<li class={current === "N" ? "current" : ""}><a href="../N">N</a></li>
+			<li class={current === "O" ? "current" : ""}><a href="../O">O</a></li>
+			<li class={current === "P" ? "current" : ""}><a href="../P">P</a></li>
+			<li class={current === "Q" ? "current" : ""}><a href="../Q">Q</a></li>
+			<li class={current === "R" ? "current" : ""}><a href="../R">R</a></li>
+			<li class={current === "S" ? "current" : ""}><a href="../S">S</a></li>
+			<li class={current === "T" ? "current" : ""}><a href="../T">T</a></li>
+			<li class={current === "U" ? "current" : ""}><a href="../U">U</a></li>
+			<li class={current === "V" ? "current" : ""}><a href="../V">V</a></li>
+			<li class={current === "W" ? "current" : ""}><a href="../W">W</a></li>
+			<li class={current === "X" ? "current" : ""}><a href="../X">X</a></li>
+			<li class={current === "Y" ? "current" : ""}><a href="../Y">Y</a></li>
+			<li class={current === "Z" ? "current" : ""}><a href="../Z">Z</a></li>
+		</ol>
+	</details>
+	<button commandfor="dialog_pagination" command="show-modal">Dialog Pagination</button>
+	<dialog id="dialog_pagination" closedby="any">
+		<ol>
+			<li class={current === "1" ? "current" : ""}><a href="../1">1</a></li>
+			<li class={current === "A" ? "current" : ""}><a href="../A">A</a></li>
+			<li class={current === "B" ? "current" : ""}><a href="../B">B</a></li>
+			<li class={current === "C" ? "current" : ""}><a href="../C">C</a></li>
+			<li class={current === "D" ? "current" : ""}><a href="../D">D</a></li>
+			<li class={current === "E" ? "current" : ""}><a href="../E">E</a></li>
+			<li class={current === "F" ? "current" : ""}><a href="../F">F</a></li>
+			<li class={current === "G" ? "current" : ""}><a href="../G">G</a></li>
+			<li class={current === "H" ? "current" : ""}><a href="../H">H</a></li>
+			<li class={current === "I" ? "current" : ""}><a href="../I">I</a></li>
+			<li class={current === "J" ? "current" : ""}><a href="../J">J</a></li>
+			<li class={current === "K" ? "current" : ""}><a href="../K">K</a></li>
+			<li class={current === "L" ? "current" : ""}><a href="../L">L</a></li>
+			<li class={current === "M" ? "current" : ""}><a href="../M">M</a></li>			
+			<li class={current === "N" ? "current" : ""}><a href="../N">N</a></li>
+			<li class={current === "O" ? "current" : ""}><a href="../O">O</a></li>
+			<li class={current === "P" ? "current" : ""}><a href="../P">P</a></li>
+			<li class={current === "Q" ? "current" : ""}><a href="../Q">Q</a></li>
+			<li class={current === "R" ? "current" : ""}><a href="../R">R</a></li>
+			<li class={current === "S" ? "current" : ""}><a href="../S">S</a></li>
+			<li class={current === "T" ? "current" : ""}><a href="../T">T</a></li>
+			<li class={current === "U" ? "current" : ""}><a href="../U">U</a></li>
+			<li class={current === "V" ? "current" : ""}><a href="../V">V</a></li>
+			<li class={current === "W" ? "current" : ""}><a href="../W">W</a></li>
+			<li class={current === "X" ? "current" : ""}><a href="../X">X</a></li>
+			<li class={current === "Y" ? "current" : ""}><a href="../Y">Y</a></li>
+			<li class={current === "Z" ? "current" : ""}><a href="../Z">Z</a></li>
+		</ol>
+	</dialog>-->
+	<details class="hybrid">
+		<summary>Pagination</summary>
+		<ol>
+			<li class={current === "1" ? "current" : ""}><a href="../1">1</a></li>
+			<li class={current === "A" ? "current" : ""}><a href="../A">A</a></li>
+			<li class={current === "B" ? "current" : ""}><a href="../B">B</a></li>
+			<li class={current === "C" ? "current" : ""}><a href="../C">C</a></li>
+			<li class={current === "D" ? "current" : ""}><a href="../D">D</a></li>
+			<li class={current === "E" ? "current" : ""}><a href="../E">E</a></li>
+			<li class={current === "F" ? "current" : ""}><a href="../F">F</a></li>
+			<li class={current === "G" ? "current" : ""}><a href="../G">G</a></li>
+			<li class={current === "H" ? "current" : ""}><a href="../H">H</a></li>
+			<li class={current === "I" ? "current" : ""}><a href="../I">I</a></li>
+			<li class={current === "J" ? "current" : ""}><a href="../J">J</a></li>
+			<li class={current === "K" ? "current" : ""}><a href="../K">K</a></li>
+			<li class={current === "L" ? "current" : ""}><a href="../L">L</a></li>
+			<li class={current === "M" ? "current" : ""}><a href="../M">M</a></li>
+			<li class={current === "N" ? "current" : ""}><a href="../N">N</a></li>
+			<li class={current === "O" ? "current" : ""}><a href="../O">O</a></li>
+			<li class={current === "P" ? "current" : ""}><a href="../P">P</a></li>
+			<li class={current === "Q" ? "current" : ""}><a href="../Q">Q</a></li>
+			<li class={current === "R" ? "current" : ""}><a href="../R">R</a></li>
+			<li class={current === "S" ? "current" : ""}><a href="../S">S</a></li>
+			<li class={current === "T" ? "current" : ""}><a href="../T">T</a></li>
+			<li class={current === "U" ? "current" : ""}><a href="../U">U</a></li>
+			<li class={current === "V" ? "current" : ""}><a href="../V">V</a></li>
+			<li class={current === "W" ? "current" : ""}><a href="../W">W</a></li>
+			<li class={current === "X" ? "current" : ""}><a href="../X">X</a></li>
+			<li class={current === "Y" ? "current" : ""}><a href="../Y">Y</a></li>
+			<li class={current === "Z" ? "current" : ""}><a href="../Z">Z</a></li>
+		</ol>
+	</details>
+</nav>

@@ -1,0 +1,29 @@
+fieldset {
+	border: none;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 1em;
+}
+
+label {
+	display: block;
+}
+fieldset label {
+	margin-top: 0;
+}
+
+input, button {
+	font-size: 1em;
+}
+input:user-invalid {
+	border-color: red;
+}
+
+textarea {
+	display: block;
+	font-size: 1em;
+}
+
+button {
+	margin-top: 1em;
+}

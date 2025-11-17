@@ -1,0 +1,67 @@
+nav ol {
+	padding: 0;
+}
+nav div ol, .hybrid ol {
+	white-space: nowrap;
+	overflow-x: auto;
+	text-align: center;
+}
+nav li {
+	display: inline-block;
+	margin: 5px;
+	border: thin solid lightgrey;
+	border-radius: 10px;
+	background: aliceblue;
+}
+nav li a {
+	display: inline-block;
+	font-size: 1.5em;
+	padding-top: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	text-decoration: none;
+}
+nav li.current {
+	font-weight: bold;
+	border-width: medium;
+	background: lightskyblue;
+}
+select {
+	font-size: 1em;
+	width: 4em;
+	padding: 5px;
+	border-radius: 0.4em;
+	text-align: center;
+	background: aliceblue;
+}
+details {
+	display: block;
+	margin-top: 20px;
+	margin-bottom: 40px;
+}
+
+.hybrid::details-content {
+	content-visibility: visible;
+}
+.hybrid[open] ol {
+	white-space: normal;
+}
+
+@media(prefers-color-scheme: dark) {
+	nav li {
+		background: midnightblue;
+	}
+	select {
+		background: midnightblue;
+} }
+
+.details_polyfill summary {
+	display: block;
+}
+.details_polyfill details > summary:before {
+	content: "▶ ";
+}
+.details_polyfill details[open] > summary:before {
+	content: "▼ ";
+}

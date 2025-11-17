@@ -6,7 +6,7 @@ import Metadata from "../../components/common_metadata.astro"
 import Header from "../../components/header.astro"
 import Footer from "../../components/footer.astro"
 import AppsList from "../../components/apps_list.astro"
-
+import Pagination from "../../components/pagination.astro"
 import { live } from "../../validate_hosted_apps.js"
 
 const characters = [ "1", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
@@ -27,30 +27,6 @@ let apps = live.filter(app => {
 	}
 	return starting == page
 })
-
-const aIndex = 1
-let currentIndex = characters.indexOf(page)
-let prev = currentIndex > 0 ? characters[currentIndex - 1] : null
-let next = currentIndex < characters.length - 1 ? characters[currentIndex + 1] : null
-let cluster = []
-if(prev && characters.indexOf(prev) > aIndex) {
-	cluster.push(prev)
-}
-if(characters.indexOf(page) > aIndex) {
-	cluster.push(page)
-}
-if(next && characters.indexOf(next) > aIndex) {
-	cluster.push(next)
-}
-let display = [characters[0], characters[1]]
-if(cluster.length > 0) {
-  display.push("...")
-  display = [...display, ...cluster]
-}
-if(! cluster.includes("Z")) {
-  display.push("...")
-  display.push("Z")
-}
 ---
 
 <!doctype html>
@@ -58,6 +34,8 @@ if(! cluster.includes("Z")) {
 	<head>
 		<Imports/>
 		<link rel="stylesheet" href="/lists.css">
+		<link rel="stylesheet" href="/pagination.css">
+		<script src="/pagination.js" defer></script>
 		<Metadata/>
 		<title>Page { page } - Hosted Apps - FF Apps Archive</title>
 		<link rel="canonical" href="/hosted/">
@@ -68,15 +46,9 @@ if(! cluster.includes("Z")) {
 			<header>
 				<h2>Hosted Apps - Page { page }</h2>
 			</header>
-			<nav aria-label="Pagination">
-				<a href="/hosted/">{ "View All" }</a>
-        { display.map((item) => item === "..." ? " ..." : <a href={ "../" + item} aria-current={item === page ? "page" : null} rel={item === prev ? "prev" : (item === next ? "next" : null)}>{item}</a>) }
-			</nav>
+			<Pagination current={page} />
 			<AppsList apps={ apps }/>
-			<nav aria-label="Pagination">
-				<a href="/hosted/">{ "View All" }</a>
-        { display.map((item) => item === "..." ? " ..." : <a href={ "../" + item} aria-current={item === page ? "page" : null} rel={item === prev ? "prev" : (item === next ? "next" : null)}>{item}</a>) }
-			</nav>
+			<Pagination current={page} />
 		</main>
 		<Footer/>
 	</body>
