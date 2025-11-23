@@ -6,6 +6,7 @@ import Footer from "../../components/footer.astro"
 import Metadata from "../../components/common_metadata.astro"
 
 import categories from "../../categories.json" with { type: "json" }
+import { pwa_data } from "../../validate_hosted_apps.js"
 
 export async function getStaticPaths() {
 	let apps = await Content.getCollection("metadata")
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
 }
 
 let { app } = Astro.props
+let pwa = pwa_data ? pwa_data[app.data.slug] : undefined
 let name = app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale]
 let manifest = app.data.app_type == "hosted" ? app.data.manifest_url : app.data.manifest_url.split("/").pop()
 let description = app.data.description ? app.data.description["en-US"] ?? app.data.description.en ?? app.data.description[app.data.default_locale] : ""
@@ -30,8 +32,8 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="/common.css">
 		<link rel="stylesheet" href="/details.css">
-		<script src="/install.js" defer nomodule></script>
-		<script src="/install.mjs" type="module"></script>
+		{ app.data.app_type != "privileged" && <script src="/install.js" defer nomodule></script> }
+		{ app.data.app_type == "hosted" && pwa && <script src="/install.mjs" type="module"></script> }
 		<link rel="icon" href={ app.data.id + "-128.png" } type="image/png">
 
 		<Metadata/>
@@ -47,7 +49,9 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 				<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
 			</header>
 			<div id="action_buttons">
-				{ app.data.app_type != "privileged" && <button id="install_button" data-manifest={ manifest }>Install</button> }
+				{ app.data.app_type == "hosted" && <button id="install_button" disabled data-manifest={ manifest } data-pwa-page={ pwa && pwa.install_page } data-pwa-id={ pwa && pwa.id } data-pwa-manifest={ pwa && pwa.manifest_url }>Install</button> }
+				{ app.data.app_type == "packaged" && <button id="install_button" disabled data-manifest={ manifest }>Install</button> }
+				{ app.data.app_type == "privileged" && <a href="/sideloading">Installation Instructions</a> }
 				{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
 			</div>
 			<div id="screenshots_list">
@@ -68,8 +72,7 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 			<p>Updated: { app.data.last_updated }</p>
 			<p>Version: { app.data.current_version }</p>
 			<hr>
-			{ releasenotes && <p>Release Notes: <br> <span class="app_text_blocks" set:html={releasenotes}></span></p> }
-			<hr>
+			{ releasenotes && <p>Release Notes: <br> <span class="app_text_blocks" set:html={releasenotes}></span></p> <hr> }
 			<p>App Type: { app.data.app_type }</p>
 		</main>	
 		<Footer/>
