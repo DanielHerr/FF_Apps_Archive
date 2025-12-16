@@ -1,19 +1,19 @@
-nav ol {
+.pages ol {
 	padding: 0;
 }
-nav div ol, .hybrid ol {
+.pages div ol, .hybrid ol {
 	white-space: nowrap;
 	overflow-x: auto;
 	text-align: center;
 }
-nav li {
+.pages li {
 	display: inline-block;
 	margin: 5px;
 	border: thin solid lightgrey;
 	border-radius: 10px;
 	background: aliceblue;
 }
-nav li a {
+.pages li a {
 	display: inline-block;
 	font-size: 1.5em;
 	padding-top: 10px;
@@ -22,7 +22,7 @@ nav li a {
 	padding-bottom: 10px;
 	text-decoration: none;
 }
-nav li.current {
+.pages li.current {
 	font-weight: bold;
 	border-width: medium;
 	background: lightskyblue;
@@ -49,7 +49,7 @@ details {
 }
 
 @media(prefers-color-scheme: dark) {
-	nav li {
+	.pages li {
 		background: midnightblue;
 	}
 	select {

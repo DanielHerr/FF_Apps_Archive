@@ -1,29 +1,12 @@
 ---
-import Imports from "../../components/common_imports.astro"
-import Metadata from "../../components/common_metadata.astro"
-import Header from "../../components/header.astro"
-import Footer from "../../components/footer.astro"
+import Base from "../../layouts/base.astro"
 import AppsList from "../../components/apps_list.astro"
 
 import { live } from "../../validate_hosted_apps.js"
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<Imports/>
-		<link rel="stylesheet" href="/lists.css">
-		<Metadata/>
-		<title>All Hosted Apps - FF Apps Archive</title>
-	</head>
-	<body>
-		<Header/>
-		<main>
-			<header>
-				<h2>All Hosted Apps</h2>
-			</header>
-			<AppsList apps={ live }/>
-		</main>
-		<Footer/>
-	</body>
-</html>
+<Base title="All Hosted Apps">
+	<link slot="imports" rel="stylesheet" href="/lists.css">
+
+	<AppsList apps={ live }/>
+</Base>

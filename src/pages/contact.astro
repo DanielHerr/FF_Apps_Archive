@@ -1,26 +1,10 @@
 ---
-import * as Content from "astro:content";
-
-import Header from "../components/header.astro";
-import Footer from "../components/footer.astro";
-import Imports from "../components/common_imports.astro";
-import Metadata from "../components/common_metadata.astro";
+import Base from "../layouts/base.astro"
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<Imports />
-		<link rel="stylesheet" href="/contact.css" />
-		<Metadata />
-		<title>Contact - FF Apps Archive</title>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<header>
-				<h2>Contact</h2>
-			</header>
+<Base title="Contact">
+	<link slot="imports" rel="stylesheet" href="/contact.css">
+
 			<form name="FFAA Contact" method="post" action="/Contacted" netlify>
 				<label>
 					Name:
@@ -51,7 +35,4 @@ import Metadata from "../components/common_metadata.astro";
 			</label><br>
 			<button type="submit">Submit Message</button>
 			</form>
-		</main>
-		<Footer/>
-	</body>
-</html>
+</Base>

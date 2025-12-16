@@ -1,29 +1,12 @@
 ---
-import Imports from "../../components/common_imports.astro"
-import Metadata from "../../components/common_metadata.astro"
-import Header from "../../components/header.astro"
-import Footer from "../../components/footer.astro"
+import Base from "../../layouts/base.astro"
 import AppsList from "../../components/apps_list.astro"
 
 import { pwas } from "../../validate_hosted_apps.js"
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<Imports/>
-		<link rel="stylesheet" href="/lists.css">
-		<Metadata/>
-		<title>All PWAs - FF Apps Archive</title>
-	</head>
-	<body>
-		<Header/>
-		<main>
-			<header>
-				<h2>All PWAs</h2>
-			</header>
-			<AppsList apps={ pwas }/>
-		</main>
-		<Footer/>
-	</body>
-</html>
+<Base title="All PWAs">
+	<link slot="imports" rel="stylesheet" href="/lists.css">
+
+	<AppsList apps={ pwas }/>
+</Base>

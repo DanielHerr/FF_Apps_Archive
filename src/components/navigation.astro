@@ -2,12 +2,14 @@
 import Categories from "../components/categories.astro"
 ---
 
-<nav>
-	<a href="all">All Apps</a>
-	<a href="packaged">Packaged</a>
-	<a href="privileged">Privileged</a>
-	<a href="hosted">Hosted</a>
-	<a href="live">Live Hosted</a>
-	<a href="dead">Dead Hosted</a>
+<nav id="nav" popover aria-label="Site Navigation">
+	<ul>
+		<li><a href="/all/1">All Apps</a></li>
+		<li><a href="/packaged/1">Packaged</a></li>
+		<li><a href="/hosted/1">Hosted</a></li>
+		<li><a href="/dead/1">Dead Hosted</a></li>
+		<li><a href="/privileged/1">Privileged</a></li>
+		<li id="pwas_link" hidden><a href="/pwa/1">PWA</a></li>
+	</ul>
 	<Categories/>
 </nav>

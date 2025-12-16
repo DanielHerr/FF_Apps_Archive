@@ -1,9 +1,7 @@
 ---
 import * as Content from "astro:content"
 
-import Header from "../../components/header.astro"
-import Footer from "../../components/footer.astro"
-import Metadata from "../../components/common_metadata.astro"
+import Base from "../../layouts/base.astro"
 
 import categories from "../../categories.json" with { type: "json" }
 import { pwa_data } from "../../validate_hosted_apps.js"
@@ -26,55 +24,45 @@ let supporturl = app.data.support_url ? app.data.support_url["en-US"] ?? app.dat
 let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? app.data.release_notes.en ?? app.data.release_notes[app.data.default_locale] : null
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="/common.css">
+<Base title={ name }>
+	<Fragment slot="imports">
 		<link rel="stylesheet" href="/details.css">
 		{ app.data.app_type != "privileged" && <script src="/install.js" defer nomodule></script> }
 		{ app.data.app_type == "hosted" && pwa && <script src="/install.mjs" type="module"></script> }
-		<link rel="icon" href={ app.data.id + "-128.png" } type="image/png">
+	</Fragment>
+	<link slot="icon" rel="icon" href={ app.data.id + "-128.png" } type="image/png">
 
-		<Metadata/>
-		<title>{ name } - FF Apps Archive</title>
-	</head>
-	<body>
-		<Header/>
-		<main>
-			<header>
-				<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
-				<h2>{ name }</h2>
-				<p>Developer: { app.data.author }</p>
-				<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
-			</header>
-			<div id="action_buttons">
-				{ app.data.app_type == "hosted" && <button id="install_button" disabled data-manifest={ manifest } data-pwa-page={ pwa && pwa.install_page } data-pwa-id={ pwa && pwa.id } data-pwa-manifest={ pwa && pwa.manifest_url }>Install</button> }
-				{ app.data.app_type == "packaged" && <button id="install_button" disabled data-manifest={ manifest }>Install</button> }
-				{ app.data.app_type == "privileged" && <a href="/sideloading">Installation Instructions</a> }
-				{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
-			</div>
-			<div id="screenshots_list">
-				{ app.data.previews.map(preview => <img src={ "screenshots/" + preview.id + ".png" } alt="">) }
-			</div>
-			<p class="app_text_blocks" set:html={description}></p>
-			<hr>
-			{ homepage && <p>Homepage: <a href={ homepage }>{ homepage }</a></p> }
-			<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
-			<p>Categories:
-				<ul>
-					{ app.data.categories.map(slug => <li><a href={ "/" + slug + "/1" }>{ categories.find(c => c.slug == slug).name }</a></li>) }
-				</ul>
-			</p>
-			{ app.data.is_offline && <p>Works Offline</p> }
-			{ app.data.app_type != "hosted" && <p>Size: { Math.round(app.data.file_size / 1024 / 1024) } MB</p> }
-			<p>Created: { app.data.created }</p>
-			<p>Updated: { app.data.last_updated }</p>
-			<p>Version: { app.data.current_version }</p>
-			<hr>
-			{ releasenotes && <p>Release Notes: <br> <span class="app_text_blocks" set:html={releasenotes}></span></p> <hr> }
-			<p>App Type: { app.data.app_type }</p>
-		</main>	
-		<Footer/>
-	</body>
-</html>
+	<Fragment slot="header">
+		<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
+		<h2>{ name }</h2>
+		<p>Developer: { app.data.author }</p>
+		<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
+	</Fragment>
+
+	<div id="action_buttons">
+		{ app.data.app_type == "hosted" && <button id="install_button" disabled data-manifest={ manifest } data-pwa-page={ pwa && pwa.install_page } data-pwa-id={ pwa && pwa.id } data-pwa-manifest={ pwa && pwa.manifest_url }>Install</button> }
+		{ app.data.app_type == "packaged" && <button id="install_button" disabled data-manifest={ manifest }>Install</button> }
+		{ app.data.app_type == "privileged" && <a href="/sideloading">Installation Instructions</a> }
+		{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
+	</div>
+	<div id="screenshots_list">
+		{ app.data.previews.map(preview => <img src={ "screenshots/" + preview.id + ".png" } alt="">) }
+	</div>
+	<p class="app_text_blocks" set:html={description}></p>
+	<hr>
+	{ homepage && <p>Homepage: <a href={ homepage }>{ homepage }</a></p> }
+	<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
+	<p>Categories:
+		<ul>
+			{ app.data.categories.map(slug => <li><a href={ "/" + slug + "/1" }>{ categories.find(c => c.slug == slug).name }</a></li>) }
+		</ul>
+	</p>
+	{ app.data.is_offline && <p>Works Offline</p> }
+	{ app.data.app_type != "hosted" && <p>Size: { Math.round(app.data.file_size / 1024 / 1024) } MB</p> }
+	<p>Created: { app.data.created }</p>
+	<p>Updated: { app.data.last_updated }</p>
+	<p>Version: { app.data.current_version }</p>
+	<hr>
+	{ releasenotes && <p>Release Notes: <br> <span class="app_text_blocks" set:html={releasenotes}></span></p> <hr> }
+	<p>App Type: { app.data.app_type }</p>
+</Base>

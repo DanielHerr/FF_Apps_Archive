@@ -1,23 +1,29 @@
 ---
-import Imports from "../components/common_imports.astro"
 import Footer from "../components/footer.astro"
 import Metadata from "../components/common_metadata.astro"
 import Categories from "../components/categories.astro"
+import Theme_Inputs from "../components/theme_inputs.astro"
+import Theme_Buttons from "../components/theme_buttons.astro"
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<Imports/>
-		<script src="show_pwas.mjs" type="module"></script>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/common.css">
+		<link rel="icon" href="/icons/rocket_32.png" type="image/png">
+		<script src="common.js" defer></script>
 		<Metadata/>
 		<title>FF Apps Archive</title>
 	</head>
 	<body>
+		<Theme_Inputs/>
 		<header>
 			<img src="/icons/rocket_bag_64.png" srcset="/icons/rocket_bag_128.png 2x, /icons/rocket_bag_512.png 8x" alt="" width="64" height="64">
 			<h1>FF Apps Archive (beta)</h1>
+			<Theme_Buttons/>
 		</header>
+		<div id="scroller">
 		<main>
 			<p>FF Apps Archive contains thousands of apps from the defunct Firefox Marketplace.
 			</p>
@@ -26,7 +32,7 @@ import Categories from "../components/categories.astro"
 			<p><a href="privileged/1">Privileged Apps - cannot be installed directly and must be sideloaded using developer tools</a></p>
 			<p><a href="hosted/1">Hosted Apps - possibly installable, but might no longer function</a></p>
 			<p><a href="dead/1">Dead Hosted Apps - cannot be installed</a></p>
-			<p hidden><a href="pwa/1">Progressive Web Apps (PWAs) - can be installed in modern web browsers</a></p>
+			<p id="pwas_link" hidden><a href="pwa/1">Progressive Web Apps (PWAs) - can be installed in modern web browsers</a></p>
 			<Categories/>
 			<p>
 				Firefox apps can be installed on any version of Firefox OS and on old versions of the Firefox web browser until v46.<br>
@@ -44,5 +50,6 @@ import Categories from "../components/categories.astro"
 			</p>
 		</main>
 		<Footer/>
+		</div>
 	</body>
 </html>

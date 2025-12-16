@@ -1,10 +1,7 @@
 ---
 import * as Content from "astro:content"
 
-import Imports from "../../components/common_imports.astro"
-import Metadata from "../../components/common_metadata.astro"
-import Header from "../../components/header.astro"
-import Footer from "../../components/footer.astro"
+import Base from "../../layouts/base.astro"
 import AppsList from "../../components/apps_list.astro"
 import Pagination from "../../components/pagination.astro"
 import { pwas } from "../../validate_hosted_apps.js"
@@ -29,27 +26,17 @@ let apps = pwas.filter(app => {
 })
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<Imports/>
+<Base title={ page + " - PWAs"}>
+	<Fragment slot="imports">
 		<link rel="stylesheet" href="/lists.css">
 		<link rel="stylesheet" href="/pagination.css">
 		<script src="/pagination.js" defer></script>
-		<Metadata/>
-		<title>Page { page } - PWAs - FF Apps Archive</title>
-		<link rel="canonical" href="/pwa/">
-	</head>
-	<body>
-		<Header/>
-		<main>
-			<header>
-				<h2>PWAs - Page { page }</h2>
-			</header>
-			<Pagination current={page} />
-			<AppsList apps={ apps }/>
-			<Pagination current={page} />
-		</main>
-		<Footer/>
-	</body>
-</html>
+	</Fragment>
+	<link slot="metadata" rel="canonical" href="/pwa/">
+
+	<h2 slot="header">PWAs - Page {page}</h2>
+
+			<Pagination current={page}/>
+	<AppsList apps={ apps }/>
+			<Pagination current={page}/>
+</Base>

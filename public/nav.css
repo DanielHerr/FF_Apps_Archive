@@ -1,0 +1,96 @@
+/*
+supported scenarios:
+
+no flexbox or media queries - menu nav? nav below main?
+
+media queries, no flexbox - absolute positioning when left nav? menu nav?
+
+media queries and flexbox:
+popover and anchor, checkbox/radio hack fallback
+*/
+
+/* radio button fallback */
+#nav, button[popovertarget], #nav_toggle:checked ~ #scroller main, #nav_toggle:checked ~ #scroller footer {
+	display: none;
+}
+#nav_toggle:checked ~ #scroller #nav {
+	display: block;
+}
+
+/* large screen, left nav */
+@media(min-width: 800px) {
+	#flexer {
+		display: -moz-box; display: -webkit-box;
+		display: flex; display: -webkit-flex;
+		align-items: flex-start;
+		flex-direction: row-reverse;
+		-moz-box-direction: reverse;
+	}
+	#nav {
+		display: block;
+		position: sticky; position: -webkit-sticky;
+		top: 0;
+		flex-shrink: 0;
+		border: none;
+		scrollbar-width: thin;
+		overflow-y: auto;
+		max-height: 100cqh;
+	}
+	main {
+		margin-left: 10px;
+		flex-grow: 1;
+		-moz-box-flex: 1;
+		min-width: 10px;
+	}
+	label[for="nav_toggle"] {
+		display: none;
+	}
+}
+
+@supports selector(:popover-open) {
+	label[for="nav_toggle"] {
+		display: none;
+	}
+	/* undo popover styles */
+	#nav {
+		width: auto;
+		height: auto;
+		border: none;
+		margin: 0;
+	}
+	/* large screen, left nav */
+	@media(width >= 800px) {
+		#nav {
+			display: block;
+		}
+	}
+}
+
+/* popover and anchor, small screen, menu nav */
+@supports selector(:popover-open) and (anchor-name: --name) {
+	@media(width < 800px) {
+		body > header {
+			anchor-name: --header;
+		}
+		#nav {
+			position: absolute;
+			top: anchor(--header bottom);
+			margin: 0;
+		}
+		#nav:popover-open {
+			display: block;
+		}
+		body:has(#nav:popover-open) :is(main, footer) {
+			display: none;
+		}
+		button[popovertarget] {
+			display: inline-block;
+		}
+	}
+}
+/* popover without anchor, fallback */
+@supports selector(:popover-open) and (not(anchor-name: --name)) {
+	#nav {
+		position: initial;
+	}
+}

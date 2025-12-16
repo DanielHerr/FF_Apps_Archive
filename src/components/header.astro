@@ -1,6 +1,13 @@
+---
+import Theme from "../components/theme_buttons.astro"
+---
+
 <header>
 	<a href="/">
 		<img src="/icons/rocket_bag_64.png" srcset="/icons/rocket_bag_128.png 2x, /icons/rocket_bag_512.png 8x" alt="" width="64" height="64">
 		<h1>FF Apps Archive (beta)</h1>
 	</a>
+	<Theme/>
+	<button popovertarget="nav" aria-label="Toggle Nav"><span aria-hidden="true">≡</span></button>
+	<label for="nav_toggle" tabindex="0" role="button" aria-controls="nav" aria-label="Toggle Nav"><span aria-hidden="true">≡</span></label>
 </header>

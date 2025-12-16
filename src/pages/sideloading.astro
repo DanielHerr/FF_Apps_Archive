@@ -1,25 +1,9 @@
 ---
-import * as Content from "astro:content"
-
-import Header from "../components/header.astro"
-import Footer from "../components/footer.astro"
-import Imports from "../components/common_imports.astro"
-import Metadata from "../components/common_metadata.astro"
+import Base from "../layouts/base.astro"
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<Imports/>
-		<Metadata/>
-		<title>Sideloading - FF Apps Archive</title>
-	</head>
-	<body>
-		<Header/>
-		<main>
-			<header>
-				<h2>Firefox OS v1.2+ Sideloading Instructions</h2>
-			</header>
+<Base title="Sideloading">
+	<h2 slot="header">Firefox OS v1.2+ Sideloading Instructions</h2>
 
 <ol>
 	<li>Download an old version of Firefox on Windows, Linux, or Mac which has WebIDE, such as <a href="https://ftp.mozilla.org/pub/firefox/releases/45.9.0esr/">v45 ESR.</a></li>
@@ -85,7 +69,5 @@ Windows 10/11:
 	<a href="https://developer.android.com/studio/run/oem-usb">Drivers for other models may be found online.</a>
 	If you can’t get recognized by ADB and can’t find drivers, try using Linux.
 </p>
-		</main>	
-		<Footer/>
-	</body>
-</html>
+
+</Base>
