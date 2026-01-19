@@ -1,0 +1,13 @@
+---
+import Base from "../layouts/base.astro"
+---
+
+<Base title="Search">
+	<Fragment slot="imports">
+		<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+		<script src="/pagefind/pagefind-ui.js" defer></script>
+		<link href="/search.css" rel="stylesheet">
+		<script src="/search.js" defer></script>
+	</Fragment>
+	<search></search>
+</Base>

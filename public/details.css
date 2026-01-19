@@ -4,15 +4,20 @@ h1 {
 h2 {
 	font-size: 3em;
 }
+@media(max-width: 800px) {
+	h2 {
+		font-size: 2em;
+} }
+
 #screenshots_list {
-	display: -moz-box;
-	display: flex;
+	display: -moz-box; display: -webkit-box;
+	display: flex; display: -webkit-flex;
 	overflow: auto;
 	clear: both;
 }
 img {
 	display: block;
-	flex-shrink: 0;
+	flex-shrink: 0; -webkit-flex-shrink: 0;
 	max-width: 100%;
 }
 #action_buttons > * {

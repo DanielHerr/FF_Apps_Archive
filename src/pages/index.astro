@@ -2,25 +2,32 @@
 import Footer from "../components/footer.astro"
 import Metadata from "../components/common_metadata.astro"
 import Categories from "../components/categories.astro"
-import Theme_Inputs from "../components/theme_inputs.astro"
+import Hidden_Inputs from "../components/hidden_inputs.astro"
 import Theme_Buttons from "../components/theme_buttons.astro"
+import Search from "../components/search.astro"
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/dialog_polyfill.css">
 		<link rel="stylesheet" href="/common.css">
-		<link rel="icon" href="/icons/rocket_32.png" type="image/png">
+		<noscript>
+			<link rel="stylesheet" href="/noscript.css">
+		</noscript>
+		<link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]">
 		<script src="common.js" defer></script>
 		<Metadata/>
-		<title>FF Apps Archive</title>
+		<title data-pagefind-meta="title">FF Apps Archive</title>
 	</head>
-	<body>
-		<Theme_Inputs/>
+	<body id="body" data-pagefind-body>
+		<Hidden_Inputs/>
 		<header>
 			<img src="/icons/rocket_bag_64.png" srcset="/icons/rocket_bag_128.png 2x, /icons/rocket_bag_512.png 8x" alt="" width="64" height="64">
-			<h1>FF Apps Archive (beta)</h1>
+			<h1 id="long_header">FF Apps Archive (beta)</h1>
+			<h1 id="short_header" aria-hidden="true">FFAA</h1>
+			<Search/>
 			<Theme_Buttons/>
 		</header>
 		<div id="scroller">
