@@ -1,0 +1,22 @@
+/* Order matters */
+
+/* 1. Fonts */
+@import "./fonts.css";
+
+/* 2. Design tokens */
+@import "./tokens.css";
+
+/* 3. Optional reset */
+@import "./reset.css";
+
+/* 4. Global base styles */
+html {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
