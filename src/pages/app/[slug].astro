@@ -30,7 +30,7 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 		{ app.data.app_type != "privileged" && <script src="/install.js" defer nomodule></script> }
 		{ app.data.app_type == "hosted" && pwa && <script src="/install.mjs" type="module"></script> }
 	</Fragment>
-	<link slot="icon" rel="icon" href={ app.data.id + "-128.png" } type="image/png" data-pagefind-meta="image[href]">
+	<link slot="icon" rel="icon" href={ "/app/" + app.data.slug + "/" + app.data.id + "-128.png" } type="image/png" data-pagefind-meta="image[href]">
 
 	<Fragment slot="header">
 		<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
