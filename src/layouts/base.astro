@@ -3,24 +3,32 @@ import Header from "../components/header.astro"
 import Footer from "../components/footer.astro"
 import Navigation from "../components/navigation.astro"
 import Metadata from "../components/common_metadata.astro"
+<<<<<<< HEAD
 import Theme from "../components/theme_inputs.astro"
 import "../styles/index.css";
+=======
+import Hidden_Inputs from "../components/hidden_inputs.astro"
+>>>>>>> master
 
-let { title } = Astro.props
+let { title, searchable } = Astro.props
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/dialog_polyfill.css">
 		<link rel="stylesheet" href="/common.css">
 		<link rel="stylesheet" href="/nav.css">
+		<noscript>
+			<link rel="stylesheet" href="/noscript.css">
+		</noscript>
 		<script defer src="/common.js"></script>
 
 		<slot name="imports"/>
 
 		<slot name="icon">
-			<link rel="icon" href="/icons/rocket_32.png" type="image/png">
+			<link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]">
 		</slot>
 
 		<Metadata/>
@@ -29,17 +37,17 @@ let { title } = Astro.props
 
 		<title>{ title } - FF Apps Archive</title>
 	</head>
-	<body>
-		<Theme/>
+	<body id="body">
+		<Hidden_Inputs/>
 		<Header/>
-		<input type="checkbox" id="nav_toggle" tabindex="-1">
+		<input type="checkbox" id="nav_toggle_input" tabindex="-1">
 		<div id="scroller">
 			<div id="flexer">
-				<main>
+				<main data-pagefind-body={ searchable ? "" : null }>
 					<header>
 
 						<slot name="header">
-							<h2>{ title }</h2>
+							<h2 data-pagefind-meta="title">{ title }</h2>
 						</slot>
 
 					</header>

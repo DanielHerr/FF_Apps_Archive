@@ -12,6 +12,7 @@
     "@astrojs/netlify": "^6.5.8",
     "@astrojs/sitemap": "^3.5.1",
     "@zip.js/zip.js": "^2.7.73",
-    "astro": "^5.15.7"
+    "astro": "^5.15.7",
+    "dialog-polyfill": "^0.5.6"
   }
 }

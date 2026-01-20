@@ -10,10 +10,10 @@ popover and anchor, checkbox/radio hack fallback
 */
 
 /* radio button fallback */
-#nav, button[popovertarget], #nav_toggle:checked ~ #scroller main, #nav_toggle:checked ~ #scroller footer {
+#nav, #nav_toggle_button, #nav_toggle_input:checked ~ #scroller main, #nav_toggle_input:checked ~ #scroller footer {
 	display: none;
 }
-#nav_toggle:checked ~ #scroller #nav {
+#nav_toggle_input:checked ~ #scroller #nav {
 	display: block;
 }
 
@@ -21,16 +21,16 @@ popover and anchor, checkbox/radio hack fallback
 @media(min-width: 800px) {
 	#flexer {
 		display: -moz-box; display: -webkit-box;
-		display: flex; display: -webkit-flex;
-		align-items: flex-start;
-		flex-direction: row-reverse;
-		-moz-box-direction: reverse;
+		display: -webkit-flex; display: flex;
+		-webkit-align-items: flex-start; align-items: flex-start;
+		-webkit-flex-direction: row-reverse; flex-direction: row-reverse;
+		-moz-box-direction: reverse; -webkit-box-direction: reverse;
 	}
 	#nav {
 		display: block;
-		position: sticky; position: -webkit-sticky;
+		position: -webkit-sticky; position: sticky;
 		top: 0;
-		flex-shrink: 0;
+		-webkit-flex-shrink: 0; flex-shrink: 0;
 		border: none;
 		scrollbar-width: thin;
 		overflow-y: auto;
@@ -38,19 +38,16 @@ popover and anchor, checkbox/radio hack fallback
 	}
 	main {
 		margin-left: 10px;
-		flex-grow: 1;
-		-moz-box-flex: 1;
+		-webkit-flex-grow: 1; flex-grow: 1;
+		-moz-box-flex: 1; -webkit-box-flex: 1;
 		min-width: 10px;
 	}
-	label[for="nav_toggle"] {
+	#nav_toggle_label {
 		display: none;
 	}
 }
 
 @supports selector(:popover-open) {
-	label[for="nav_toggle"] {
-		display: none;
-	}
 	/* undo popover styles */
 	#nav {
 		width: auto;
@@ -58,20 +55,11 @@ popover and anchor, checkbox/radio hack fallback
 		border: none;
 		margin: 0;
 	}
-	/* large screen, left nav */
-	@media(width >= 800px) {
-		#nav {
-			display: block;
-		}
-	}
 }
 
 /* popover and anchor, small screen, menu nav */
 @supports selector(:popover-open) and (anchor-name: --name) {
 	@media(width < 800px) {
-		body > header {
-			anchor-name: --header;
-		}
 		#nav {
 			position: absolute;
 			top: anchor(--header bottom);
@@ -83,12 +71,15 @@ popover and anchor, checkbox/radio hack fallback
 		body:has(#nav:popover-open) :is(main, footer) {
 			display: none;
 		}
-		button[popovertarget] {
+		#nav_toggle_button {
 			display: inline-block;
+		}
+		#nav_toggle_label {
+			display: none;
 		}
 	}
 }
-/* popover without anchor, fallback */
+/* popover without anchor, fallback to checkbox trick */
 @supports selector(:popover-open) and (not(anchor-name: --name)) {
 	#nav {
 		position: initial;

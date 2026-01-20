@@ -24,17 +24,17 @@ let supporturl = app.data.support_url ? app.data.support_url["en-US"] ?? app.dat
 let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? app.data.release_notes.en ?? app.data.release_notes[app.data.default_locale] : null
 ---
 
-<Base title={ name }>
+<Base title={ name } searchable>
 	<Fragment slot="imports">
 		<link rel="stylesheet" href="/details.css">
 		{ app.data.app_type != "privileged" && <script src="/install.js" defer nomodule></script> }
 		{ app.data.app_type == "hosted" && pwa && <script src="/install.mjs" type="module"></script> }
 	</Fragment>
-	<link slot="icon" rel="icon" href={ app.data.id + "-128.png" } type="image/png">
+	<link slot="icon" rel="icon" href={ "/app/" + app.data.slug + "/" + app.data.id + "-128.png" } type="image/png" data-pagefind-meta="image[href]">
 
 	<Fragment slot="header">
 		<img src={ app.data.id + "-128.png" } alt="" width="128" height="128">
-		<h2>{ name }</h2>
+		<h2 data-pagefind-meta="title">{ name }</h2>
 		<p>Developer: { app.data.author }</p>
 		<p>Rating: { app.data.ratings.average }, { app.data.ratings.count } ratings</p>
 	</Fragment>
@@ -54,7 +54,7 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 	<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
 	<p>Categories:
 		<ul>
-			{ app.data.categories.map(slug => <li><a href={ "/" + slug + "/1" }>{ categories.find(c => c.slug == slug).name }</a></li>) }
+			{ app.data.categories.map(slug => <li data-pagefind-filter="category"><a href={ "/" + slug + "/1" }>{ categories.find(c => c.slug == slug).name }</a></li>) }
 		</ul>
 	</p>
 	{ app.data.is_offline && <p>Works Offline</p> }
@@ -64,5 +64,5 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 	<p>Version: { app.data.current_version }</p>
 	<hr>
 	{ releasenotes && <p>Release Notes: <br> <span class="app_text_blocks" set:html={releasenotes}></span></p> <hr> }
-	<p>App Type: { app.data.app_type }</p>
+	<p>App Type: <span data-pagefind-filter="type">{ app.data.app_type }<span></p>
 </Base>

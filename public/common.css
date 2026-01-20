@@ -1,14 +1,21 @@
 * {
 	box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
 }
+[hidden] {
+	display: none !important;
+}
+.visible {
+	display: initial !important;
+}
+
 html {
 	height: 100%;
 }
 body {
 	display: -moz-box; display: -webkit-box;
-	display: flex; display: -webkit-flex;
-	flex-direction: column;
-	-moz-box-orient: vertical;
+	display: -webkit-flex; display: flex;
+	-webkit-flex-direction: column; flex-direction: column;
+	-moz-box-orient: vertical; -webkit-box-orient: vertical;
 	font-family: sans-serif;
 	height: 100%;
 	margin: 0;
@@ -17,8 +24,9 @@ body > input {
 	display: none;
 }
 body > header {
-	flex-shrink: 0;
+	-webkit-flex-shrink: 0; flex-shrink: 0;
 	padding: 5px;
+	anchor-name: --header;
 }
 body > header a {
 	display: inline-block;
@@ -38,12 +46,14 @@ body > header label, body > header button {
 	margin-left: 10px;
 	padding: 5px;
 	border-radius: 5px;
+	line-height: 1;
 }
+
 #scroller {
 	overflow: auto;
 	container-type: size;
-	flex-grow: 1;
-	-moz-box-flex: 1;
+	-webkit-flex-grow: 1; flex-grow: 1;
+	-moz-box-flex: 1; -webkit-box-flex: 1;
 	padding: 5px;
 	min-height: 10px;
 }
@@ -56,10 +66,37 @@ main header img {
 	margin-right: 1em;
 }
 
-@media(max-width: 800px) {
+@media(max-width: 1000px) {
 	.theme_label {
 		display: none;
-} }
+	}
+}
+@media(max-width: 600px) {
+	#long_header {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0,0,0,0);
+		white-space: nowrap;
+		border: 0;
+	}
+}
+@media(max-width: 500px) {
+	body > header h1 {
+		margin: 0;
+	}
+	body > header label, body > header button {
+		margin: 0;
+	}
+}
+@media(min-width: 600px) {
+	#short_header {
+		display: none;
+	}
+}
 
 #light_theme:checked ~ * {
 	background: white;
@@ -68,17 +105,6 @@ main header img {
 #dark_theme:checked ~ * {
 	background: black;
 	color: white;
-}
-
-html.light {
-	background: white;
-	color: black;
-	color-scheme: light;
-} /* added by JS */
-html.dark {
-	background: black;
-	color: white;
-	color-scheme: dark;
 }
 
 @media(prefers-color-scheme: light) {
@@ -113,4 +139,78 @@ html:has(#light_theme:checked) {
 }
 html:has(#dark_theme:checked) {
 	color-scheme: dark;
+}
+
+
+#search_toggle_input:checked ~ #scroller, #search_unavailable_input:checked ~ #scroller {
+	display: none;
+}
+#search_toggle_input:checked ~ header #search_form {
+	display: block;
+}
+#search_unavailable_input:checked ~ header #search_unavailable {
+	display: block;
+}
+#search_unavailable_button {
+	display: none;
+}
+#search_unavailable_close_button {
+	display: none;
+}
+
+#search_toggle_button {
+	display: none;
+}
+@supports selector(:popover-open) {
+	#search_unavailable_close_label {
+		display: none;
+	}
+	#search_unavailable_close_button {
+		display: initial;
+	}
+	/* undo default popover styles */
+	#search_form {
+		position: initial;
+		margin: 0;
+		border: none;
+	}
+	#search_form:popover-open {
+		display: block;
+	}
+	body:has(#search_form:popover-open, #search_unavailable:popover-open) #scroller {
+		display: none;
+	}
+}
+/* only use popover if anchor supported */
+@supports selector(:popover-open) and (anchor-name: --name){
+	#search_toggle_label {
+		display: none;
+	}
+	#search_toggle_button {
+		display: initial;
+	}
+	#search_form:popover-open {
+		position: absolute;
+		top: anchor(--header bottom);
+	}
+}
+
+/* small screen, toggled search box */
+@media(max-width: 800px) {
+	#search_form {
+		display: none;
+	}
+}
+
+/* large screen, always visible search box */
+@media(min-width: 800px) {
+	#search_form {
+		display: inline-block;
+	}
+	#search_toggle_button {
+		display: none;
+	}
+	#search_toggle_label {
+		display: none;
+	}
 }

@@ -1,6 +1,38 @@
-	<search>
-			<form action="search" method="get">
-			<input type="search" name="q" placeholder="Search" required>
-			<button type="submit">Search</button>
-		</form>
-	</search>
+<!--
+Possible Scenarios:
+
+Search Unavailable:
+no JS, checkbox trick
+no JS, HTML popover
+no JS, HTML commands dialog
+
+JS, no WASM, JS dialog polyfill
+JS, no WASM, JS native dialog
+JS, no WASM, HTML commands dialog
+
+Search Available: JS and WASM
+small screen:
+checkbox trick replacing entire page
+popover replacing entire page
+
+large screen:
+search contained inside header, no toggle
+-->
+<form id="search_form" method="get" action="/search" popover role="search">
+	<input type="search" name="q" required placeholder="Search for apps">
+	<button type="submit" aria-label="Search"><span aria-hidden="true">🔎</span></button>
+</form>
+
+<button id="search_toggle_button" popovertarget="search_form" aria-label="Toggle Search"><span aria-hidden="true">🔎</span></button>
+
+<label id="search_toggle_label" for="search_toggle_input" tabindex="0" role="button" aria-controls="search_form" aria-label="Toggle Search"><span aria-hidden="true">🔎</span></label>
+
+<button id="search_unavailable_button" popovertarget="search_unavailable" commandfor="search_unavailable" command="show-modal" aria-label="Search Unavailable"><span aria-hidden="true">🔎*</span></button>
+
+<label id="search_unavailable_label" for="search_unavailable_input" tabindex="0" role="button" aria-controls="search_unavailable" aria-label="Search Unavailable"><span aria-hidden="true">🔎*</span></label>
+
+<dialog id="search_unavailable" popover closedby="any" class="fixed">
+	<p>Search requires JavaScript and WebAssembly. Try using a modern web browser or enable JS and WASM in settings.</p>
+	<button id="search_unavailable_close_button" popovertarget="search_unavailable" popovertargetaction="hide" commandfor="search_unavailable" command="close">Close</button>
+	<label id="search_unavailable_close_label" for="search_unavailable_input" tabindex="0" role="button" aria-controls="search_unavailable">Close</label>
+</dialog>
