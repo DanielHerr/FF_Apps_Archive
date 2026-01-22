@@ -17,9 +17,8 @@
   font-style: normal;
   font-display: swap;
   src: local('Metropolis');
-  /* Add your font file sources here:
-  src: url('/fonts/metropolis-regular.woff2') format('woff2'),
-       url('/fonts/metropolis-regular.woff') format('woff'); */
+  src: url('/fonts/metropolis/Metropolis-Regular.otf') format('opentype'),
+       url('/fonts/metropolis/Metropolis-Regular.otf') format('opentype');
 }
 
 @font-face {
@@ -28,7 +27,8 @@
   font-style: normal;
   font-display: swap;
   src: local('Metropolis');
-  /* Add your font file sources here */
+  src: url('/fonts/metropolis/Metropolis-Medium.otf') format('opentype'),
+       url('/fonts/metropolis/Metropolis-Medium.otf') format('opentype');
 }
 
 @font-face {
@@ -37,7 +37,8 @@
   font-style: normal;
   font-display: swap;
   src: local('Metropolis');
-  /* Add your font file sources here */
+  src: url('/fonts/metropolis/Metropolis-Bold.otf') format('opentype'),
+       url('/fonts/metropolis/Metropolis-Bold.otf') format('opentype');
 }
 
 /* Public Sans - Brand Font */
