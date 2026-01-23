@@ -1,22 +1,22 @@
 ---
 export interface Props {
   title?: string
+  size?: number | string
 }
-const { title} = Astro.props
+const { title, size = 24 } = Astro.props
 ---
 
 <svg
-  viewBox="0 0 24 24"
-  width="24"
-  height="24"
+  viewBox="0 0 256 256"
+  width={size}
+  height={size}
   fill="currentColor"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
   role={title ? "img" : "presentation"}
   aria-hidden={!title}
 >
   {title && <title>{title}</title>}
-  <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z" transform="scale(0.375)" />
+  <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z" />
 </svg>
+
+
+

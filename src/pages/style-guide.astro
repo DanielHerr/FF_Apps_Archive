@@ -1,0 +1,82 @@
+---
+import '../styles/fonts.css'
+
+// Import all your icons
+import * as AppTypesIcons from '../components/icons/app-types/index'
+import * as BrandIcons from '../components/icons/brand/index'
+import * as CategoryIcons from '../components/icons/categories/index'
+import * as LabelIcons from '../components/icons/labels/index'
+import * as NavigationIcons from '../components/icons/navigation/index'
+import * as RatingIcons from '../components/icons/ratings/index'
+
+// Collect icons into categories for display
+const iconGroups = [
+  { name: 'App Types', icons: AppTypesIcons },
+  { name: 'Brand', icons: BrandIcons },
+  { name: 'Categories', icons: CategoryIcons },
+  { name: 'Labels', icons: LabelIcons },
+  { name: 'Navigation', icons: NavigationIcons },
+  { name: 'Ratings', icons: RatingIcons },
+]
+
+// Example tokens
+const colorTokens = [
+  { name: 'Primary', value: 'var(--color-primary)' },
+  { name: 'Accent', value: 'var(--color-accent)' },
+  { name: 'Text', value: 'var(--color-text)' },
+  { name: 'Background', value: 'var(--color-bg)' },
+]
+
+const fontTokens = [
+  { name: 'Primary', value: 'var(--font-primary)' },
+  { name: 'Secondary', value: 'var(--font-secondary)' },
+  { name: 'Heading', value: 'var(--font-heading)' },
+]
+---
+
+<html lang="en">
+  <head>
+    <title>Style Guide</title>
+    <style>
+      body { padding: 2rem; font-family: var(--font-primary); color: var(--color-text); }
+      h1, h2 { margin-top: 2rem; }
+      .token-swatch { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+      .token-box { width: 3rem; height: 3rem; border: 1px solid #ccc; }
+      .icon-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+      .icon-item { display: flex; flex-direction: column; align-items: center; width: 5rem; font-size: 0.75rem; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <h1>Design Tokens</h1>
+
+    <h2>Colors</h2>
+    {colorTokens.map(token => (
+      <div class="token-swatch">
+        <div class="token-box" style={`background: ${token.value}`}></div>
+        <span>{token.name}: {token.value}</span>
+      </div>
+    ))}
+
+    <h2>Fonts</h2>
+    {fontTokens.map(token => (
+      <div class="token-swatch" style={`font-family: ${token.value}`}>
+        <span>{token.name}: {token.value}</span>
+      </div>
+    ))}
+
+    <h1>Icons</h1>
+    {iconGroups.map(group => (
+      <>
+        <h2>{group.name}</h2>
+        <div class="icon-grid">
+          {Object.entries(group.icons).map(([name, IconComponent]) => (
+            <div class="icon-item">
+              <IconComponent title={name} />
+              <span>{name}</span>
+            </div>
+          ))}
+        </div>
+      </>
+    ))}
+  </body>
+</html>
