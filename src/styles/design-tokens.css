@@ -199,4 +199,26 @@
   
   /* Legacy radius variable for backward compatibility */
   --radius: 4px;
+
+  /* ========================================
+    EFFECTS - BLUR
+    ======================================== */
+  
+  --blur-app-header: 25px;
+
+
+  /* ========================================
+     EFFECTS - SHADOWS
+     ======================================== */
+  
+  /* App Icon Shadow: X:0 Y:1 Blur:1 Spread:0 */
+  --shadow-app-icon: 0px 1px 1px 0px rgb(from var(--neutral-black-strong) r g b / 0.1);
+
+
+  /* ========================================
+     EFFECTS - OPACITY
+     ======================================== */
+  
+  --opacity-app-image: 0.15;
+  --opacity-contrast: 1;
 }

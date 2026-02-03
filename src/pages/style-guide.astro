@@ -1,10 +1,102 @@
 ---
 import '../styles/fonts.css'
+import '../styles/design-tokens.css'
 import '../styles/colors-primitives.css'
 import '../styles/colors-semantic.css'
 
 // Import all icons
 import * as Icons from '../components/icons/index.js';
+import IconRocketColor from '../components/icons/brand/IconRocketColor.astro';
+import IconHeaderLogo from '../components/icons/brand/IconHeaderLogo.astro';
+import IconRocketColorGradient from '../components/icons/brand/IconRocketColorGradient.astro';
+import IconHeaderLogoGradient from '../components/icons/brand/IconHeaderLogoGradient.astro';
+
+// Typography Tokens
+const fontFamilies = [
+  { name: 'Metropolis', variable: '--font-metropolis', value: "'Metropolis', sans-serif" },
+  { name: 'Inter', variable: '--font-inter', value: "'Inter', sans-serif" },
+  { name: 'Public Sans', variable: '--font-public-sans', value: "'Public Sans', sans-serif" },
+];
+
+const headingTokens = [
+  { name: 'Heading XXL', sizeVar: '--heading-xxl-size', lineVar: '--heading-xxl-line', weightVar: '--font-weight-bold', size: '64px', line: '72px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XL', sizeVar: '--heading-xl-size', lineVar: '--heading-xl-line', weightVar: '--font-weight-bold', size: '56px', line: '64px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading LG', sizeVar: '--heading-lg-size', lineVar: '--heading-lg-line', weightVar: '--font-weight-bold', size: '48px', line: '56px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading MD', sizeVar: '--heading-md-size', lineVar: '--heading-md-line', weightVar: '--font-weight-bold', size: '40px', line: '44px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading SM', sizeVar: '--heading-sm-size', lineVar: '--heading-sm-line', weightVar: '--font-weight-bold', size: '32px', line: '36px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XS', sizeVar: '--heading-xs-size', lineVar: '--heading-xs-line', weightVar: '--font-weight-bold', size: '24px', line: '28px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XXS', sizeVar: '--heading-xxs-size', lineVar: '--heading-xxs-line', weightVar: '--font-weight-bold', size: '20px', line: '24px', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XXXS', sizeVar: '--heading-xxxs-size', lineVar: '--heading-xxxs-line', weightVar: '--font-weight-bold', size: '16px', line: '20px', weight: '700', font: 'Metropolis' },
+  { name: 'Billboard', sizeVar: '--heading-billboard-size', lineVar: '--heading-billboard-line', weightVar: '--font-weight-bold', size: '128px', line: 'auto', weight: '700', font: 'Metropolis' },
+];
+
+const bodyTokens = [
+  { name: 'Body LG', sizeVar: '--body-lg-size', lineVar: '--body-lg-line', weightVar: '--font-weight-regular', size: '18px', line: '36px', weight: '400', font: 'Inter' },
+  { name: 'Body MD', sizeVar: '--body-md-size', lineVar: '--body-md-line', weightVar: '--font-weight-regular', size: '16px', line: '24px', weight: '400', font: 'Inter' },
+  { name: 'Body SM', sizeVar: '--body-sm-size', lineVar: '--body-sm-line', weightVar: '--font-weight-regular', size: '14px', line: '22px', weight: '400', font: 'Inter' },
+  { name: 'Body XS', sizeVar: '--body-xs-size', lineVar: '--body-xs-line', weightVar: '--font-weight-regular', size: '12px', line: '18px', weight: '400', font: 'Inter' },
+  { name: 'Body XXS', sizeVar: '--body-xxs-size', lineVar: '--body-xxs-line', weightVar: '--font-weight-regular', size: '10px', line: '16px', weight: '400', font: 'Inter' },
+];
+
+const brandTokens = [
+  { name: 'Brand Bold MD', sizeVar: '--brand-bold-md-size', lineVar: '--brand-bold-md-line', weightVar: '--font-weight-bold', size: '24px', line: '20px', weight: '700', font: 'Public Sans' },
+  { name: 'Brand Regular MD', sizeVar: '--brand-regular-md-size', lineVar: '--brand-regular-md-line', weightVar: '--font-weight-regular', size: '20px', line: '20px', weight: '400', font: 'Public Sans' },
+  { name: 'Brand Bold SM', sizeVar: '--brand-bold-sm-size', lineVar: '--brand-bold-sm-line', weightVar: '--font-weight-bold', size: '18px', line: '20px', weight: '700', font: 'Public Sans' },
+  { name: 'Brand Regular SM', sizeVar: '--brand-regular-sm-size', lineVar: '--brand-regular-sm-line', weightVar: '--font-weight-regular', size: '16px', line: '20px', weight: '400', font: 'Public Sans' },
+];
+
+// Spacing Tokens
+const spacingTokens = [
+  { name: 'Spacing 2', variable: '--spacing-2', value: '2px' },
+  { name: 'Spacing 4', variable: '--spacing-4', value: '4px' },
+  { name: 'Spacing 8', variable: '--spacing-8', value: '8px' },
+  { name: 'Spacing 12', variable: '--spacing-12', value: '12px' },
+  { name: 'Spacing 16', variable: '--spacing-16', value: '16px' },
+  { name: 'Spacing 20', variable: '--spacing-20', value: '20px' },
+  { name: 'Spacing 24', variable: '--spacing-24', value: '24px' },
+  { name: 'Spacing 28', variable: '--spacing-28', value: '28px' },
+  { name: 'Spacing 32', variable: '--spacing-32', value: '32px' },
+  { name: 'Spacing 36', variable: '--spacing-36', value: '36px' },
+  { name: 'Spacing 40', variable: '--spacing-40', value: '40px' },
+  { name: 'Spacing 44', variable: '--spacing-44', value: '44px' },
+  { name: 'Spacing 48', variable: '--spacing-48', value: '48px' },
+  { name: 'Spacing 52', variable: '--spacing-52', value: '52px' },
+  { name: 'Spacing 56', variable: '--spacing-56', value: '56px' },
+  { name: 'Spacing 60', variable: '--spacing-60', value: '60px' },
+  { name: 'Spacing 64', variable: '--spacing-64', value: '64px' },
+];
+
+// Icon Size Tokens
+const iconTokens = [
+  { name: 'Icon XXXXS', variable: '--icon-xxxxs', value: '8px' },
+  { name: 'Icon XXXS', variable: '--icon-xxxs', value: '10px' },
+  { name: 'Icon XXS', variable: '--icon-xxs', value: '12px' },
+  { name: 'Icon XS', variable: '--icon-xs', value: '14px' },
+  { name: 'Icon SM', variable: '--icon-sm', value: '16px' },
+  { name: 'Icon MD', variable: '--icon-md', value: '24px' },
+  { name: 'Icon LG', variable: '--icon-lg', value: '32px' },
+];
+
+// App Icon Size Tokens
+const appIconTokens = [
+  { name: 'App Icon SM', variable: '--app-icon-sm', value: '52px' },
+  { name: 'App Icon MD', variable: '--app-icon-md', value: '92px' },
+  { name: 'App Icon LG', variable: '--app-icon-lg', value: '138px' },
+];
+
+// Effect Tokens
+const effectTokens = {
+  blur: [
+    { name: 'App Header Blur', variable: '--blur-app-header', value: '25px' },
+  ],
+  shadow: [
+    { name: 'App Icon Shadow', variable: '--shadow-app-icon', value: '0px 1px 1px 0px rgb(from var(--neutral-black-strong) r g b / 0.1)' },
+  ],
+  opacity: [
+    { name: 'App Image Opacity', variable: '--opacity-app-image', value: '0.15' },
+    { name: 'Contrast Opacity', variable: '--opacity-contrast', value: '1' },
+  ],
+};
 
 // Group icons by category
 const iconGroups = [
@@ -273,13 +365,77 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
     <style>
       body { 
         padding: 2rem; 
-        font-family: var(--font-primary); 
+        font-family: var(--font-inter); 
         color: var(--color-text);
         background: var(--color-bg);
       }
-      h1, h2 { margin-top: 2rem; margin-bottom: 1rem; }
-      h1 { font-size: 2.5rem; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
-      h2 { font-size: 1.5rem; color: var(--on-surface-light-primary); }
+      h1 { 
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-xxl-size);
+        line-height: var(--heading-xxl-line);
+        font-weight: var(--font-weight-bold);
+        margin-top: 2rem; 
+        margin-bottom: 1rem; 
+        border-bottom: 2px solid var(--color-border); 
+        padding-bottom: 1rem; 
+      }
+      h2 { 
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-md-size);
+        line-height: var(--heading-md-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-primary); 
+        margin-top: 1.5rem; 
+        margin-bottom: 1rem;
+      }
+      summary {
+        cursor: pointer;
+        padding: 0.75rem 1rem;
+        /* reserve space on right for caret */
+        padding-right: 3rem;
+        background: var(--surface-light-low);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        list-style: none;
+        position: relative;
+      }
+      summary::-webkit-details-marker { display: none; }
+      /* caret moved to the right and absolutely positioned so it stays inline */
+      summary::after {
+        content: "\\25BE"; /* down-pointing triangle */
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transform-origin: center;
+        transition: transform 0.18s ease-in-out;
+      }
+      details[open] summary::after {
+        transform: translateY(-50%) rotate(180deg);
+      }
+      /* Ensure headings keep original typography when moved inside summary */
+      summary h1 {
+        display: inline-block;
+        margin: 0;
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-xxl-size);
+        line-height: var(--heading-xxl-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-text);
+      }
+        line-height: var(--heading-md-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-primary); 
+        margin-top: 1.5rem; 
+        margin-bottom: 1rem;
+      }
+      p, .description {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        line-height: var(--body-md-line);
+        font-weight: var(--font-weight-regular);
+      }
       .token-swatch { 
         display: flex; 
         align-items: center; 
@@ -287,7 +443,8 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
         margin-bottom: 0.5rem;
         padding: 0.5rem;
         border-radius: 4px;
-        font-size: 0.9rem;
+        font-size: var(--body-sm-size);
+        font-family: var(--font-inter);
       }
       .token-box { 
         width: 3rem; 
@@ -300,7 +457,8 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
         margin-bottom: 2rem;
       }
       .color-group h2 {
-        font-size: 1.2rem;
+        font-size: var(--heading-sm-size);
+        line-height: var(--heading-sm-line);
         margin-bottom: 1rem;
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--color-border);
@@ -321,22 +479,445 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
         flex-direction: column; 
         align-items: center; 
         width: 5rem; 
-        font-size: 0.75rem; 
+        font-size: var(--body-xs-size);
+        font-family: var(--font-inter);
         text-align: center; 
       }
       .color-name {
-        font-family: monospace;
-        font-weight: 500;
+        font-family: var(--font-inter);
+        font-weight: var(--font-weight-bold);
       }
       .color-value {
         font-family: monospace;
-        font-size: 0.85rem;
+        font-size: var(--body-xs-size);
         opacity: 0.8;
       }
+      .typography-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 1rem;
+      }
+      .typography-sample {
+        padding: 1.5rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .typography-preview {
+        margin-bottom: 1rem;
+      }
+      .typography-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        font-size: var(--body-sm-size);
+        opacity: 0.8;
+      }
+      .typography-info-item {
+        font-family: var(--font-inter);
+      }
+      .typography-info-label {
+        font-weight: var(--font-weight-bold);
+        display: block;
+        opacity: 0.7;
+        font-size: var(--body-xs-size);
+      }
+      .font-families-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .font-family-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .font-family-preview {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        font-weight: var(--font-weight-bold);
+      }
+      .font-family-name {
+        font-family: var(--font-inter);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.25rem;
+        font-size: var(--body-md-size);
+      }
+      .font-family-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+      }
+      .spacing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .spacing-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .spacing-visual {
+        background: var(--violet-50);
+        margin-bottom: 1rem;
+        border-radius: 4px;
+      }
+      .spacing-label {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.5rem;
+      }
+      .spacing-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+        margin-bottom: 0.25rem;
+      }
+      .spacing-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.9;
+      }
+      .size-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .size-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        text-align: center;
+      }
+      .size-visual {
+        background: var(--violet-50);
+        margin: 0 auto 1rem auto;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        color: var(--ink-05);
+        margin-bottom: 1rem;
+      }
+      .size-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.5rem;
+      }
+      .size-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+        margin-bottom: 0.25rem;
+      }
+      .size-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.9;
+      }
+      .effects-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 1rem;
+      }
+      .effect-section h3 {
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-sm-size);
+        line-height: var(--heading-sm-line);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 1rem;
+      }
+      .effect-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      .effect-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .effect-item-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.5rem;
+      }
+      .effect-item-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+        margin-bottom: 0.25rem;
+      }
+      .effect-item-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.9;
+        word-break: break-all;
+      }
+      .logo-section {
+        margin-bottom: 3rem;
+      }
+      .logo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+      }
+      .logo-variants {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+      .logo-variant {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        flex: 1;
+      }
+      .logo-variant-gradient {
+        background: var(--surface-light-low);
+      }
+      .logo-variant-primary {
+        background: var(--surface-light-low);
+      }
+      .logo-display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 120px;
+        margin-bottom: 1rem;
+      }
+      .logo-variant-primary .logo-display {
+        color: var(--violet-60);
+      }
+      .logo-variant-gradient .logo-display {
+        color: var(--surface-light-primary-gradient-start);
+      }
+      .logo-variant-label {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        text-align: center;
+      }
+      .logo-variant-primary .logo-variant-label {
+        color: var(--ink-05);
+      }
+      .logo-variant-gradient .logo-variant-label {
+        color: var(--ink-05);
+      }
+      /* Collapsible section styles */
+      details {
+        margin-bottom: 1.5rem;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid var(--color-border);
+        background: transparent;
+      }
+      summary {
+        cursor: pointer;
+        padding: 0.75rem 1rem;
+        background: var(--surface-light-low);
+        display: block;
+        list-style: none;
+      }
+      summary::-webkit-details-marker { display: none; }
+      summary::before {
+        content: "\25BE"; /* down-pointing triangle */
+        display: inline-block;
+        margin-right: 0.75rem;
+        transform-origin: center;
+        transition: transform 0.18s ease-in-out;
+      }
+      details[open] summary::before {
+        transform: rotate(180deg);
+      }
+      summary h1 { display: inline-block; margin: 0; }
     </style>
   </head>
   <body>
-    <h1>Design Tokens</h1>
+    <div class="logo-section">
+      <h1>Logos</h1>
+      
+      <h2>Icon Rocket Color</h2>
+      <div class="logo-variants">
+        <div class="logo-variant logo-variant-gradient">
+          <div class="logo-display">
+            <IconRocketColorGradient size={100} />
+          </div>
+          <div class="logo-variant-label">Brand Gradient</div>
+        </div>
+        <div class="logo-variant logo-variant-primary">
+          <div class="logo-display">
+            <IconRocketColor size={100} />
+          </div>
+          <div class="logo-variant-label">Primary Color</div>
+        </div>
+      </div>
+
+      <h2>Header Logo</h2>
+      <div class="logo-variants">
+        <div class="logo-variant logo-variant-gradient">
+          <div class="logo-display">
+            <IconHeaderLogoGradient size={100} />
+          </div>
+          <div class="logo-variant-label">Brand Gradient</div>
+        </div>
+        <div class="logo-variant logo-variant-primary">
+          <div class="logo-display">
+            <IconHeaderLogo size={100} />
+          </div>
+          <div class="logo-variant-label">Primary Color</div>
+        </div>
+      </div>
+    </div>
+
+    <h1>Typography</h1>
+    
+    <h2>Font Families</h2>
+    <div class="font-families-grid">
+      {fontFamilies.map(font => (
+        <div class="font-family-item">
+          <div class="font-family-preview" style={`font-family: ${font.value}`}>{font.name}</div>
+          <div class="font-family-name">{font.name}</div>
+          <div class="font-family-variable">{font.variable}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2>Heading Styles (Metropolis Bold)</h2>
+    <div class="typography-grid">
+      {headingTokens.map(token => (
+        <div class="typography-sample">
+          <div class="typography-preview" style={`font-family: var(--font-metropolis); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+            {token.name}
+          </div>
+          <div class="typography-info">
+            <div class="typography-info-item">
+              <span class="typography-info-label">Size Variable</span>
+              {token.sizeVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Size</span>
+              {token.size}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Line Height Variable</span>
+              {token.lineVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Line Height</span>
+              {token.line}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Weight Variable</span>
+              {token.weightVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Weight</span>
+              {token.weight}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <h2>Body Styles (Inter Regular)</h2>
+    <div class="typography-grid">
+      {bodyTokens.map(token => (
+        <div class="typography-sample">
+          <div class="typography-preview" style={`font-family: var(--font-inter); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+            The quick brown fox jumps over the lazy dog
+          </div>
+          <div class="typography-info">
+            <div class="typography-info-item">
+              <span class="typography-info-label">Name</span>
+              {token.name}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Size Variable</span>
+              {token.sizeVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Size</span>
+              {token.size}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Line Height Variable</span>
+              {token.lineVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Line Height</span>
+              {token.line}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Weight Variable</span>
+              {token.weightVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Weight</span>
+              {token.weight}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <h2>Brand Styles (Public Sans)</h2>
+    <div class="typography-grid">
+      {brandTokens.map(token => (
+        <div class="typography-sample">
+          <div class="typography-preview" style={`font-family: var(--font-public-sans); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+            {token.name}
+          </div>
+          <div class="typography-info">
+            <div class="typography-info-item">
+              <span class="typography-info-label">Size Variable</span>
+              {token.sizeVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Size</span>
+              {token.size}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Line Height Variable</span>
+              {token.lineVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Line Height</span>
+              {token.line}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Weight Variable</span>
+              {token.weightVar}
+            </div>
+            <div class="typography-info-item">
+              <span class="typography-info-label">Weight</span>
+              {token.weight}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
 
     <h1>Primitive Colors</h1>
     {Object.entries(groupedPrimitiveColors).map(([groupName, colors]) => (
@@ -388,5 +969,114 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
         </div>
       </>
     ))}
+
+    <h1>Spacing</h1>
+    <div class="spacing-grid">
+      {spacingTokens.map(token => (
+        <div class="spacing-item">
+          <div class="spacing-visual" style={`height: ${token.value}`}></div>
+          <div class="spacing-label">{token.name}</div>
+          <div class="spacing-variable">{token.variable}</div>
+          <div class="spacing-value">{token.value}</div>
+        </div>
+      ))}
+    </div>
+
+    <h1>Sizing</h1>
+    
+    <h2>Icon Sizes</h2>
+    <div class="size-grid">
+      {iconTokens.map(token => (
+        <div class="size-item">
+          <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
+          <div class="size-name">{token.name}</div>
+          <div class="size-variable">{token.variable}</div>
+          <div class="size-value">{token.value}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2>App Icon Sizes</h2>
+    <div class="size-grid">
+      {appIconTokens.map(token => (
+        <div class="size-item">
+          <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
+          <div class="size-name">{token.name}</div>
+          <div class="size-variable">{token.variable}</div>
+          <div class="size-value">{token.value}</div>
+        </div>
+      ))}
+    </div>
+
+    <h1>Effects</h1>
+    <div class="effects-grid">
+      <div class="effect-section">
+        <h3>Blur</h3>
+        <div class="effect-items">
+          {effectTokens.blur.map(token => (
+            <div class="effect-item">
+              <div class="effect-item-name">{token.name}</div>
+              <div class="effect-item-variable">{token.variable}</div>
+              <div class="effect-item-value">{token.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="effect-section">
+        <h3>Shadow</h3>
+        <div class="effect-items">
+          {effectTokens.shadow.map(token => (
+            <div class="effect-item">
+              <div class="effect-item-name">{token.name}</div>
+              <div class="effect-item-variable">{token.variable}</div>
+              <div class="effect-item-value">{token.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="effect-section">
+        <h3>Opacity</h3>
+        <div class="effect-items">
+          {effectTokens.opacity.map(token => (
+            <div class="effect-item">
+              <div class="effect-item-name">{token.name}</div>
+              <div class="effect-item-variable">{token.variable}</div>
+              <div class="effect-item-value">{token.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   </body>
+  <script>
+    // Wrap each top-level H1 and its following siblings until the next H1
+    (function(){
+      // Wrap every H1 (wherever it appears) into a <details> with its section content
+      const h1s = Array.from(document.querySelectorAll('h1'));
+      for (let i = 0; i < h1s.length; i++) {
+        const h1 = h1s[i];
+        const nextH1 = h1s[i + 1] || null;
+
+        const details = document.createElement('details');
+        // collapsed by default
+        details.open = false;
+        const summary = document.createElement('summary');
+
+        // Insert details at the H1 position, move the H1 into the summary
+        h1.parentNode.insertBefore(details, h1);
+        summary.appendChild(h1);
+        details.appendChild(summary);
+
+        // Move following siblings into the details until the next H1 in the original list
+        let node = details.nextSibling;
+        while (node && node !== nextH1) {
+          const next = node.nextSibling;
+          details.appendChild(node);
+          node = next;
+        }
+      }
+    })();
+  </script>
 </html>
