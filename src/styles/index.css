@@ -4,7 +4,9 @@
 @import "./fonts.css";
 
 /* 2. Design tokens */
-@import "./tokens.css";
+@import './design-tokens.css';
+@import './colors-primitives.css';
+@import './colors-semantic.css';
 
 /* 3. Optional reset */
 @import "./reset.css";

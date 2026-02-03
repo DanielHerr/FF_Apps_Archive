@@ -1,5 +1,7 @@
 ---
 import '../styles/fonts.css'
+import '../styles/colors-primitives.css'
+import '../styles/colors-semantic.css'
 
 // Import all icons
 import * as Icons from '../components/icons/index.js';
@@ -14,48 +16,361 @@ const iconGroups = [
   { name: 'Ratings', icons: Icons.RatingIcons },
 ];
 
-// Example tokens
-const colorTokens = [
-  { name: 'Primary', value: 'var(--color-primary)' },
-  { name: 'Accent', value: 'var(--color-accent)' },
-  { name: 'Text', value: 'var(--color-text)' },
-  { name: 'Background', value: 'var(--color-bg)' },
-]
+// Primitive Colors
+const primitiveColors = [
+  // Green Scale
+  { group: 'Green', name: 'green-05', value: '#e3fff3' },
+  { group: 'Green', name: 'green-10', value: '#d0ffed' },
+  { group: 'Green', name: 'green-20', value: '#b3ffe3' },
+  { group: 'Green', name: 'green-30', value: '#88ffd1' },
+  { group: 'Green', name: 'green-40', value: '#53febe' },
+  { group: 'Green', name: 'green-50', value: '#3fe1b0' },
+  { group: 'Green', name: 'green-60', value: '#2bc4a2' },
+  { group: 'Green', name: 'green-70', value: '#068989' },
+  { group: 'Green', name: 'green-80', value: '#005e5d' },
+  { group: 'Green', name: 'green-90', value: '#083f37' },
+  // Blue Scale
+  { group: 'Blue', name: 'blue-05', value: '#acf1ff' },
+  { group: 'Blue', name: 'blue-10', value: '#80eaff' },
+  { group: 'Blue', name: 'blue-20', value: '#00ddff' },
+  { group: 'Blue', name: 'blue-30', value: '#00b3f5' },
+  { group: 'Blue', name: 'blue-40', value: '#0290ee' },
+  { group: 'Blue', name: 'blue-50', value: '#0060e0' },
+  { group: 'Blue', name: 'blue-60', value: '#0250bc' },
+  { group: 'Blue', name: 'blue-70', value: '#063f96' },
+  { group: 'Blue', name: 'blue-80', value: '#073072' },
+  { group: 'Blue', name: 'blue-90', value: '#0a214d' },
+  // Violet Scale
+  { group: 'Violet', name: 'violet-05', value: '#e6dfff' },
+  { group: 'Violet', name: 'violet-10', value: '#d9bfff' },
+  { group: 'Violet', name: 'violet-20', value: '#cc9eff' },
+  { group: 'Violet', name: 'violet-30', value: '#c588ff' },
+  { group: 'Violet', name: 'violet-40', value: '#ac71ff' },
+  { group: 'Violet', name: 'violet-50', value: '#9059ff' },
+  { group: 'Violet', name: 'violet-60', value: '#7543e3' },
+  { group: 'Violet', name: 'violet-70', value: '#582acb' },
+  { group: 'Violet', name: 'violet-80', value: '#46278e' },
+  { group: 'Violet', name: 'violet-90', value: '#321c64' },
+  // Purple Scale
+  { group: 'Purple', name: 'purple-05', value: '#f7e3ff' },
+  { group: 'Purple', name: 'purple-10', value: '#f6b9ff' },
+  { group: 'Purple', name: 'purple-20', value: '#f690ff' },
+  { group: 'Purple', name: 'purple-30', value: '#f564ff' },
+  { group: 'Purple', name: 'purple-40', value: '#d64cf1' },
+  { group: 'Purple', name: 'purple-50', value: '#b933e1' },
+  { group: 'Purple', name: 'purple-60', value: '#962bb9' },
+  { group: 'Purple', name: 'purple-70', value: '#712290' },
+  { group: 'Purple', name: 'purple-80', value: '#4d1a69' },
+  { group: 'Purple', name: 'purple-90', value: '#2b1141' },
+  // Pink Scale
+  { group: 'Pink', name: 'pink-05', value: '#ffdff0' },
+  { group: 'Pink', name: 'pink-10', value: '#ffb4db' },
+  { group: 'Pink', name: 'pink-20', value: '#ff8ac6' },
+  { group: 'Pink', name: 'pink-30', value: '#ff6bbb' },
+  { group: 'Pink', name: 'pink-40', value: '#fe4aa3' },
+  { group: 'Pink', name: 'pink-50', value: '#ff2a8a' },
+  { group: 'Pink', name: 'pink-60', value: '#e11586' },
+  { group: 'Pink', name: 'pink-70', value: '#c60184' },
+  { group: 'Pink', name: 'pink-80', value: '#7f165b' },
+  { group: 'Pink', name: 'pink-90', value: '#50134c' },
+  // Red Scale
+  { group: 'Red', name: 'red-05', value: '#ffe0e8' },
+  { group: 'Red', name: 'red-10', value: '#ffbec6' },
+  { group: 'Red', name: 'red-20', value: '#ff9aa2' },
+  { group: 'Red', name: 'red-30', value: '#ff848c' },
+  { group: 'Red', name: 'red-40', value: '#ff6a75' },
+  { group: 'Red', name: 'red-50', value: '#ff505f' },
+  { group: 'Red', name: 'red-60', value: '#e02950' },
+  { group: 'Red', name: 'red-70', value: '#c50143' },
+  { group: 'Red', name: 'red-80', value: '#800220' },
+  { group: 'Red', name: 'red-90', value: '#440307' },
+  // Orange Scale
+  { group: 'Orange', name: 'orange-05', value: '#fff4de' },
+  { group: 'Orange', name: 'orange-10', value: '#ffd6b2' },
+  { group: 'Orange', name: 'orange-20', value: '#ffb588' },
+  { group: 'Orange', name: 'orange-30', value: '#fea365' },
+  { group: 'Orange', name: 'orange-40', value: '#fe8a4f' },
+  { group: 'Orange', name: 'orange-50', value: '#ff7139' },
+  { group: 'Orange', name: 'orange-60', value: '#e25821' },
+  { group: 'Orange', name: 'orange-70', value: '#cd3d00' },
+  { group: 'Orange', name: 'orange-80', value: '#9d280c' },
+  { group: 'Orange', name: 'orange-90', value: '#7b1604' },
+  // Yellow Scale
+  { group: 'Yellow', name: 'yellow-05', value: '#ffffcd' },
+  { group: 'Yellow', name: 'yellow-10', value: '#feff95' },
+  { group: 'Yellow', name: 'yellow-20', value: '#ffea7f' },
+  { group: 'Yellow', name: 'yellow-30', value: '#ffd567' },
+  { group: 'Yellow', name: 'yellow-40', value: '#ffbd4f' },
+  { group: 'Yellow', name: 'yellow-50', value: '#ffa537' },
+  { group: 'Yellow', name: 'yellow-60', value: '#e17f2e' },
+  { group: 'Yellow', name: 'yellow-70', value: '#c45a28' },
+  { group: 'Yellow', name: 'yellow-80', value: '#a7341f' },
+  { group: 'Yellow', name: 'yellow-90', value: '#960f18' },
+  // Special Purpose
+  { group: 'Special Purpose', name: 'color-click', value: '#0060df' },
+  { group: 'Special Purpose', name: 'color-success', value: '#3fe1b0' },
+  { group: 'Special Purpose', name: 'color-warning', value: '#ffea80' },
+  { group: 'Special Purpose', name: 'color-error', value: '#ff6a75' },
+  // Neutrals - Base
+  { group: 'Neutrals - Base', name: 'neutral-black', value: '#161616' },
+  { group: 'Neutrals - Base', name: 'neutral-black-strong', value: '#000000' },
+  { group: 'Neutrals - Base', name: 'neutral-white', value: '#fafafa' },
+  { group: 'Neutrals - Base', name: 'neutral-white-strong', value: '#ffffff' },
+  // Neutrals - Gray Scale
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray', value: '#b3b3b3' },
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray-light', value: '#e8e8e8' },
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray-mid', value: '#6d6d6d' },
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray-dark', value: '#414141' },
+  // Marketing Gray Scale
+  { group: 'Marketing Gray', name: 'gray-marketing-10', value: '#f9f9fa' },
+  { group: 'Marketing Gray', name: 'gray-marketing-20', value: '#ededf0' },
+  { group: 'Marketing Gray', name: 'gray-marketing-30', value: '#cdcdd4' },
+  { group: 'Marketing Gray', name: 'gray-marketing-40', value: '#b1b1bc' },
+  { group: 'Marketing Gray', name: 'gray-marketing-50', value: '#9595a2' },
+  { group: 'Marketing Gray', name: 'gray-marketing-60', value: '#7a7a8b' },
+  { group: 'Marketing Gray', name: 'gray-marketing-70', value: '#5e5e72' },
+  { group: 'Marketing Gray', name: 'gray-marketing-80', value: '#42425a' },
+  { group: 'Marketing Gray', name: 'gray-marketing-90', value: '#1f2033' },
+  { group: 'Marketing Gray', name: 'gray-marketing-99', value: '#20123a' },
+  // Ink Scale
+  { group: 'Ink', name: 'ink-05', value: '#393473' },
+  { group: 'Ink', name: 'ink-10', value: '#342f6d' },
+  { group: 'Ink', name: 'ink-20', value: '#312a64' },
+  { group: 'Ink', name: 'ink-30', value: '#2e255d' },
+  { group: 'Ink', name: 'ink-40', value: '#2b2156' },
+  { group: 'Ink', name: 'ink-50', value: '#291d4f' },
+  { group: 'Ink', name: 'ink-60', value: '#271948' },
+  { group: 'Ink', name: 'ink-70', value: '#241541' },
+  { group: 'Ink', name: 'ink-80', value: '#20123a' },
+  { group: 'Ink', name: 'ink-90', value: '#1d1133' },
+  // Opacity Variants
+  { group: 'Opacity Variants', name: 'black-30', value: 'rgb(from var(--neutral-black) r g b / 0.3)' },
+  { group: 'Opacity Variants', name: 'black-strong-10', value: 'rgb(from var(--neutral-black-strong) r g b / 0.1)' },
+  { group: 'Opacity Variants', name: 'white-30', value: 'rgb(from var(--neutral-white) r g b / 0.3)' },
+  { group: 'Opacity Variants', name: 'white-80', value: 'rgb(from var(--neutral-white) r g b / 0.8)' },
+  { group: 'Opacity Variants', name: 'white-strong-25', value: 'rgb(from var(--neutral-white-strong) r g b / 0.25)' },
+  { group: 'Opacity Variants', name: 'gray-marketing-90-25', value: 'rgb(from var(--gray-marketing-90) r g b / 0.25)' },
+  { group: 'Opacity Variants', name: 'ink-05-70', value: 'rgb(from var(--ink-05) r g b / 0.7)' },
+  { group: 'Opacity Variants', name: 'ink-05-20', value: 'rgb(from var(--ink-05) r g b / 0.2)' },
+];
 
-const fontTokens = [
-  { name: 'Primary', value: 'var(--font-primary)' },
-  { name: 'Secondary', value: 'var(--font-secondary)' },
-  { name: 'Heading', value: 'var(--font-heading)' },
-]
+// Semantic Colors
+const semanticColors = [
+  // Surface / Light Mode
+  { group: 'Surface / Light', name: 'surface-light-primary-gradient-start', value: 'var(--violet-60)' },
+  { group: 'Surface / Light', name: 'surface-light-primary-gradient-end', value: 'var(--violet-70)' },
+  { group: 'Surface / Light', name: 'surface-light-primary-low', value: 'var(--violet-05)' },
+  { group: 'Surface / Light', name: 'surface-light-secondary-low', value: 'var(--pink-10)' },
+  { group: 'Surface / Light', name: 'surface-light-high', value: 'var(--neutral-gray-light)' },
+  { group: 'Surface / Light', name: 'surface-light-mid', value: 'var(--neutral-white-strong)' },
+  { group: 'Surface / Light', name: 'surface-light-low', value: 'var(--neutral-white)' },
+  { group: 'Surface / Light', name: 'surface-light-background-start', value: 'var(--neutral-white)' },
+  { group: 'Surface / Light', name: 'surface-light-background-end', value: 'var(--neutral-white-strong)' },
+  // Surface / Dark Mode
+  { group: 'Surface / Dark', name: 'surface-dark-primary-gradient-start', value: 'var(--violet-50)' },
+  { group: 'Surface / Dark', name: 'surface-dark-primary-gradient-end', value: 'var(--violet-60)' },
+  { group: 'Surface / Dark', name: 'surface-dark-primary', value: 'var(--violet-80)' },
+  { group: 'Surface / Dark', name: 'surface-dark-secondary', value: 'var(--pink-80)' },
+  { group: 'Surface / Dark', name: 'surface-dark-high', value: 'var(--ink-30)' },
+  { group: 'Surface / Dark', name: 'surface-dark-mid', value: 'var(--gray-marketing-90)' },
+  { group: 'Surface / Dark', name: 'surface-dark-low', value: 'var(--gray-marketing-80)' },
+  { group: 'Surface / Dark', name: 'surface-dark-background-start', value: 'var(--gray-marketing-90)' },
+  { group: 'Surface / Dark', name: 'surface-dark-background-end', value: 'var(--gray-marketing-80)' },
+  // On Surface / Light Mode
+  { group: 'On Surface / Light', name: 'on-surface-light-regular', value: 'var(--ink-05)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-faded', value: 'var(--ink-05-70)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-border-low', value: 'var(--ink-05-20)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-border-high', value: 'var(--ink-05-20)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-primary', value: 'var(--violet-70)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-on-primary', value: 'var(--neutral-white-strong)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-app-header-stroke', value: 'var(--gray-marketing-90-25)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-scrollbar', value: 'var(--black-30)' },
+  // On Surface / Dark Mode
+  { group: 'On Surface / Dark', name: 'on-surface-dark-regular', value: 'var(--gray-marketing-20)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-faded', value: 'var(--gray-marketing-30)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-border-low', value: 'var(--gray-marketing-99)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-border-high', value: 'var(--gray-marketing-50)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-primary', value: 'var(--violet-50)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-on-primary', value: 'var(--neutral-white-strong)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-app-header-stroke', value: 'var(--gray-marketing-90-25)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-scrollbar', value: 'var(--white-30)' },
+  // On Surface / Any Mode
+  { group: 'On Surface / Any', name: 'on-surface-any-blue', value: 'var(--blue-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-yellow', value: 'var(--yellow-70)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-purple', value: 'var(--purple-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-orange', value: 'var(--orange-60)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-red', value: 'var(--red-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-gradient-start', value: 'var(--violet-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-gradient-end', value: 'var(--red-50)' },
+  // App Icon Background / Light Mode
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-blue', value: 'var(--blue-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-yellow', value: 'var(--yellow-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-purple', value: 'var(--purple-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-orange', value: 'var(--orange-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-red', value: 'var(--red-05)' },
+  // App Icon Background / Dark Mode
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-blue', value: 'var(--blue-50)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-yellow', value: 'var(--yellow-70)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-purple', value: 'var(--purple-50)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-orange', value: 'var(--orange-60)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-red', value: 'var(--red-50)' },
+  // Card Gradient / Light Mode
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-blue-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-blue-end', value: 'rgb(from var(--blue-50) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-yellow-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-yellow-end', value: 'rgb(from var(--yellow-70) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-purple-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-purple-end', value: 'rgb(from var(--purple-50) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-orange-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-orange-end', value: 'rgb(from var(--orange-60) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-red-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-red-end', value: 'rgb(from var(--red-50) r g b / 0.03)' },
+  // Card Gradient / Dark Mode
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-blue-start', value: 'rgb(from var(--blue-50) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-blue-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-yellow-start', value: 'rgb(from var(--yellow-70) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-yellow-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-purple-start', value: 'rgb(from var(--purple-50) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-purple-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-orange-start', value: 'rgb(from var(--orange-60) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-orange-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-red-start', value: 'rgb(from var(--red-50) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-red-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  // Attention / Light Mode
+  { group: 'Attention / Light', name: 'attention-light-warning', value: 'var(--color-warning)' },
+  // Attention / Dark Mode
+  { group: 'Attention / Dark', name: 'attention-dark-warning', value: 'var(--yellow-30)' },
+  // Attention / Any Mode
+  { group: 'Attention / Any', name: 'attention-click', value: 'var(--color-click)' },
+  { group: 'Attention / Any', name: 'attention-success', value: 'var(--color-success)' },
+  { group: 'Attention / Any', name: 'attention-error', value: 'var(--color-error)' },
+  // Legacy Aliases
+  { group: 'Legacy Aliases', name: 'color-purple', value: 'var(--ink-05)' },
+  { group: 'Legacy Aliases', name: 'color-light', value: 'var(--neutral-white)' },
+  { group: 'Legacy Aliases', name: 'color-white', value: 'var(--neutral-white-strong)' },
+  { group: 'Legacy Aliases', name: 'color-border', value: 'var(--ink-05-20)' },
+  { group: 'Legacy Aliases', name: 'gradient-start', value: 'var(--violet-50)' },
+  { group: 'Legacy Aliases', name: 'gradient-end', value: 'var(--red-50)' },
+];
+
+// Group colors by category
+const groupedPrimitiveColors = primitiveColors.reduce((acc, color) => {
+  if (!acc[color.group]) acc[color.group] = [];
+  acc[color.group].push(color);
+  return acc;
+}, {} as Record<string, typeof primitiveColors>);
+
+const groupedSemanticColors = semanticColors.reduce((acc, color) => {
+  if (!acc[color.group]) acc[color.group] = [];
+  acc[color.group].push(color);
+  return acc;
+}, {} as Record<string, typeof semanticColors>);
 ---
 
 <html lang="en">
   <head>
     <title>Style Guide</title>
     <style>
-      body { padding: 2rem; font-family: var(--font-primary); color: var(--color-text); }
-      h1, h2 { margin-top: 2rem; }
-      .token-swatch { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-      .token-box { width: 3rem; height: 3rem; border: 1px solid #ccc; }
-      .icon-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
-      .icon-item { display: flex; flex-direction: column; align-items: center; width: 5rem; font-size: 0.75rem; text-align: center; }
+      body { 
+        padding: 2rem; 
+        font-family: var(--font-primary); 
+        color: var(--color-text);
+        background: var(--color-bg);
+      }
+      h1, h2 { margin-top: 2rem; margin-bottom: 1rem; }
+      h1 { font-size: 2.5rem; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+      h2 { font-size: 1.5rem; color: var(--on-surface-light-primary); }
+      .token-swatch { 
+        display: flex; 
+        align-items: center; 
+        gap: 1rem; 
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+      .token-box { 
+        width: 3rem; 
+        height: 3rem; 
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .color-group {
+        margin-bottom: 2rem;
+      }
+      .color-group h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .colors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      .icon-grid { 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 1rem; 
+        margin-top: 1rem; 
+      }
+      .icon-item { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        width: 5rem; 
+        font-size: 0.75rem; 
+        text-align: center; 
+      }
+      .color-name {
+        font-family: monospace;
+        font-weight: 500;
+      }
+      .color-value {
+        font-family: monospace;
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }
     </style>
   </head>
   <body>
     <h1>Design Tokens</h1>
 
-    <h2>Colors</h2>
-    {colorTokens.map(token => (
-      <div class="token-swatch">
-        <div class="token-box" style={`background: ${token.value}`}></div>
-        <span>{token.name}: {token.value}</span>
+    <h1>Primitive Colors</h1>
+    {Object.entries(groupedPrimitiveColors).map(([groupName, colors]) => (
+      <div class="color-group">
+        <h2>{groupName}</h2>
+        <div class="colors-grid">
+          {colors.map(token => (
+            <div class="token-swatch">
+              <div class="token-box" style={`background: ${token.value}`}></div>
+              <div>
+                <div class="color-name">{token.name}</div>
+                <div class="color-value">{token.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     ))}
 
-    <h2>Fonts</h2>
-    {fontTokens.map(token => (
-      <div class="token-swatch" style={`font-family: ${token.value}`}>
-        <span>{token.name}: {token.value}</span>
+    <h1>Semantic Colors</h1>
+    {Object.entries(groupedSemanticColors).map(([groupName, colors]) => (
+      <div class="color-group">
+        <h2>{groupName}</h2>
+        <div class="colors-grid">
+          {colors.map(token => (
+            <div class="token-swatch">
+              <div class="token-box" style={`background: ${token.value}`}></div>
+              <div>
+                <div class="color-name">{token.name}</div>
+                <div class="color-value">{token.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     ))}
 

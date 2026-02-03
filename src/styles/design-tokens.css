@@ -1,0 +1,202 @@
+/**
+ * ========================================
+ * DESIGN TOKENS
+ * ========================================
+ * Typography, Spacing, Sizing, and Layout Tokens
+ * Extracted from Figma Design Library
+ * Firefox Apps Archive Style Guide
+ * 
+ * Note: Color tokens are defined in colors-primitives.css
+ */
+
+:root {
+  /* ========================================
+     TYPOGRAPHY - FONT FAMILIES
+     ======================================== */
+  
+  --font-metropolis: 'Metropolis', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-public-sans: 'Public Sans', sans-serif;
+  
+
+  /* ========================================
+     TYPOGRAPHY - HEADING SIZES (Metropolis Bold)
+     ======================================== */
+  
+  /* Heading XXL */
+  --heading-xxl-size: 64px;
+  --heading-xxl-line: 72px;
+  
+  /* Heading XL */
+  --heading-xl-size: 56px;
+  --heading-xl-line: 64px;
+  
+  /* Heading LG */
+  --heading-lg-size: 48px;
+  --heading-lg-line: 56px;
+  
+  /* Heading MD */
+  --heading-md-size: 40px;
+  --heading-md-line: 44px;
+  
+  /* Heading SM */
+  --heading-sm-size: 32px;
+  --heading-sm-line: 36px;
+  
+  /* Heading XS */
+  --heading-xs-size: 24px;
+  --heading-xs-line: 28px;
+  
+  /* Heading XXS */
+  --heading-xxs-size: 20px;
+  --heading-xxs-line: 24px;
+  
+  /* Heading XXXS */
+  --heading-xxxs-size: 16px;
+  --heading-xxxs-line: 20px;
+  
+  /* Billboard */
+  --heading-billboard-size: 128px;
+  --heading-billboard-line: auto;
+  
+
+  /* ========================================
+     TYPOGRAPHY - BODY SIZES (Inter Regular)
+     ======================================== */
+  
+  /* Body LG */
+  --body-lg-size: 18px;
+  --body-lg-line: 36px;
+  
+  /* Body MD */
+  --body-md-size: 16px;
+  --body-md-line: 24px;
+  
+  /* Body SM */
+  --body-sm-size: 14px;
+  --body-sm-line: 22px;
+  
+  /* Body XS */
+  --body-xs-size: 12px;
+  --body-xs-line: 18px;
+  
+  /* Body XXS */
+  --body-xxs-size: 10px;
+  --body-xxs-line: 16px;
+  
+  /* Body XXS Small Caps */
+  --body-xxs-sc-size: 10px;
+  --body-xxs-sc-line: normal;
+  --body-xxs-sc-spacing: 0.4px;
+  
+
+  /* ========================================
+     TYPOGRAPHY - BRAND SIZES (Public Sans)
+     ======================================== */
+  
+  /* Brand Bold MD */
+  --brand-bold-md-size: 24px;
+  --brand-bold-md-line: 20px;
+  
+  /* Brand Regular MD */
+  --brand-regular-md-size: 20px;
+  --brand-regular-md-line: 20px;
+  
+  /* Brand Bold SM */
+  --brand-bold-sm-size: 18px;
+  --brand-bold-sm-line: 20px;
+  
+  /* Brand Regular SM */
+  --brand-regular-sm-size: 16px;
+  --brand-regular-sm-line: 20px;
+  
+
+  /* ========================================
+     TYPOGRAPHY - FONT WEIGHTS
+     ======================================== */
+  
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+  
+
+  /* ========================================
+     SPACING - 8 POINT SYSTEM
+     ======================================== */
+  
+  --spacing-2: 2px;
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-40: 40px;
+  --spacing-44: 44px;
+  --spacing-48: 48px;
+  --spacing-52: 52px;
+  --spacing-56: 56px;
+  --spacing-60: 60px;
+  --spacing-64: 64px;
+  
+
+  /* ========================================
+     ICON SIZES
+     ======================================== */
+  
+  --icon-xxxxs: 8px;
+  --icon-xxxs: 10px;
+  --icon-xxs: 12px;
+  --icon-xs: 14px;
+  --icon-sm: 16px;
+  --icon-md: 24px;
+  --icon-lg: 32px;
+  
+
+  /* ========================================
+     APP ICON SIZES
+     ======================================== */
+  
+  --app-icon-sm: 52px;
+  --app-icon-md: 92px;
+  --app-icon-lg: 138px;
+  
+
+  /* ========================================
+     BREAKPOINTS
+     ======================================== */
+  
+  --breakpoint-mobile-lg: 481px;
+  --breakpoint-tablet-md: 769px;
+  --breakpoint-desktop-sm: 1200px;
+  
+
+  /* ========================================
+     LAYOUT SIZES
+     ======================================== */
+  
+  --layout-min-width: 320px;
+  --layout-max-width: 1000px;
+  --content-width: 400px;
+  --full-width: 1268px;
+  
+
+  /* ========================================
+     BORDERS & RADIUS
+     ======================================== */
+  
+  /* Border Radius */
+  --radius-md: 4px;
+  --radius-lg: 12px;
+  
+  /* Border Thickness */
+  --border-sm: 0.5px;
+  --border-md: 1px;
+  --border-lg: 2px;
+  --border-xl: 4px;
+  
+  /* Legacy radius variable for backward compatibility */
+  --radius: 4px;
+}

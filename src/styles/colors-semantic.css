@@ -1,0 +1,206 @@
+/**
+ * ========================================
+ * SEMANTIC COLOR TOKENS
+ * ========================================
+ * Application-level color assignments
+ * Maps primitive colors to functional purposes
+ * Extracted from Figma Design Library
+ * Firefox Apps Archive Style Guide
+ * 
+ * These tokens reference primitives from colors-primitives.css
+ * Use these semantic tokens in components for consistency.
+ */
+
+:root {
+  /* ========================================
+     SURFACE / LIGHT MODE
+     ======================================== */
+  
+  /* Primary Surface Colors */
+  --surface-light-primary-gradient-start: var(--violet-60);
+  --surface-light-primary-gradient-end: var(--violet-70);
+  --surface-light-primary-low: var(--violet-05);
+  --surface-light-secondary-low: var(--pink-10);
+  
+  /* Neutral Surface Levels */
+  --surface-light-high: var(--neutral-gray-light);
+  --surface-light-mid: var(--neutral-white-strong);
+  --surface-light-low: var(--neutral-white);
+  
+  /* Background Gradient */
+  --surface-light-background-start: var(--neutral-white);
+  --surface-light-background-end: var(--neutral-white-strong);
+
+
+  /* ========================================
+     SURFACE / DARK MODE
+     ======================================== */
+  
+  /* Primary Surface Colors */
+  --surface-dark-primary-gradient-start: var(--violet-50);
+  --surface-dark-primary-gradient-end: var(--violet-60);
+  --surface-dark-primary: var(--violet-80);
+  --surface-dark-secondary: var(--pink-80);
+  
+  /* Neutral Surface Levels */
+  --surface-dark-high: var(--ink-30);
+  --surface-dark-mid: var(--gray-marketing-90);
+  --surface-dark-low: var(--gray-marketing-80);
+  
+  /* Background Gradient */
+  --surface-dark-background-start: var(--gray-marketing-90);
+  --surface-dark-background-end: var(--gray-marketing-80);
+
+
+  /* ========================================
+     ON SURFACE / LIGHT MODE (Text & Icons)
+     ======================================== */
+  
+  /* Primary Text Colors */
+  --on-surface-light-regular: var(--ink-05);
+  --on-surface-light-faded: var(--ink-05-70);
+  --on-surface-light-border-low: var(--ink-05-20);
+  --on-surface-light-border-high: var(--ink-05-20);
+  
+  /* Accent Colors */
+  --on-surface-light-primary: var(--violet-70);
+  --on-surface-light-on-primary: var(--neutral-white-strong);
+  
+  /* Utility Colors */
+  --on-surface-light-app-header-stroke: var(--gray-marketing-90-25);
+  --on-surface-light-scrollbar: var(--black-30);
+
+
+  /* ========================================
+     ON SURFACE / DARK MODE (Text & Icons)
+     ======================================== */
+  
+  /* Primary Text Colors */
+  --on-surface-dark-regular: var(--gray-marketing-20);
+  --on-surface-dark-faded: var(--gray-marketing-30);
+  --on-surface-dark-border-low: var(--gray-marketing-99);
+  --on-surface-dark-border-high: var(--gray-marketing-50);
+  
+  /* Accent Colors */
+  --on-surface-dark-primary: var(--violet-50);
+  --on-surface-dark-on-primary: var(--neutral-white-strong);
+  
+  /* Utility Colors */
+  --on-surface-dark-app-header-stroke: var(--gray-marketing-90-25);
+  --on-surface-dark-scrollbar: var(--white-30);
+
+
+  /* ========================================
+     ON SURFACE / ANY MODE (Context-Independent)
+     ======================================== */
+  
+  /* Category Colors */
+  --on-surface-any-blue: var(--blue-50);
+  --on-surface-any-yellow: var(--yellow-70);
+  --on-surface-any-purple: var(--purple-50);
+  --on-surface-any-orange: var(--orange-60);
+  --on-surface-any-red: var(--red-50);
+  
+  /* Gradient (Special) */
+  --on-surface-any-gradient-start: var(--violet-50);
+  --on-surface-any-gradient-end: var(--red-50);
+
+
+  /* ========================================
+     APP ICON BACKGROUND / LIGHT MODE
+     ======================================== */
+  
+  --app-icon-bg-light-blue: var(--blue-05);
+  --app-icon-bg-light-yellow: var(--yellow-05);
+  --app-icon-bg-light-purple: var(--purple-05);
+  --app-icon-bg-light-orange: var(--orange-05);
+  --app-icon-bg-light-red: var(--red-05);
+
+
+  /* ========================================
+     APP ICON BACKGROUND / DARK MODE
+     ======================================== */
+  
+  --app-icon-bg-dark-blue: var(--blue-50);
+  --app-icon-bg-dark-yellow: var(--yellow-70);
+  --app-icon-bg-dark-purple: var(--purple-50);
+  --app-icon-bg-dark-orange: var(--orange-60);
+  --app-icon-bg-dark-red: var(--red-50);
+
+
+  /* ========================================
+     CARD GRADIENT / LIGHT MODE
+     ======================================== */
+  
+  /* Subtle 3% opacity gradients for cards */
+  --card-gradient-light-blue-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-blue-end: rgb(from var(--blue-50) r g b / 0.03);
+  
+  --card-gradient-light-yellow-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-yellow-end: rgb(from var(--yellow-70) r g b / 0.03);
+  
+  --card-gradient-light-purple-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-purple-end: rgb(from var(--purple-50) r g b / 0.03);
+  
+  --card-gradient-light-orange-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-orange-end: rgb(from var(--orange-60) r g b / 0.03);
+  
+  --card-gradient-light-red-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-red-end: rgb(from var(--red-50) r g b / 0.03);
+
+
+  /* ========================================
+     CARD GRADIENT / DARK MODE
+     ======================================== */
+  
+  /* 15% opacity gradients for dark mode cards */
+  --card-gradient-dark-blue-start: rgb(from var(--blue-50) r g b / 0.15);
+  --card-gradient-dark-blue-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+  
+  --card-gradient-dark-yellow-start: rgb(from var(--yellow-70) r g b / 0.15);
+  --card-gradient-dark-yellow-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+  
+  --card-gradient-dark-purple-start: rgb(from var(--purple-50) r g b / 0.15);
+  --card-gradient-dark-purple-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+  
+  --card-gradient-dark-orange-start: rgb(from var(--orange-60) r g b / 0.15);
+  --card-gradient-dark-orange-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+  
+  --card-gradient-dark-red-start: rgb(from var(--red-50) r g b / 0.15);
+  --card-gradient-dark-red-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+
+
+  /* ========================================
+     ATTENTION / LIGHT MODE
+     ======================================== */
+  
+  --attention-light-warning: var(--color-warning);
+
+
+  /* ========================================
+     ATTENTION / DARK MODE
+     ======================================== */
+  
+  --attention-dark-warning: var(--yellow-30);
+
+
+  /* ========================================
+     ATTENTION / ANY MODE (Context-Independent)
+     ======================================== */
+  
+  --attention-click: var(--color-click); /* Blue 50: #0060df */
+  --attention-success: var(--color-success); /* Green 50: #3fe1b0 */
+  --attention-error: var(--color-error); /* Red 40: #ff6a75 */
+
+
+  /* ========================================
+     LEGACY ALIASES (for backward compatibility)
+     ======================================== */
+  
+  --color-purple: var(--ink-05);
+  --color-light: var(--neutral-white);
+  --color-white: var(--neutral-white-strong);
+  --color-border: var(--ink-05-20);
+  --gradient-start: var(--violet-50);
+  --gradient-end: var(--red-50);
+}
