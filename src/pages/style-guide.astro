@@ -725,6 +725,44 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
       .logo-variant-gradient .logo-variant-label {
         color: var(--ink-05);
       }
+      /* Icon cards (consistent with other token cards) */
+      .icon-group {
+        margin-bottom: 2rem;
+      }
+      .icon-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .icon-card {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .icon-card-visual {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(0,0,0,0);
+        margin-bottom: 0.25rem;
+      }
+      .icon-card-visual svg { width: 48px; height: 48px; }
+      .icon-card-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-xs-size);
+        color: var(--ink-05);
+        word-break: break-word;
+      }
       /* Collapsible section styles */
       details {
         margin-bottom: 1.5rem;
@@ -957,17 +995,19 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
 
     <h1>Icons</h1>
     {iconGroups.map(group => (
-      <>
+      <div class="icon-group">
         <h2>{group.name}</h2>
-        <div class="icon-grid">
+        <div class="icon-cards-grid">
           {Object.entries(group.icons).map(([name, IconComponent]) => (
-            <div class="icon-item">
-              <IconComponent title={name} />
-              <span>{name}</span>
+            <div class="icon-card">
+              <div class="icon-card-visual">
+                <IconComponent title={name} />
+              </div>
+              <div class="icon-card-name">{name}</div>
             </div>
           ))}
         </div>
-      </>
+      </div>
     ))}
 
     <h1>Spacing</h1>

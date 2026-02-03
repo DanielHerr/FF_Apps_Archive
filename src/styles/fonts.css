@@ -6,7 +6,21 @@
  */
 
 /* Inter - Primary Body Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* Inter - Primary Body Font (local packaged variable font) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+}
 
 /* Metropolis - Heading Font */
 /* Note: Metropolis is not available on Google Fonts. 
@@ -42,7 +56,14 @@
 }
 
 /* Public Sans - Brand Font */
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* Public Sans - Brand Font (local packaged variable font) */
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/public_sans/Public_Sans/PublicSans-VariableFont_wght.ttf') format('truetype');
+}
 
 /* Fallback Font Stack */
 /* If custom fonts fail to load, the system will fall back to:
