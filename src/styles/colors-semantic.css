@@ -204,3 +204,36 @@
   --gradient-start: var(--violet-50);
   --gradient-end: var(--red-50);
 }
+
+/* Dark theme variable overrides - applied to body which is after the theme toggles */
+#dark_theme:checked ~ body,
+#dark_theme:checked ~ * body {
+  /* Override surface tokens for dark mode */
+  --surface-light-low: var(--surface-dark-low);
+  --surface-light-mid: var(--surface-dark-mid);
+  --surface-light-high: var(--surface-dark-high);
+  
+  /* Override text/border tokens for dark mode */
+  --on-surface-light-regular: var(--on-surface-dark-regular);
+  --on-surface-light-faded: var(--on-surface-dark-faded);
+  --on-surface-light-border-low: var(--on-surface-dark-border-low);
+  --on-surface-light-border-high: var(--on-surface-dark-border-high);
+  --on-surface-light-primary: var(--on-surface-dark-primary);
+  --on-surface-light-on-primary: var(--on-surface-dark-on-primary);
+}
+
+/* Fallback: also apply to html element */
+html:has(#dark_theme:checked) {
+  /* Override surface tokens for dark mode */
+  --surface-light-low: var(--surface-dark-low);
+  --surface-light-mid: var(--surface-dark-mid);
+  --surface-light-high: var(--surface-dark-high);
+  
+  /* Override text/border tokens for dark mode */
+  --on-surface-light-regular: var(--on-surface-dark-regular);
+  --on-surface-light-faded: var(--on-surface-dark-faded);
+  --on-surface-light-border-low: var(--on-surface-dark-border-low);
+  --on-surface-light-border-high: var(--on-surface-dark-border-high);
+  --on-surface-light-primary: var(--on-surface-dark-primary);
+  --on-surface-light-on-primary: var(--on-surface-dark-on-primary);
+}

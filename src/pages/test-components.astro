@@ -1,0 +1,529 @@
+---
+/**
+ * Component Test Page - Astro Version
+ * Comprehensive demonstration of all design system components
+ */
+
+import Layout from '../layouts/base.astro';
+import RadioButton from '../components/UI/RadioButton.astro';
+---
+
+<Layout title="Component Library - Design System">
+  <div class="test-page">
+    <main class="container">
+      <!-- Page Header -->
+      <header class="page-header">
+        <h1 class="heading-lg">Component Library</h1>
+        <p class="body-lg text-faded">
+          Interactive components using pure CSS design tokens
+        </p>
+      </header>
+
+      <div class="divider"></div>
+
+      <!-- Radio Button Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="true">
+          <h2 class="heading-md">Radio Button</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="false">
+          <div class="content-inner">
+            <!-- Interactive Radio Group -->
+            <section class="section">
+              <h2 class="heading-xs">Basic Radio Group</h2>
+              <p class="body-sm text-faded">Select an option to see state changes</p>
+              
+              <form class="radio-group">
+                <RadioButton
+                  name="options"
+                  value="option1"
+                  label="Option 1"
+                />
+                <RadioButton
+                  name="options"
+                  value="option2"
+                  label="Option 2"
+                />
+                <RadioButton
+                  name="options"
+                  value="option3"
+                  label="Option 3"
+                />
+              </form>
+              
+              <div class="selection-display">
+                <span class="body-xs">Selected: </span>
+                <code class="body-xs" data-selection-output="options">none</code>
+              </div>
+            </section>
+
+            <!-- Color Selection -->
+            <section class="section">
+              <h2 class="heading-xs">Color Selection</h2>
+              <p class="body-sm text-faded">Horizontal layout with multiple options</p>
+              
+              <form class="radio-group-horizontal">
+                <RadioButton
+                  name="color"
+                  value="blue"
+                  label="Blue"
+                />
+                <RadioButton
+                  name="color"
+                  value="purple"
+                  label="Purple"
+                />
+                <RadioButton
+                  name="color"
+                  value="orange"
+                  label="Orange"
+                />
+                <RadioButton
+                  name="color"
+                  value="red"
+                  label="Red"
+                />
+              </form>
+              
+              <div class="selection-display">
+                <span class="body-xs">Selected color: </span>
+                <code class="body-xs" data-selection-output="color">none</code>
+              </div>
+            </section>
+
+            <!-- States Visualization -->
+            <section class="section">
+              <h2 class="heading-xs">Component States</h2>
+              <p class="body-sm text-faded">Hover over buttons to see state changes</p>
+              
+              <div class="states-grid">
+                <!-- Default State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Default</p>
+                  <div class="state-box">
+                    <RadioButton
+                      name="state-default"
+                      value="default"
+                      label="Button"
+                    />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Light border • Empty circle
+                  </p>
+                </div>
+
+                <!-- Hover State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <RadioButton
+                      name="state-hover"
+                      value="hover"
+                      label="Button"
+                    />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Primary border • Empty circle
+                  </p>
+                </div>
+
+                <!-- Active State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Active</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab or click & hold</p>
+                    <RadioButton
+                      name="state-active"
+                      value="active"
+                      label="Button"
+                    />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Thick border • Focus ring
+                  </p>
+                </div>
+
+                <!-- Selected State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Selected</p>
+                  <div class="state-box">
+                    <RadioButton
+                      name="state-selected"
+                      value="selected"
+                      label="Button"
+                      checked={true}
+                    />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Primary bg • Filled circle • White text
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens Used</h2>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-4</code>
+                      <span class="body-xs">4px gap</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-8</code>
+                      <span class="body-xs">8px padding</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Border</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px default</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px active</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px corners</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Primary accent</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-border-low</code>
+                      <span class="body-xs">Border color</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--ink-05</code>
+                      <span class="body-xs">Dark stroke</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Effects</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--shadow-app-icon</code>
+                      <span class="body-xs">Box shadow</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--icon-sm</code>
+                      <span class="body-xs">16px circle</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .test-page {
+    background: var(--surface-light-low, #ffffff);
+    min-height: 100vh;
+    padding: var(--spacing-24);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-36);
+  }
+
+  /* Page Header */
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+
+  .text-faded {
+    color: var(--on-surface-light-faded);
+  }
+
+  /* Divider */
+  .divider {
+    height: var(--border-md);
+    background: var(--on-surface-light-border-low);
+    width: 100%;
+  }
+
+  /* Section */
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+  }
+
+  /* Radio Groups */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+
+  .radio-group-horizontal {
+    display: flex;
+    gap: var(--spacing-12);
+    flex-wrap: wrap;
+  }
+
+  /* Selection Display */
+  .selection-display {
+    padding: var(--spacing-8) var(--spacing-12);
+    background: var(--surface-light-mid);
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    gap: var(--spacing-4);
+    width: fit-content;
+  }
+
+  .selection-display code {
+    color: var(--violet-60);
+    font-family: 'Courier New', monospace;
+    background: var(--surface-light-low);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* States Grid */
+  .states-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-24);
+  }
+
+  .state-demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    align-items: center;
+  }
+
+  .state-box {
+    padding: var(--spacing-16);
+    background: var(--surface-light-low);
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-md);
+    min-height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .state-description {
+    text-align: center;
+  }
+
+  .hint {
+    margin-bottom: var(--spacing-4);
+  }
+
+  /* Tokens Section */
+  .tokens-section {
+    padding: var(--spacing-24);
+    background: var(--surface-light-mid);
+    border-radius: var(--radius-lg);
+  }
+
+  .tokens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-24);
+  }
+
+  .token-category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+
+  .token-category h3 {
+    color: var(--on-surface-light-regular);
+    font-weight: 600;
+  }
+
+  .token-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+  }
+
+  .token-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  .token-item code {
+    color: var(--violet-60);
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    background: var(--surface-light-mid);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    width: fit-content;
+  }
+
+  .token-item span {
+    color: var(--on-surface-light-faded);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .test-page {
+      padding: var(--spacing-16);
+    }
+
+    .states-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tokens-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Component Section */
+  .component-section {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--surface-light-mid);
+    padding: var(--spacing-16) var(--spacing-20);
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border: none;
+    text-align: left;
+  }
+
+  .section-header:hover {
+    background: var(--surface-light-high);
+  }
+
+  .section-header h2 {
+    margin: 0;
+    color: var(--on-surface-light-regular);
+  }
+
+  .toggle-icon {
+    flex-shrink: 0;
+    color: var(--on-surface-light-regular);
+    transition: transform 0.2s ease;
+  }
+
+  .section-header[aria-expanded="false"] .toggle-icon {
+    transform: rotate(-90deg);
+  }
+
+  .section-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  .section-content[aria-hidden="false"] {
+    display: block;
+    max-height: 10000px;
+  }
+
+  .section-content[aria-hidden="true"] {
+    display: block;
+    max-height: 0;
+    padding: 0 var(--spacing-16);
+  }
+
+  .content-inner {
+    padding: var(--spacing-24) var(--spacing-16);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-36);
+  }
+</style>
+
+<script>
+  // Update selection display when radio buttons change
+  function initSelectionDisplays() {
+    const radioInputs = document.querySelectorAll('[data-radio-input]');
+    
+    radioInputs.forEach((input) => {
+      const radioInput = input as HTMLInputElement;
+      
+      radioInput.addEventListener('change', () => {
+        if (radioInput.checked) {
+          const name = radioInput.name;
+          const value = radioInput.value;
+          
+          // Update the corresponding selection output
+          const output = document.querySelector(`[data-selection-output="${name}"]`);
+          if (output) {
+            output.textContent = value;
+          }
+        }
+      });
+    });
+  }
+  
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSelectionDisplays);
+  } else {
+    initSelectionDisplays();
+  }
+
+  // Toggle section content
+  function toggleSection(event) {
+    const header = event.target.closest('.section-header');
+    if (header) {
+      const content = header.nextElementSibling;
+      const isExpanded = header.getAttribute('aria-expanded') === 'true';
+      
+      header.setAttribute('aria-expanded', !isExpanded);
+      content.setAttribute('aria-hidden', isExpanded);
+    }
+  }
+
+  // Add event listeners to section headers
+  document.querySelectorAll('.section-header').forEach((header) => {
+    header.addEventListener('click', toggleSection);
+  });
+</script>

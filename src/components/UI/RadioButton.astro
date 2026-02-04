@@ -1,0 +1,264 @@
+---
+/**
+ * Radio Button Component
+ * Interactive radio button following Firefox Apps Archive design system
+ * 
+ * States:
+ * - Default: White background, light border, empty circle
+ * - Hover: White background, primary border, empty circle
+ * - Active/Focus: White background, thick darker border, empty circle, focus ring
+ * - Selected: Primary background, filled circle with gradient, white text
+ * - Selected + Focus: Primary background, filled circle, white text, focus ring
+ * 
+ * Props:
+ * @param name - Radio group name
+ * @param value - Radio button value
+ * @param label - Label text
+ * @param checked - Whether the radio is checked (default: false)
+ * @param id - Unique identifier for the radio button
+ */
+
+interface Props {
+  name: string;
+  value: string;
+  label?: string;
+  checked?: boolean;
+  id?: string;
+}
+
+const { 
+  name, 
+  value, 
+  label = 'Button', 
+  checked = false,
+  id = `radio-${name}-${value}`
+} = Astro.props;
+---
+
+<label 
+  for={id}
+  class="radio-button"
+  data-checked={checked}
+  data-radio-label
+>
+  <!-- Border - changes on hover/active/selected -->
+  <div aria-hidden="true" class="border-overlay"></div>
+  
+  <input 
+    type="radio" 
+    {name} 
+    {value} 
+    {id}
+    checked={checked}
+    class="radio-input"
+    data-radio-input
+  />
+  
+  <!-- Radio Circle -->
+  <div class="radio-circle">
+    <svg class="radio-svg" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16">
+      <!-- Outer circle stroke -->
+      <circle 
+        cx="8" 
+        cy="8" 
+        r="7.5"
+        class="circle-stroke"
+      />
+      <!-- Filled circle for selected state (with gradient) -->
+      <circle 
+        cx="8" 
+        cy="8" 
+        r="7.5"
+        class="circle-fill"
+        fill="url(#radio-gradient-{id})"
+        stroke="var(--surface-light-mid)"
+      />
+      <defs>
+        <linearGradient id="radio-gradient-{id}" x1="8" y1="0" x2="8" y2="16" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="var(--violet-50)" />
+          <stop offset="1" stop-color="var(--violet-70)" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+  
+  <!-- Label Text -->
+  <div class="label-text body-sm">
+    {label}
+  </div>
+</label>
+
+<script>
+  // Handle radio button interactivity
+  function initRadioButtons() {
+    const radioInputs = document.querySelectorAll('[data-radio-input]');
+    
+    radioInputs.forEach((input) => {
+      const radioInput = input as HTMLInputElement;
+      
+      radioInput.addEventListener('change', () => {
+        if (radioInput.checked) {
+          const name = radioInput.name;
+          
+          // Uncheck all radio buttons in the same group
+          const allInGroup = document.querySelectorAll(`input[name="${name}"][data-radio-input]`);
+          allInGroup.forEach((otherInput) => {
+            const otherRadio = otherInput as HTMLInputElement;
+            const otherLabel = otherRadio.closest('[data-radio-label]');
+            if (otherLabel) {
+              otherLabel.setAttribute('data-checked', 'false');
+            }
+          });
+          
+          // Check the clicked radio button
+          const label = radioInput.closest('[data-radio-label]');
+          if (label) {
+            label.setAttribute('data-checked', 'true');
+          }
+        }
+      });
+    });
+  }
+  
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRadioButtons);
+  } else {
+    initRadioButtons();
+  }
+</script>
+
+<style>
+  .radio-button {
+    display: inline-flex;
+    min-width: fit-content;
+    background: var(--surface-light-mid);
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-8) var(--spacing-8);
+    position: relative;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1;
+  }
+  
+  /* Border overlay */
+  .border-overlay {
+    position: absolute;
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-app-icon);
+  }
+  
+  /* Hide native radio input */
+  .radio-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  /* Radio circle container */
+  .radio-circle {
+    position: relative;
+    flex-shrink: 0;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+  
+  /* Radio SVG */
+  .radio-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Circle stroke - visible in default state, hidden when selected */
+  .circle-stroke {
+    stroke: var(--on-surface-light-border-high);
+    stroke-width: 1;
+    fill: none;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+  
+  /* Circle fill - hidden in default state, visible when selected */
+  .circle-fill {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    stroke-width: 1;
+  }
+  
+  /* Label text */
+  .label-text {
+    color: var(--on-surface-light-primary);
+    transition: color 0.2s ease;
+  }
+  
+  /* Hover state - primary border */
+  .radio-button:hover .border-overlay {
+    border-color: var(--on-surface-light-primary);
+  }
+  
+  /* Active state (mouse click) - thick darker border */
+  .radio-button:active .border-overlay {
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-faded);
+  }
+  
+  /* Focus state (keyboard only) - thick darker border */
+  .radio-button:has(.radio-input:focus-visible) .border-overlay {
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-faded);
+  }
+  
+  /* Selected state - primary background */
+  .radio-button[data-checked="true"] {
+    background-color: var(--on-surface-light-primary);
+  }
+  
+  .radio-button[data-checked="true"] .border-overlay {
+    border-color: var(--on-surface-light-primary);
+  }
+  
+  /* Selected + Active state (mouse click) - just thick border, no focus ring */
+  .radio-button[data-checked="true"]:active .border-overlay {
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-faded);
+  }
+  
+  /* Selected + Focus state (keyboard only) - show focus ring */
+  .radio-button[data-checked="true"]:has(.radio-input:focus-visible) .border-overlay {
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-faded);
+    /* Add visible focus ring around selected button */
+    box-shadow: 
+      var(--shadow-app-icon),
+      0 0 0 2px var(--ink-05);
+  }
+  
+  /* Hide stroke circle when selected */
+  .radio-button[data-checked="true"] .circle-stroke {
+    opacity: 0;
+  }
+  
+  /* Show filled circle when selected */
+  .radio-button[data-checked="true"] .circle-fill {
+    opacity: 1;
+  }
+  
+  /* White text when selected */
+  .radio-button[data-checked="true"] .label-text {
+    color: var(--on-surface-light-on-primary);
+  }
+</style>
