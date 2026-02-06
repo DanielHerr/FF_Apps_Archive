@@ -9,10 +9,17 @@ import RadioButton from '../components/UI/RadioButton.astro';
 import Button from '../components/UI/Button.astro';
 import ButtonCta from '../components/UI/ButtonCta.astro';
 import ButtonCategory from '../components/UI/ButtonCategory.astro';
+import ButtonAppTypes from '../components/UI/ButtonAppTypes.astro';
+import CardAppTypes from '../components/UI/CardAppTypes.astro';
 import IconBooksRegular from '../components/icons/categories/IconBooksRegular.astro';
 import IconCameraRegular from '../components/icons/categories/IconCameraRegular.astro';
 import IconMusicNotesRegular from '../components/icons/categories/IconMusicNotesRegular.astro';
 import IconGameControllerRegular from '../components/icons/categories/IconGameControllerRegular.astro';
+import IconShapes from '../components/icons/app-types/IconShapes.astro';
+import IconPackage from '../components/icons/app-types/IconPackage.astro';
+import IconCloud from '../components/icons/app-types/IconCloud.astro';
+import IconDownload from '../components/icons/app-types/IconDownload.astro';
+import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro';
 ---
 
 <Layout title="Component Library - Design System">
@@ -1118,6 +1125,563 @@ import IconGameControllerRegular from '../components/icons/categories/IconGameCo
                     <div class="token-item">
                       <code>icons/categories/</code>
                       <span class="body-xs">Regular weight category icons</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Effects</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--shadow-app-icon</code>
+                      <span class="body-xs">Box shadow (0 1px 1px)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- App Types Button Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">App Types Button</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">ButtonAppTypes.astro</code>
+            </div>
+            
+            <!-- All Variants Examples -->
+            <section class="section">
+              <h2 class="heading-xs">All Variants</h2>
+              <p class="body-sm text-faded">Two app types button styles for different use cases</p>
+              
+              <div class="button-group" style="gap: var(--spacing-16); align-items: flex-start; flex-direction: column;">
+                <div style="display: flex; gap: var(--spacing-12); align-items: center;">
+                  <ButtonAppTypes variant="label" label="Extension" iconBgColor="--app-icon-bg-light-blue">
+                    <IconPackage slot="icon" size={16} />
+                  </ButtonAppTypes>
+                  <span class="body-sm text-faded">Label Variant (Blue)</span>
+                </div>
+                
+                <div style="display: flex; gap: var(--spacing-12); align-items: center;">
+                  <ButtonAppTypes variant="inline" label="Hosted" iconBgColor="--app-icon-bg-light-purple">
+                    <IconCloud slot="icon" size={16} />
+                  </ButtonAppTypes>
+                  <span class="body-sm text-faded">Inline Variant (Purple)</span>
+                </div>
+                
+                <div style="display: flex; gap: var(--spacing-12); align-items: center;">
+                  <ButtonAppTypes variant="label" label="Download" iconBgColor="--app-icon-bg-light-yellow">
+                    <IconDownload slot="icon" size={16} />
+                  </ButtonAppTypes>
+                  <span class="body-sm text-faded">Label Variant (Yellow)</span>
+                </div>
+                
+                <div style="display: flex; gap: var(--spacing-12); align-items: center;">
+                  <ButtonAppTypes variant="inline" label="Offline" iconBgColor="--app-icon-bg-light-orange">
+                    <IconSmileyXEyes slot="icon" size={16} />
+                  </ButtonAppTypes>
+                  <span class="body-sm text-faded">Inline Variant (Orange)</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Label Variant States -->
+            <section class="section">
+              <h2 class="heading-xs">Label Variant - States</h2>
+              <p class="body-sm text-faded">State variations for label variant</p>
+              
+              <div class="states-grid">
+                <!-- Default State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Default</p>
+                  <div class="state-box">
+                    <ButtonAppTypes variant="label" label="App Type">
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Transparent background, regular text and icon color
+                  </p>
+                </div>
+
+                <!-- Hover State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Hover</p>
+                  <div class="state-box state-hover">
+                    <ButtonAppTypes variant="label" label="App Type">
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    White background with purple bottom border (2px)
+                  </p>
+                </div>
+
+                <!-- Focus State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonAppTypes variant="label" label="App Type">
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    4px faded border with outline (keyboard navigation)
+                  </p>
+                </div>
+
+                <!-- Active State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Active</p>
+                  <div class="state-box">
+                    <ButtonAppTypes variant="label" label="App Type" active={true}>
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gray background (#e8e8e8), rounded corners
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Inline Variant States -->
+            <section class="section">
+              <h2 class="heading-xs">Inline Variant - States</h2>
+              <p class="body-sm text-faded">State variations for inline variant (284px width)</p>
+              
+              <div class="states-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                <!-- Default State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Default</p>
+                  <div class="state-box">
+                    <ButtonAppTypes variant="inline" label="App Type">
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Transparent with subtle bottom border (0.5px)
+                  </p>
+                </div>
+
+                <!-- Focus State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonAppTypes variant="inline" label="App Type">
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    4px faded border with outline (keyboard navigation)
+                  </p>
+                </div>
+
+                <!-- Active State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Active</p>
+                  <div class="state-box">
+                    <ButtonAppTypes variant="inline" label="App Type" active={true}>
+                      <IconShapes slot="icon" size={16} />
+                    </ButtonAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gray background (#e8e8e8), no border, rounded corners
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens</h2>
+              <p class="body-sm text-faded">CSS variables used in this component</p>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Colors</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--on-surface-light-regular</code>
+                      <span class="body-xs">Text and icon color</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Hover border (purple)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Focus border color</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-border-high</code>
+                      <span class="body-xs">Default border (inline variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--surface-light-mid</code>
+                      <span class="body-xs">Hover background (white)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--surface-light-high</code>
+                      <span class="body-xs">Active background (#e8e8e8)</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="token-category">
+                  <h3 class="body-sm">Icon Background Colors</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--app-icon-bg-light-blue</code>
+                      <span class="body-xs">Blue icon background (default)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--app-icon-bg-light-yellow</code>
+                      <span class="body-xs">Yellow icon background</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--app-icon-bg-light-purple</code>
+                      <span class="body-xs">Purple icon background</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--app-icon-bg-light-orange</code>
+                      <span class="body-xs">Orange icon background</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--app-icon-bg-light-red</code>
+                      <span class="body-xs">Red icon background</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>.body-sm</code>
+                      <span class="body-xs">Inter 14px/22px (both variants)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-4</code>
+                      <span class="body-xs">Vertical padding (label variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-8</code>
+                      <span class="body-xs">Horizontal padding (label), icon gap</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-12</code>
+                      <span class="body-xs">All padding (inline variant)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Borders & Radius</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px (inline default border)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px (label hover border)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-xl</code>
+                      <span class="body-xs">4px (focus border)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px (border radius)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Icon</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--icon-sm</code>
+                      <span class="body-xs">16px (both variants)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>icons/app-types/</code>
+                      <span class="body-xs">App type icon components</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- App Types Card Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">App Types Card</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">CardAppTypes.astro</code>
+            </div>
+            
+            <!-- Card Examples -->
+            <section class="section">
+              <h2 class="heading-xs">Card Examples</h2>
+              <p class="body-sm text-faded">App type cards with different colors and icons</p>
+              
+              <div class="button-group" style="gap: var(--spacing-16); align-items: flex-start;">
+                <CardAppTypes 
+                  title="Extension" 
+                  description="Browser extensions and add-ons"
+                  iconColor="--on-surface-any-blue"
+                  gradientStart="--card-gradient-light-blue-start"
+                  gradientEnd="--card-gradient-light-blue-end"
+                >
+                  <IconPackage slot="icon" />
+                </CardAppTypes>
+                
+                <CardAppTypes 
+                  title="Hosted" 
+                  description="Cloud-hosted web applications"
+                  iconColor="--on-surface-any-purple"
+                  gradientStart="--card-gradient-light-purple-start"
+                  gradientEnd="--card-gradient-light-purple-end"
+                >
+                  <IconCloud slot="icon" />
+                </CardAppTypes>
+                
+                <CardAppTypes 
+                  title="Download" 
+                  description="Downloadable desktop apps"
+                  iconColor="--on-surface-any-yellow"
+                  gradientStart="--card-gradient-light-yellow-start"
+                  gradientEnd="--card-gradient-light-yellow-end"
+                >
+                  <IconDownload slot="icon" />
+                </CardAppTypes>
+              </div>
+              
+              <div class="button-group" style="gap: var(--spacing-16); align-items: flex-start; margin-top: var(--spacing-16);">
+                <CardAppTypes 
+                  title="Offline" 
+                  description="Works without internet"
+                  iconColor="--on-surface-any-orange"
+                  gradientStart="--card-gradient-light-orange-start"
+                  gradientEnd="--card-gradient-light-orange-end"
+                >
+                  <IconSmileyXEyes slot="icon" />
+                </CardAppTypes>
+                
+                <CardAppTypes 
+                  title="Premium" 
+                  description="Exclusive premium features"
+                  iconColor="--on-surface-any-red"
+                  gradientStart="--card-gradient-light-red-start"
+                  gradientEnd="--card-gradient-light-red-end"
+                >
+                  <IconShapes slot="icon" />
+                </CardAppTypes>
+              </div>
+            </section>
+
+            <!-- Card States -->
+            <section class="section">
+              <h2 class="heading-xs">Card States</h2>
+              <p class="body-sm text-faded">State variations for app types card (284px × 130px)</p>
+              
+              <div class="states-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                <!-- Default State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Default</p>
+                  <div class="state-box">
+                    <CardAppTypes title="Type" description="Description">
+                      <IconShapes slot="icon" />
+                    </CardAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Blue gradient background, 1px blue border with shadow
+                  </p>
+                </div>
+
+                <!-- Hover State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Hover</p>
+                  <div class="state-box state-hover">
+                    <CardAppTypes title="Type" description="Description">
+                      <IconShapes slot="icon" />
+                    </CardAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Same gradient, 2px blue border with shadow
+                  </p>
+                </div>
+
+                <!-- Focus State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <CardAppTypes title="Type" description="Description">
+                      <IconShapes slot="icon" />
+                    </CardAppTypes>
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Same gradient, 2px faded border with outline (keyboard)
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens</h2>
+              <p class="body-sm text-faded">CSS variables used in this component</p>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Colors</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--on-surface-any-blue</code>
+                      <span class="body-xs">Blue variant (default) - title, description, icon, border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-any-yellow</code>
+                      <span class="body-xs">Yellow variant - title, description, icon, border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-any-purple</code>
+                      <span class="body-xs">Purple variant - title, description, icon, border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-any-orange</code>
+                      <span class="body-xs">Orange variant - title, description, icon, border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-any-red</code>
+                      <span class="body-xs">Red variant - title, description, icon, border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Focus border color</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Gradients</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--card-gradient-light-blue-*</code>
+                      <span class="body-xs">Blue gradient pair (start/end)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--card-gradient-light-yellow-*</code>
+                      <span class="body-xs">Yellow gradient pair (start/end)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--card-gradient-light-purple-*</code>
+                      <span class="body-xs">Purple gradient pair (start/end)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--card-gradient-light-orange-*</code>
+                      <span class="body-xs">Orange gradient pair (start/end)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--card-gradient-light-red-*</code>
+                      <span class="body-xs">Red gradient pair (start/end)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>.heading-xxxs</code>
+                      <span class="body-xs">Metropolis Bold 16px/20px (title)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>.body-sm</code>
+                      <span class="body-xs">Inter 14px/22px (description)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-8</code>
+                      <span class="body-xs">Gap between header and description</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-12</code>
+                      <span class="body-xs">Horizontal padding</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-16</code>
+                      <span class="body-xs">Vertical padding</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Borders & Radius</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px (default border)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px (hover & focus border)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px (border radius)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Icon</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--icon-md</code>
+                      <span class="body-xs">24px (card icon size)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>icons/app-types/</code>
+                      <span class="body-xs">App type icon components</span>
                     </div>
                   </div>
                 </div>

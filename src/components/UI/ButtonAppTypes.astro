@@ -1,0 +1,277 @@
+---
+/**
+ * App Types Button Component
+ * Button for app type selection with 2 variants
+ * 
+ * Variants:
+ * - label: Horizontal layout (icon + text), minimal width 160px
+ * - inline: Full width horizontal (text + icon right), 284px
+ * 
+ * States:
+ * - Default: No background, transparent
+ * - Hover: White background, purple bottom border (label) or no special state (inline)
+ * - Focus: 4px faded border (keyboard navigation)
+ * - Active: Gray background
+ * 
+ * Props:
+ * @param variant - Button variant: 'label' | 'inline'
+ * @param label - Button text
+ * @param active - Active state (both variants)
+ * @param iconBgColor - CSS variable for icon background color (default: --app-icon-bg-light-blue)
+ *                      Available options: --app-icon-bg-light-blue | --app-icon-bg-light-yellow | 
+ *                      --app-icon-bg-light-purple | --app-icon-bg-light-orange | --app-icon-bg-light-red |
+ *                      --app-icon-bg-dark-blue | --app-icon-bg-dark-yellow | --app-icon-bg-dark-purple |
+ *                      --app-icon-bg-dark-orange | --app-icon-bg-dark-red
+ * @param onclick - Optional click handler
+ * 
+ * Usage with custom icon:
+ * <ButtonAppTypes variant="label" label="Extension" iconBgColor="--app-icon-bg-light-blue">
+ *   <IconPackage slot="icon" size={16} />
+ * </ButtonAppTypes>
+ */
+
+interface Props {
+  variant?: 'label' | 'inline';
+  label?: string;
+  active?: boolean;
+  iconBgColor?: string;
+  onclick?: string;
+}
+
+const { 
+  variant = 'label',
+  label = 'App Type',
+  active = false,
+  iconBgColor = '--app-icon-bg-light-blue',
+  onclick
+} = Astro.props;
+
+// Import default icon from app-types icons
+import IconShapes from '../icons/app-types/IconShapes.astro';
+
+const hasIcon = Astro.slots.has('icon');
+---
+
+<button 
+  onclick={onclick}
+  class={`app-types-button variant-${variant} ${active ? 'active' : ''}`}
+  data-app-types-button
+  data-variant={variant}
+  data-active={active}
+>
+  <!-- Content -->
+  <div class="button-content">
+    {variant === 'label' && (
+      <>
+        <!-- Icon Slot (left) -->
+        <div class="icon-bg" style={`background-color: var(${iconBgColor});`}>
+          {hasIcon ? (
+            <slot name="icon" />
+          ) : (
+            <div class="icon-wrapper icon-sm">
+              <IconShapes size={16} />
+            </div>
+          )}
+        </div>
+        
+        <!-- Label -->
+        <span class="body-sm">
+          {label}
+        </span>
+      </>
+    )}
+    
+    {variant === 'inline' && (
+      <>
+        <!-- Label -->
+        <span class="body-sm">
+          {label}
+        </span>
+        
+        <!-- Icon Slot (right) -->
+        <div class="icon-bg" style={`background-color: var(${iconBgColor});`}>
+          {hasIcon ? (
+            <slot name="icon" />
+          ) : (
+            <div class="icon-wrapper icon-sm">
+              <IconShapes size={16} />
+            </div>
+          )}
+        </div>
+      </>
+    )}
+  </div>
+  
+  <!-- Border overlay - changes on hover/active -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</button>
+
+<style>
+  /* Base Button */
+  .app-types-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+  }
+
+  /* Content wrapper */
+  .button-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    color: var(--on-surface-light-regular);
+  }
+
+  /* Icon background circle */
+  .icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .icon-bg :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Icon wrapper */
+  .icon-wrapper {
+    flex-shrink: 0;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-sm {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     VARIANT: LABEL
+     ======================================== */
+  .variant-label {
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 160px;
+  }
+
+  .variant-label .button-content {
+    gap: var(--spacing-8);
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-4) var(--spacing-8);
+  }
+
+  .variant-label .border-overlay {
+    display: none;
+  }
+
+  /* Label - Active State */
+  .variant-label.active {
+    background: var(--surface-light-high);
+    border-radius: var(--radius-md);
+  }
+
+  /* Label - Hover State */
+  .variant-label:hover:not(.active) {
+    background: var(--surface-light-mid);
+    border-radius: var(--radius-md);
+  }
+
+  .variant-label:hover:not(.active) .border-overlay {
+    display: block;
+    inset: 0 0 -1px 0;
+    border: none;
+    border-bottom: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: var(--radius-md);
+  }
+
+  /* Label - Focus State (keyboard only) */
+  .variant-label:focus-visible .border-overlay {
+    display: block;
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* ========================================
+     VARIANT: INLINE
+     ======================================== */
+  .variant-inline {
+    width: 284px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .variant-inline .button-content {
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-12);
+    width: 100%;
+  }
+
+  .variant-inline .border-overlay {
+    display: block;
+    inset: 0 0 -0.5px 0;
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-high);
+  }
+
+  /* Inline - Active State */
+  .variant-inline.active {
+    background: var(--surface-light-high);
+    border-radius: var(--radius-md);
+  }
+
+  /* Inline - Focus State (keyboard only) */
+  .variant-inline:focus-visible .border-overlay {
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* Focus outline (keyboard navigation) */
+  .app-types-button:focus-visible {
+    outline: 2px solid var(--on-surface-light-faded);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Add click handlers to toggle active state for both variants
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('[data-app-types-button]');
+    
+    buttons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        // Toggle active class
+        button.classList.toggle('active');
+        
+        // Update data attribute
+        const isActive = button.classList.contains('active');
+        button.setAttribute('data-active', isActive.toString());
+      });
+    });
+  });
+</script>

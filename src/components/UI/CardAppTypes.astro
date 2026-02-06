@@ -1,0 +1,194 @@
+---
+/**
+ * App Types Card Component
+ * Card for app type display and selection
+ * 
+ * States:
+ * - Default: Gradient background, colored border (1px)
+ * - Hover: Gradient background, colored border (2px)
+ * - Focus: Gradient background, faded border (2px) (keyboard navigation)
+ * 
+ * Props:
+ * @param title - Card title (heading)
+ * @param description - Card description text
+ * @param iconColor - CSS variable for icon/text/border color (default: --on-surface-any-blue)
+ *                    Available options: --on-surface-any-blue | --on-surface-any-yellow | 
+ *                    --on-surface-any-purple | --on-surface-any-orange | --on-surface-any-red
+ * @param gradientStart - CSS variable for gradient start (default: --card-gradient-light-blue-start)
+ * @param gradientEnd - CSS variable for gradient end (default: --card-gradient-light-blue-end)
+ *                      Gradient pairs: blue-start/blue-end | yellow-start/yellow-end | 
+ *                      purple-start/purple-end | orange-start/orange-end | red-start/red-end
+ * @param onclick - Optional click handler
+ * 
+ * Usage with custom icon and colors:
+ * <CardAppTypes 
+ *   title="Extension" 
+ *   description="Browser extensions"
+ *   iconColor="--on-surface-any-blue"
+ *   gradientStart="--card-gradient-light-purple-start"
+ *   gradientEnd="--card-gradient-light-purple-end"
+ * >
+ *   <IconPackage slot="icon" />
+ * </CardAppTypes>
+ */
+
+interface Props {
+  title?: string;
+  description?: string;
+  iconColor?: string;
+  gradientStart?: string;
+  gradientEnd?: string;
+  onclick?: string;
+}
+
+const { 
+  title = 'Type',
+  description = 'Description',
+  iconColor = '--on-surface-any-blue',
+  gradientStart = '--card-gradient-light-blue-start',
+  gradientEnd = '--card-gradient-light-blue-end',
+  onclick
+} = Astro.props;
+
+// Import default icon from app-types icons
+import IconShapes from '../icons/app-types/IconShapes.astro';
+
+const hasIcon = Astro.slots.has('icon');
+---
+
+<button 
+  onclick={onclick}
+  class="app-types-card"
+  data-app-types-card
+  style={`
+    background: linear-gradient(180deg, var(${gradientStart}) 0%, var(${gradientEnd}) 100%);
+    --card-icon-color: var(${iconColor});
+  `}
+>
+  <!-- Content -->
+  <div class="card-content">
+    <!-- Header -->
+    <div class="card-header">
+      <h3 class="heading-xxxs card-title">
+        {title}
+      </h3>
+      
+      <!-- Icon Slot -->
+      {hasIcon ? (
+        <slot name="icon" />
+      ) : (
+        <div class="icon-wrapper icon-md">
+          <IconShapes />
+        </div>
+      )}
+    </div>
+    
+    <!-- Description -->
+    <p class="body-sm card-description">
+      {description}
+    </p>
+  </div>
+  
+  <!-- Border overlay - changes on hover/focus -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</button>
+
+<style>
+  /* Base Card */
+  .app-types-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 284px;
+    height: 130px;
+    padding: var(--spacing-16) var(--spacing-12);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
+  }
+
+  /* Content wrapper */
+  .card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    width: 100%;
+  }
+
+  /* Header */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Title */
+  .card-title {
+    color: var(--card-icon-color);
+  }
+
+  /* Icon wrapper */
+  .icon-wrapper {
+    flex-shrink: 0;
+    color: var(--card-icon-color);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Slotted icon styling */
+  .card-header :global(svg) {
+    color: var(--card-icon-color);
+  }
+
+  .icon-md {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+
+  /* Description */
+  .card-description {
+    color: var(--card-icon-color);
+    width: 100%;
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border: var(--border-sm) solid var(--card-icon-color);
+    border-radius: calc(var(--radius-md) + 0.5px);
+    pointer-events: none;
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* Hover State */
+  .app-types-card:hover .border-overlay {
+    inset: -1px;
+    border-width: var(--border-lg);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Focus State (keyboard only) */
+  .app-types-card:focus-visible .border-overlay {
+    inset: -2px;
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Focus outline (keyboard navigation) */
+  .app-types-card:focus-visible {
+    outline: 2px solid var(--on-surface-light-faded);
+    outline-offset: 2px;
+  }
+</style>
