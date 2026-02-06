@@ -6,9 +6,9 @@
  * States:
  * - Default: White background, light border, empty circle
  * - Hover: White background, primary border, empty circle
- * - Active/Focus: White background, thick darker border, empty circle, focus ring
- * - Selected: Primary background, filled circle with gradient, white text
- * - Selected + Focus: Primary background, filled circle, white text, focus ring
+ * - Focus: White background, thick darker border, empty circle, focus ring (keyboard navigation)
+ * - Active: Primary background, filled circle with gradient, white text (checked/selected)
+ * - Active + Focus: Primary background, filled circle, white text, focus ring
  * 
  * Props:
  * @param name - Radio group name
@@ -147,7 +147,7 @@ const {
   /* Border overlay */
   .border-overlay {
     position: absolute;
-    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border: var(--border-sm) solid var(--on-surface-light-border-high);
     inset: 0;
     pointer-events: none;
     border-radius: var(--radius-md);
@@ -210,14 +210,14 @@ const {
     border-color: var(--on-surface-light-primary);
   }
   
-  /* Active state (mouse click) - thick darker border */
-  .radio-button:active .border-overlay {
+  /* Focus state (keyboard only) - thick darker border */
+  .radio-button:has(.radio-input:focus-visible) .border-overlay {
     border-width: var(--border-lg);
     border-color: var(--on-surface-light-faded);
   }
   
-  /* Focus state (keyboard only) - thick darker border */
-  .radio-button:has(.radio-input:focus-visible) .border-overlay {
+  /* Active state (mouse click) - thick darker border */
+  .radio-button:active .border-overlay {
     border-width: var(--border-lg);
     border-color: var(--on-surface-light-faded);
   }

@@ -1,0 +1,139 @@
+---
+/**
+ * CTA (Call to Action) Button Component
+ * Prominent button for primary actions with optional icon
+ * 
+ * States:
+ * - Default: Blue background, subtle border
+ * - Hover: Medium border (2px)
+ * - Focus: Thick border (4px) (keyboard navigation)
+ * 
+ * Props:
+ * @param label - Button text
+ * @param href - Link URL (optional)
+ * @param icon - Optional icon component (slot)
+ * @param onclick - Optional click handler attribute
+ */
+
+interface Props {
+  label?: string;
+  href?: string;
+  onclick?: string;
+}
+
+const { 
+  label = 'CTA Button',
+  href,
+  onclick
+} = Astro.props;
+
+// Import the GitHub logo icon component
+import IconGithubLogo from '../icons/brand/IconGithubLogo.astro';
+
+const hasIcon = Astro.slots.has('icon');
+---
+
+<a 
+  href={href}
+  onclick={onclick}
+  class="cta-button"
+  data-cta-button
+>
+  <div class="button-content">
+    <!-- Icon Slot -->
+    {hasIcon ? (
+      <slot name="icon" />
+    ) : (
+      <div class="icon-default">
+        <IconGithubLogo />
+      </div>
+    )}
+    
+    <!-- Button Label -->
+    <span class="button-label body-md">
+      {label}
+    </span>
+  </div>
+  
+  <!-- Border overlay - changes on hover/active -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</a>
+
+<style>
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: var(--attention-click);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-height: 40px;
+    min-width: fit-content;
+  }
+  
+  /* Button content container */
+  .button-content {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-8);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+  
+  /* Icon */
+  .icon-default {
+    position: relative;
+    flex-shrink: 0;
+    width: var(--icon-md);
+    height: var(--icon-md);
+    color: var(--surface-light-mid);
+  }
+  
+  .icon-default svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Button label */
+  .button-label {
+    position: relative;
+    color: white;
+    line-height: 24px;
+    white-space: nowrap;
+  }
+  
+  /* Border overlay */
+  .border-overlay {
+    position: absolute;
+    inset: calc(var(--border-sm) * -0.5);
+    pointer-events: none;
+    border-radius: calc(var(--radius-md) + calc(var(--border-sm) * 0.5));
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+  
+  /* Hover state */
+  .cta-button:hover .border-overlay {
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-primary);
+    inset: calc(var(--border-lg) * -0.5);
+    border-radius: calc(var(--radius-md) + calc(var(--border-lg) * 0.5));
+  }
+  
+  /* Focus state (keyboard only) */
+  .cta-button:focus-visible .border-overlay {
+    border-width: var(--border-xl);
+    border-color: var(--on-surface-light-faded);
+    inset: calc(var(--border-xl) * -1);
+    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 0.5));
+  }
+</style>

@@ -1,0 +1,398 @@
+---
+/**
+ * Category Button Component
+ * Multi-purpose button for category selection with 4 variants
+ * 
+ * Variants:
+ * - label: Horizontal layout (icon + text), minimal width 160px
+ * - chip: Compact horizontal (text + icon), fixed 69px width
+ * - block: Vertical layout (icon above text), 90x76px
+ * - inline: Full width horizontal (text + icon right), 280px
+ * 
+ * States:
+ * - Default: Gradient background, subtle border
+ * - Hover: 2px purple border
+ * - Focus: 4px purple border
+ * - Active: Gray background (label & inline variants)
+ * 
+ * Props:
+ * @param variant - Button variant: 'label' | 'chip' | 'block' | 'inline'
+ * @param label - Button text
+ * @param active - Active state (label & inline variants)
+ * @param onclick - Optional click handler
+ * 
+ * Usage with custom icon:
+ * <ButtonCategory variant="label" label="Books">
+ *   <IconBooksRegular slot="icon" />
+ * </ButtonCategory>
+ */
+
+interface Props {
+  variant?: 'label' | 'chip' | 'block' | 'inline';
+  label?: string;
+  active?: boolean;
+  onclick?: string;
+}
+
+const { 
+  variant = 'label',
+  label = 'Books',
+  active = false,
+  onclick
+} = Astro.props;
+
+// Import default icon from existing categories (Regular weight)
+import IconBooksRegular from '../icons/categories/IconBooksRegular.astro';
+
+const hasIcon = Astro.slots.has('icon');
+---
+
+<button 
+  onclick={onclick}
+  class={`category-button variant-${variant} ${active ? 'active' : ''}`}
+  data-category-button
+  data-variant={variant}
+  data-active={active}
+>
+  <!-- Content -->
+  <div class="button-content">
+    {variant === 'label' && (
+      <>
+        <!-- Icon Slot (left) -->
+        {hasIcon ? (
+          <slot name="icon" />
+        ) : (
+          <div class="icon-wrapper icon-xs">
+            <IconBooksRegular size={14} />
+          </div>
+        )}
+        
+        <!-- Label -->
+        <span class={variant === 'label' ? 'body-sm' : 'body-xs'}>
+          {label}
+        </span>
+      </>
+    )}
+    
+    {variant === 'chip' && (
+      <>
+        <!-- Label -->
+        <span class="body-xs">
+          {label}
+        </span>
+        
+        <!-- Icon Slot (right) -->
+        {hasIcon ? (
+          <slot name="icon" />
+        ) : (
+          <div class="icon-wrapper icon-xs">
+            <IconBooksRegular size={14} />
+          </div>
+        )}
+      </>
+    )}
+    
+    {variant === 'block' && (
+      <>
+        <!-- Icon Slot (top) -->
+        {hasIcon ? (
+          <slot name="icon" />
+        ) : (
+          <div class="icon-wrapper icon-md">
+            <IconBooksRegular size={24} />
+          </div>
+        )}
+        
+        <!-- Label -->
+        <span class="body-xxs">
+          {label}
+        </span>
+      </>
+    )}
+    
+    {variant === 'inline' && (
+      <>
+        <!-- Label -->
+        <span class="body-xs">
+          {label}
+        </span>
+        
+        <!-- Icon Slot (right) -->
+        {hasIcon ? (
+          <slot name="icon" />
+        ) : (
+          <div class="icon-wrapper icon-sm">
+            <IconBooksRegular size={16} />
+          </div>
+        )}
+      </>
+    )}
+  </div>
+  
+  <!-- Border overlay - changes on hover/active -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</button>
+
+<style>
+  /* Base Button */
+  .category-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-app-icon);
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
+  }
+
+  /* Content wrapper */
+  .button-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    color: var(--on-surface-light-faded);
+  }
+
+  /* Icon wrapper */
+  .icon-wrapper {
+    flex-shrink: 0;
+    color: var(--on-surface-light-faded);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-xs {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+  }
+
+  .icon-sm {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  .icon-md {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+
+  .icon-lg {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border: var(--border-sm) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 0.5px);
+    pointer-events: none;
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     VARIANT: LABEL
+     ======================================== */
+  .variant-label {
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 160px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .variant-label .button-content {
+    gap: var(--spacing-8);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4) var(--spacing-8);
+  }
+
+  .variant-label .border-overlay {
+    display: none;
+  }
+
+  /* Label - Selected State */
+  .variant-label.active {
+    background: var(--surface-light-high);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  /* Label - Hover State */
+  .variant-label:hover:not(.active) {
+    background: var(--surface-light-mid);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  .variant-label:hover:not(.active) .border-overlay {
+    display: block;
+    inset: 0 0 -1px 0;
+    border: none;
+    border-bottom: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: var(--radius-md);
+  }
+
+  /* Label - Focus State (keyboard only) */
+  .variant-label:focus-visible {
+    background: var(--surface-light-mid);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  .variant-label:focus-visible .border-overlay {
+    display: block;
+    inset: -2px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* ========================================
+     VARIANT: CHIP
+     ======================================== */
+  .variant-chip {
+    width: 69px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .variant-chip .button-content {
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4) var(--spacing-8);
+    width: 100%;
+  }
+
+  /* Chip - Hover State */
+  .variant-chip:hover .border-overlay {
+    inset: -1px;
+    border: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Chip - Focus State (keyboard only) */
+  .variant-chip:focus-visible .border-overlay {
+    inset: -2px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* ========================================
+     VARIANT: BLOCK
+     ======================================== */
+  .variant-block {
+    width: 90px;
+    height: 76px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4);
+  }
+
+  .variant-block .button-content {
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-12) 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .variant-block .body-xxs {
+    white-space: nowrap;
+    margin-top: -1px;
+  }
+
+  /* Block - Hover State */
+  .variant-block:hover .border-overlay {
+    inset: -1px;
+    border: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Block - Focus State (keyboard only) */
+  .variant-block:focus-visible .border-overlay {
+    inset: -2px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* ========================================
+     VARIANT: INLINE
+     ======================================== */
+  .variant-inline {
+    width: 280px;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--spacing-8) var(--spacing-12);
+  }
+
+  .variant-inline .button-content {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .variant-inline .border-overlay {
+    display: block;
+  }
+
+  /* Inline - Active State */
+  .variant-inline.active {
+    background: var(--surface-light-high);
+  }
+
+  .variant-inline.active .border-overlay {
+    display: none;
+  }
+
+  /* Inline - Hover State */
+  .variant-inline:hover:not(.active) .border-overlay {
+    inset: -1px;
+    border: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Inline - Focus State (keyboard only) */
+  .variant-inline:focus-visible:not(.active) .border-overlay {
+    inset: -2px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* Focus outline (keyboard navigation) */
+  .category-button:focus-visible {
+    outline: 2px solid var(--on-surface-light-faded);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Add click handlers to toggle active state for label and inline variants
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('[data-category-button]');
+    
+    buttons.forEach(button => {
+      const variant = button.getAttribute('data-variant');
+      
+      // Only add toggle behavior for label and inline variants
+      if (variant === 'label' || variant === 'inline') {
+        button.addEventListener('click', (e) => {
+          // Toggle active class
+          button.classList.toggle('active');
+          
+          // Update data attribute
+          const isActive = button.classList.contains('active');
+          button.setAttribute('data-active', isActive.toString());
+        });
+      }
+    });
+  });
+</script>

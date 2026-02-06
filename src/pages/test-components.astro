@@ -6,6 +6,13 @@
 
 import Layout from '../layouts/base.astro';
 import RadioButton from '../components/UI/RadioButton.astro';
+import Button from '../components/UI/Button.astro';
+import ButtonCta from '../components/UI/ButtonCta.astro';
+import ButtonCategory from '../components/UI/ButtonCategory.astro';
+import IconBooksRegular from '../components/icons/categories/IconBooksRegular.astro';
+import IconCameraRegular from '../components/icons/categories/IconCameraRegular.astro';
+import IconMusicNotesRegular from '../components/icons/categories/IconMusicNotesRegular.astro';
+import IconGameControllerRegular from '../components/icons/categories/IconGameControllerRegular.astro';
 ---
 
 <Layout title="Component Library - Design System">
@@ -23,15 +30,20 @@ import RadioButton from '../components/UI/RadioButton.astro';
 
       <!-- Radio Button Component Section -->
       <section class="component-section">
-        <button class="section-header" data-toggle-section aria-expanded="true">
+        <button class="section-header" data-toggle-section aria-expanded="false">
           <h2 class="heading-md">Radio Button</h2>
           <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
         
-        <div class="section-content" data-section-content aria-hidden="false">
+        <div class="section-content" data-section-content aria-hidden="true">
           <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">RadioButton.astro</code>
+            </div>
+            
             <!-- Interactive Radio Group -->
             <section class="section">
               <h2 class="heading-xs">Basic Radio Group</h2>
@@ -132,14 +144,14 @@ import RadioButton from '../components/UI/RadioButton.astro';
                   </p>
                 </div>
 
-                <!-- Active State -->
+                <!-- Focus State (keyboard navigation) -->
                 <div class="state-demo">
-                  <p class="body-xs text-faded">Active</p>
+                  <p class="body-xs text-faded">Focus</p>
                   <div class="state-box">
-                    <p class="body-xxs text-faded hint">Tab or click & hold</p>
+                    <p class="body-xxs text-faded hint">Tab</p>
                     <RadioButton
-                      name="state-active"
-                      value="active"
+                      name="state-focus"
+                      value="focus"
                       label="Button"
                     />
                   </div>
@@ -148,19 +160,36 @@ import RadioButton from '../components/UI/RadioButton.astro';
                   </p>
                 </div>
 
-                <!-- Selected State -->
+                <!-- Active State (checked/selected) -->
                 <div class="state-demo">
-                  <p class="body-xs text-faded">Selected</p>
+                  <p class="body-xs text-faded">Active</p>
                   <div class="state-box">
                     <RadioButton
-                      name="state-selected"
-                      value="selected"
+                      name="state-active"
+                      value="active"
                       label="Button"
                       checked={true}
                     />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Primary bg • Filled circle • White text
+                  </p>
+                </div>
+
+                <!-- Active + Focus State (checked + keyboard navigation) -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Active + Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <RadioButton
+                      name="state-active-focus"
+                      value="active-focus"
+                      label="Button"
+                      checked={true}
+                    />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Primary bg • Filled circle • White text • Focus ring
                   </p>
                 </div>
               </div>
@@ -176,29 +205,29 @@ import RadioButton from '../components/UI/RadioButton.astro';
                   <div class="token-list">
                     <div class="token-item">
                       <code>--spacing-4</code>
-                      <span class="body-xs">4px gap</span>
+                      <span class="body-xs">Gap between icon and label</span>
                     </div>
                     <div class="token-item">
                       <code>--spacing-8</code>
-                      <span class="body-xs">8px padding</span>
+                      <span class="body-xs">Padding (horizontal & vertical)</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="token-category">
-                  <h3 class="body-sm">Border</h3>
+                  <h3 class="body-sm">Borders</h3>
                   <div class="token-list">
                     <div class="token-item">
                       <code>--border-sm</code>
-                      <span class="body-xs">0.5px default</span>
+                      <span class="body-xs">0.5px default border</span>
                     </div>
                     <div class="token-item">
                       <code>--border-lg</code>
-                      <span class="body-xs">2px active</span>
+                      <span class="body-xs">2px active/focus border</span>
                     </div>
                     <div class="token-item">
                       <code>--radius-md</code>
-                      <span class="body-xs">4px corners</span>
+                      <span class="body-xs">4px corner radius</span>
                     </div>
                   </div>
                 </div>
@@ -207,16 +236,50 @@ import RadioButton from '../components/UI/RadioButton.astro';
                   <h3 class="body-sm">Colors</h3>
                   <div class="token-list">
                     <div class="token-item">
-                      <code>--on-surface-light-primary</code>
-                      <span class="body-xs">Primary accent</span>
+                      <code>--surface-light-mid</code>
+                      <span class="body-xs">Background (default)</span>
                     </div>
                     <div class="token-item">
-                      <code>--on-surface-light-border-low</code>
-                      <span class="body-xs">Border color</span>
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Selected background & text</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-on-primary</code>
+                      <span class="body-xs">White text (selected)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-border-high</code>
+                      <span class="body-xs">Default border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Active/focus border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--violet-50, --violet-70</code>
+                      <span class="body-xs">Gradient fill (selected)</span>
                     </div>
                     <div class="token-item">
                       <code>--ink-05</code>
-                      <span class="body-xs">Dark stroke</span>
+                      <span class="body-xs">Focus ring outline</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>.body-sm</code>
+                      <span class="body-xs">Inter 14px/22px (label)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-inter</code>
+                      <span class="body-xs">Inter font family</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-weight-regular</code>
+                      <span class="body-xs">400 weight</span>
                     </div>
                   </div>
                 </div>
@@ -226,11 +289,845 @@ import RadioButton from '../components/UI/RadioButton.astro';
                   <div class="token-list">
                     <div class="token-item">
                       <code>--shadow-app-icon</code>
-                      <span class="body-xs">Box shadow</span>
+                      <span class="body-xs">Box shadow (0 1px 1px)</span>
                     </div>
                     <div class="token-item">
                       <code>--icon-sm</code>
-                      <span class="body-xs">16px circle</span>
+                      <span class="body-xs">16px radio circle</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Button Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">Button</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">Button.astro</code>
+            </div>
+            
+            <!-- Button Variants -->
+            <section class="section">
+              <h2 class="heading-xs">Button Variants</h2>
+              <p class="body-sm text-faded">Two styles: Primary (gradient) and Secondary (outline)</p>
+              
+              <div class="button-group">
+                <Button variant="primary" label="Primary Button" />
+                <Button variant="secondary" label="Secondary Button" />
+              </div>
+            </section>
+
+            <!-- Interactive Buttons -->
+            <section class="section">
+              <h2 class="heading-xs">Interactive Examples</h2>
+              <p class="body-sm text-faded">Try hovering, clicking, and tabbing</p>
+              
+              <div class="button-group">
+                <Button variant="primary" label="Save Changes" />
+                <Button variant="secondary" label="Cancel" />
+                <Button variant="primary" label="Continue" />
+              </div>
+            </section>
+
+            <!-- States Visualization -->
+            <section class="section">
+              <h2 class="heading-xs">Component States</h2>
+              <p class="body-sm text-faded">Both variants support all interactive states</p>
+              
+              <div class="states-grid">
+                <!-- Primary Default -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Primary - Default</p>
+                  <div class="state-box">
+                    <Button variant="primary" label="Button" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gradient bg • Subtle border • White text
+                  </p>
+                </div>
+
+                <!-- Primary Hover -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Primary - Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <Button variant="primary" label="Button" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Medium border (2px)
+                  </p>
+                </div>
+
+                <!-- Primary Focus -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Primary - Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <Button variant="primary" label="Button" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Thick border (4px) • Focus ring
+                  </p>
+                </div>
+
+                <!-- Secondary Default -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Secondary - Default</p>
+                  <div class="state-box">
+                    <Button variant="secondary" label="Button" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Light bg • Primary border • Primary text
+                  </p>
+                </div>
+
+                <!-- Secondary Hover -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Secondary - Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <Button variant="secondary" label="Button" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Medium border (2px)
+                  </p>
+                </div>
+
+                <!-- Secondary Focus -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Secondary - Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <Button variant="secondary" label="Button" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Thick border (4px) • Focus ring
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens Used</h2>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-8</code>
+                      <span class="body-xs">Padding (all sides)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Borders</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px default border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px hover border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-xl</code>
+                      <span class="body-xs">4px focus border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px corner radius</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors - Primary</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--surface-light-primary-gradient-start</code>
+                      <span class="body-xs">Gradient start</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--surface-light-primary-gradient-end</code>
+                      <span class="body-xs">Gradient end</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Border color</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-on-primary</code>
+                      <span class="body-xs">White text</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Focus border</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors - Secondary</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--surface-light-mid</code>
+                      <span class="body-xs">Background</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Border & text</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Focus border</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>.body-md</code>
+                      <span class="body-xs">Inter 16px/24px (label)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-inter</code>
+                      <span class="body-xs">Inter font family</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-weight-regular</code>
+                      <span class="body-xs">400 weight</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Effects</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--shadow-app-icon</code>
+                      <span class="body-xs">Box shadow (0 1px 1px)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Button Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">CTA Button</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">ButtonCta.astro</code>
+            </div>
+            
+            <!-- Interactive Examples -->
+            <section class="section">
+              <h2 class="heading-xs">Call to Action Button</h2>
+              <p class="body-sm text-faded">Prominent button for primary actions with icon</p>
+              
+              <div class="button-group">
+                <ButtonCta label="CTA Button" href="#" />
+                <ButtonCta label="Get Started" href="#" />
+                <ButtonCta label="Learn More" href="#" />
+              </div>
+            </section>
+
+            <!-- States Visualization -->
+            <section class="section">
+              <h2 class="heading-xs">Component States</h2>
+              <p class="body-sm text-faded">Hover and click to see state changes</p>
+              
+              <div class="states-grid">
+                <!-- Default State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Default</p>
+                  <div class="state-box">
+                    <ButtonCta label="CTA Button" href="#" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Blue bg • Subtle border • Icon + Text
+                  </p>
+                </div>
+
+                <!-- Hover State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <ButtonCta label="CTA Button" href="#" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Purple border (2px)
+                  </p>
+                </div>
+
+                <!-- Focus State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonCta label="CTA Button" href="#" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Thick dark purple border (4px)
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens Used</h2>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-4</code>
+                      <span class="body-xs">Gap between icon and label</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-8</code>
+                      <span class="body-xs">Padding (all sides)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Borders</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px default border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px hover border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-xl</code>
+                      <span class="body-xs">4px focus border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px corner radius</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--attention-click</code>
+                      <span class="body-xs">Blue background (#0060df)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-border-low</code>
+                      <span class="body-xs">Default border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Hover border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Focus border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--surface-light-mid</code>
+                      <span class="body-xs">Icon color</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>.body-md</code>
+                      <span class="body-xs">Inter 16px/24px (label)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-inter</code>
+                      <span class="body-xs">Inter font family</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-weight-regular</code>
+                      <span class="body-xs">400 weight</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Icon</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--icon-md</code>
+                      <span class="body-xs">24px icon size</span>
+                    </div>
+                    <div class="token-item">
+                      <code>icons/categories/</code>
+                      <span class="body-xs">Category icon components</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Effects</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--shadow-app-icon</code>
+                      <span class="body-xs">Box shadow (0 1px 1px)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category Button Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">Category Button</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">ButtonCategory.astro</code>
+            </div>
+            
+            <!-- All Variants Examples -->
+            <section class="section">
+              <h2 class="heading-xs">All Variants</h2>
+              <p class="body-sm text-faded">Four category button styles for different use cases</p>
+              
+              <div class="button-group" style="gap: var(--spacing-16); align-items: center;">
+                <ButtonCategory variant="label" label="Books">
+                  <IconBooksRegular slot="icon" size={14} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="chip" label="Books">
+                  <IconBooksRegular slot="icon" size={14} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="block" label="Books">
+                  <IconBooksRegular slot="icon" size={24} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="inline" label="Books">
+                  <IconBooksRegular slot="icon" size={16} />
+                </ButtonCategory>
+              </div>
+            </section>
+
+            <!-- Interactive Examples with Different Icons -->
+            <section class="section">
+              <h2 class="heading-xs">Interactive Examples</h2>
+              <p class="body-sm text-faded">Try hovering, clicking, and selecting different categories</p>
+              
+              <div class="button-group">
+                <ButtonCategory variant="label" label="Books">
+                  <IconBooksRegular slot="icon" size={14} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="label" label="Photography">
+                  <IconCameraRegular slot="icon" size={14} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="label" label="Music">
+                  <IconMusicNotesRegular slot="icon" size={14} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="label" label="Gaming">
+                  <IconGameControllerRegular slot="icon" size={14} />
+                </ButtonCategory>
+              </div>
+              
+              <div class="button-group" style="margin-top: var(--spacing-16);">
+                <ButtonCategory variant="block" label="Books">
+                  <IconBooksRegular slot="icon" size={24} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="block" label="Photos">
+                  <IconCameraRegular slot="icon" size={24} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="block" label="Music">
+                  <IconMusicNotesRegular slot="icon" size={24} />
+                </ButtonCategory>
+                
+                <ButtonCategory variant="block" label="Games">
+                  <IconGameControllerRegular slot="icon" size={24} />
+                </ButtonCategory>
+              </div>
+            </section>
+            
+            <!-- Label Variant -->
+            <section class="section">
+              <h2 class="heading-xs">Label Variant</h2>
+              <p class="body-sm text-faded">Horizontal layout with icon and text (160px min-width)</p>
+              
+              <div class="states-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                <!-- Label - Default -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Label - Default</p>
+                  <div class="state-box">
+                    <ButtonCategory variant="label" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Transparent • No border
+                  </p>
+                </div>
+
+                <!-- Label - Hover -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Label - Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <ButtonCategory variant="label" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    2px purple bottom border
+                  </p>
+                </div>
+
+                <!-- Label - Focus -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Label - Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonCategory variant="label" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    4px gray border
+                  </p>
+                </div>
+
+                <!-- Label - Active -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Label - Active</p>
+                  <div class="state-box">
+                    <ButtonCategory variant="label" label="Books" active={true} />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gray bg • Shadow
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Chip Variant -->
+            <section class="section">
+              <h2 class="heading-xs">Chip Variant</h2>
+              <p class="body-sm text-faded">Compact horizontal layout (69px fixed width)</p>
+              
+              <div class="states-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                <!-- Chip - Default -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Chip - Default</p>
+                  <div class="state-box">
+                    <ButtonCategory variant="chip" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gradient bg • Subtle border
+                  </p>
+                </div>
+
+                <!-- Chip - Hover -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Chip - Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <ButtonCategory variant="chip" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    2px purple border
+                  </p>
+                </div>
+
+                <!-- Chip - Focus -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Chip - Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonCategory variant="chip" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    4px gray border
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Block Variant -->
+            <section class="section">
+              <h2 class="heading-xs">Block Variant</h2>
+              <p class="body-sm text-faded">Vertical layout with large icon (90x76px)</p>
+              
+              <div class="states-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                <!-- Block - Default -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Block - Default</p>
+                  <div class="state-box">
+                    <ButtonCategory variant="block" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gradient bg • Subtle border
+                  </p>
+                </div>
+
+                <!-- Block - Hover -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Block - Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <ButtonCategory variant="block" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    2px purple border
+                  </p>
+                </div>
+
+                <!-- Block - Focus -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Block - Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonCategory variant="block" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    4px gray border
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Inline Variant -->
+            <section class="section">
+              <h2 class="heading-xs">Inline Variant</h2>
+              <p class="body-sm text-faded">Full width layout with icon on right (280px)</p>
+              
+              <div class="states-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Inline - Default -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Inline - Default</p>
+                  <div class="state-box">
+                    <ButtonCategory variant="inline" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gradient bg • Subtle border
+                  </p>
+                </div>
+
+                <!-- Inline - Hover -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Inline - Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <ButtonCategory variant="inline" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    2px purple border
+                  </p>
+                </div>
+
+                <!-- Inline - Focus -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Inline - Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonCategory variant="inline" label="Books" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    4px gray border
+                  </p>
+                </div>
+
+                <!-- Inline - Active -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Inline - Active</p>
+                  <div class="state-box">
+                    <ButtonCategory variant="inline" label="Books" active={true} />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Gray bg • No border
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens Used</h2>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-4</code>
+                      <span class="body-xs">Gap (chip), padding (vertical)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-8</code>
+                      <span class="body-xs">Gap (label), padding (horizontal)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-12</code>
+                      <span class="body-xs">Padding (inline & block content)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Borders</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px default border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px hover border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-xl</code>
+                      <span class="body-xs">4px active/focus border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px corner radius</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Text, icon, default border, focus border</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Hover border (purple)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--surface-light-high</code>
+                      <span class="body-xs">Active background (label & inline) #e8e8e8</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--surface-light-mid</code>
+                      <span class="body-xs">Hover background (label variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-faded</code>
+                      <span class="body-xs">Focus-visible outline & focus borders</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--card-gradient-light-blue-start</code>
+                      <span class="body-xs">Default background gradient start</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--card-gradient-light-blue-end</code>
+                      <span class="body-xs">Default background gradient end</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>.body-sm</code>
+                      <span class="body-xs">Inter 14px/22px (label variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>.body-xs</code>
+                      <span class="body-xs">Inter 12px/18px (chip & inline)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>.body-xxs</code>
+                      <span class="body-xs">Inter 11px/16px (block variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-inter</code>
+                      <span class="body-xs">Inter font family</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-weight-regular</code>
+                      <span class="body-xs">400 weight</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Icon</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--icon-xs</code>
+                      <span class="body-xs">14px (label & chip variants)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--icon-sm</code>
+                      <span class="body-xs">16px (inline variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--icon-md</code>
+                      <span class="body-xs">24px (block variant)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>icons/categories/</code>
+                      <span class="body-xs">Regular weight category icons</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Effects</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--shadow-app-icon</code>
+                      <span class="body-xs">Box shadow (0 1px 1px)</span>
                     </div>
                   </div>
                 </div>
@@ -294,6 +1191,14 @@ import RadioButton from '../components/UI/RadioButton.astro';
     display: flex;
     gap: var(--spacing-12);
     flex-wrap: wrap;
+  }
+
+  /* Button Groups */
+  .button-group {
+    display: flex;
+    gap: var(--spacing-12);
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   /* Selection Display */
@@ -477,6 +1382,21 @@ import RadioButton from '../components/UI/RadioButton.astro';
     display: flex;
     flex-direction: column;
     gap: var(--spacing-36);
+  }
+
+  /* Component Name */
+  .component-name {
+    margin-bottom: var(--spacing-16);
+  }
+
+  .component-name code {
+    color: var(--violet-60);
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    background: var(--surface-light-mid);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    width: fit-content;
   }
 </style>
 

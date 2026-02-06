@@ -1,0 +1,161 @@
+---
+/**
+ * Button Component
+ * Interactive button following Firefox Apps Archive design system
+ * 
+ * Variants:
+ * - Primary: Gradient background, white text
+ * - Secondary: Light background, primary text
+ * 
+ * States (both variants):
+ * - Default: Thin border, subtle shadow
+ * - Hover: Medium border (2px)
+ * - Focus: Thick border (4px), darker color (keyboard navigation)
+ * 
+ * Props:
+ * @param variant - Button style ('primary' | 'secondary')
+ * @param label - Button text
+ * @param type - Button type ('button' | 'submit' | 'reset')
+ * @param disabled - Whether the button is disabled
+ * @param onclick - Optional click handler attribute
+ */
+
+interface Props {
+  variant?: 'primary' | 'secondary';
+  label?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  onclick?: string;
+}
+
+const { 
+  variant = 'primary',
+  label = 'Button',
+  type = 'button',
+  disabled = false,
+  onclick
+} = Astro.props;
+---
+
+<button 
+  type={type}
+  disabled={disabled}
+  onclick={onclick}
+  class="button"
+  data-variant={variant}
+  data-button
+>
+  <!-- Border overlay - changes on hover/active -->
+  <div aria-hidden="true" class="border-overlay"></div>
+  
+  <!-- Button label -->
+  <span class="button-label body-md">
+    {label}
+  </span>
+</button>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-8);
+    position: relative;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    min-height: 40px;
+    min-width: fit-content;
+  }
+  
+  /* Border overlay */
+  .border-overlay {
+    position: absolute;
+    inset: calc(var(--border-sm) * -0.5);
+    pointer-events: none;
+    border-radius: calc(var(--radius-md) + calc(var(--border-sm) * 0.5));
+    transition: all 0.2s ease;
+  }
+  
+  /* Button label */
+  .button-label {
+    position: relative;
+    z-index: 1;
+    line-height: 24px;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  
+  /* Disabled state */
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* ========================================
+     SECONDARY VARIANT (Light background)
+     ======================================== */
+  
+  /* Secondary - Default state */
+  .button[data-variant="secondary"] {
+    background: var(--surface-light-mid);
+  }
+  
+  .button[data-variant="secondary"] .border-overlay {
+    border: var(--border-sm) solid var(--on-surface-light-primary);
+    box-shadow: var(--shadow-app-icon);
+  }
+  
+  .button[data-variant="secondary"] .button-label {
+    color: var(--on-surface-light-primary);
+  }
+  
+  /* Secondary - Hover state */
+  .button[data-variant="secondary"]:hover:not(:disabled) .border-overlay {
+    border-width: var(--border-lg);
+    inset: calc(var(--border-lg) * -0.5);
+    border-radius: calc(var(--radius-md) + calc(var(--border-lg) * 0.5));
+  }
+  
+  /* Secondary - Focus state (keyboard only) */
+  .button[data-variant="secondary"]:focus-visible:not(:disabled) .border-overlay {
+    border-width: var(--border-xl);
+    border-color: var(--on-surface-light-faded);
+    inset: calc(var(--border-xl) * -0.5);
+    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 0.5));
+  }
+  
+  /* ========================================
+     PRIMARY VARIANT (Gradient background)
+     ======================================== */
+  
+  /* Primary - Default state */
+  .button[data-variant="primary"] {
+    background: linear-gradient(180deg, var(--surface-light-primary-gradient-start) 0%, var(--surface-light-primary-gradient-end) 100%);
+  }
+  
+  .button[data-variant="primary"] .border-overlay {
+    border: var(--border-sm) solid var(--on-surface-light-primary);
+    box-shadow: var(--shadow-app-icon);
+  }
+  
+  .button[data-variant="primary"] .button-label {
+    color: var(--on-surface-light-on-primary);
+  }
+  
+  /* Primary - Hover state */
+  .button[data-variant="primary"]:hover:not(:disabled) .border-overlay {
+    border-width: var(--border-xl);
+    inset: calc(var(--border-lg) * -1);
+    border-radius: calc(var(--radius-md) + calc(var(--border-lg) * 0.5));
+  }
+  
+  /* Primary - Focus state (keyboard only) */
+  .button[data-variant="primary"]:focus-visible:not(:disabled) .border-overlay {
+    border-width: var(--border-xl);
+    border-color: var(--on-surface-light-faded);
+    inset: calc(var(--border-xl) * -0.5);
+    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 0.5));
+  }
+</style>
