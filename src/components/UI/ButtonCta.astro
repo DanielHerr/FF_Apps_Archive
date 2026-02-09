@@ -143,4 +143,9 @@ const hasIcon = Astro.slots.has('icon');
     inset: calc(var(--border-xl) * -1);
     border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 1));
   }
+
+  /* Active state - when button is pressed */
+  .cta-button:active {
+    transform: scale(0.98);
+  }
 </style>
