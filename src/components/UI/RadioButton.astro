@@ -83,7 +83,7 @@ const {
   </div>
   
   <!-- Label Text -->
-  <div class="label-text body-sm">
+  <div class="label-text">
     {label}
   </div>
 </label>
@@ -142,6 +142,7 @@ const {
     cursor: pointer;
     transition: all 0.2s ease;
     line-height: 1;
+    outline: none;
   }
   
   /* Border overlay */
@@ -201,6 +202,10 @@ const {
   
   /* Label text */
   .label-text {
+    font-family: var(--font-inter);
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
     color: var(--on-surface-light-primary);
     transition: color 0.2s ease;
   }

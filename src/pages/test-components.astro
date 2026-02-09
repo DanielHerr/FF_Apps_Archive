@@ -11,6 +11,8 @@ import ButtonCta from '../components/UI/ButtonCta.astro';
 import ButtonCategory from '../components/UI/ButtonCategory.astro';
 import ButtonAppTypes from '../components/UI/ButtonAppTypes.astro';
 import CardAppTypes from '../components/UI/CardAppTypes.astro';
+import ButtonColorTheme from '../components/UI/ButtonColorTheme.astro';
+import BadgeNotification from '../components/UI/BadgeNotification.astro';
 import IconBooksRegular from '../components/icons/categories/IconBooksRegular.astro';
 import IconCameraRegular from '../components/icons/categories/IconCameraRegular.astro';
 import IconMusicNotesRegular from '../components/icons/categories/IconMusicNotesRegular.astro';
@@ -23,7 +25,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
 ---
 
 <Layout title="Component Library - Design System">
-  <div class="test-page">
+  <div class="component-library">
     <main class="container">
       <!-- Page Header -->
       <header class="page-header">
@@ -1590,7 +1592,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                       <span class="body-xs">Red variant - title, description, icon, border</span>
                     </div>
                     <div class="token-item">
-                      <code>--on-surface-light-faded</code>
+                      <code>--on-surface-light-regular</code>
                       <span class="body-xs">Focus border color</span>
                     </div>
                   </div>
@@ -1700,12 +1702,432 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
           </div>
         </div>
       </section>
+
+      <!-- Button Color Theme Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">Color Theme Button</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">ButtonColorTheme.astro</code>
+            </div>
+            
+            <!-- Interactive Examples - With Text -->
+            <section class="section">
+              <h2 class="heading-xs">With Text Label</h2>
+              <p class="body-sm text-faded">Toggle button with state label (Auto/Light/Dark)</p>
+              
+              <div class="button-group">
+                <ButtonColorTheme state="auto" variant="with-text" />
+                <ButtonColorTheme state="light" variant="with-text" />
+                <ButtonColorTheme state="dark" variant="with-text" />
+              </div>
+            </section>
+
+            <!-- Interactive Examples - Icon Only -->
+            <section class="section">
+              <h2 class="heading-xs">Icon Only</h2>
+              <p class="body-sm text-faded">Compact version without text label</p>
+              
+              <div class="button-group">
+                <ButtonColorTheme state="auto" variant="icon-only" />
+                <ButtonColorTheme state="light" variant="icon-only" />
+                <ButtonColorTheme state="dark" variant="icon-only" />
+              </div>
+            </section>
+
+            <!-- States Visualization -->
+            <section class="section">
+              <h2 class="heading-xs">Color Theme States (3 states × with label)</h2>
+              <p class="body-sm text-faded">Three theme options with text labels</p>
+              
+              <div class="states-grid">
+                <!-- Auto State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Auto</p>
+                  <div class="state-box">
+                    <ButtonColorTheme state="auto" variant="with-text" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Lightning icon • Center (cx=27)
+                  </p>
+                </div>
+
+                <!-- Light State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Light</p>
+                  <div class="state-box">
+                    <ButtonColorTheme state="light" variant="with-text" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Lightbulb icon • Right (cx=43)
+                  </p>
+                </div>
+
+                <!-- Dark State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Dark</p>
+                  <div class="state-box">
+                    <ButtonColorTheme state="dark" variant="with-text" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Lightbulb filament • Left (cx=11)
+                  </p>
+                </div>
+
+                <!-- Icon Only Variant -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Icon Only (no label)</p>
+                  <div class="state-box">
+                    <ButtonColorTheme state="auto" variant="icon-only" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Compact variant • No text label
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Button States Visualization -->
+            <section class="section">
+              <h2 class="heading-xs">Button Interaction States (3 states on Auto)</h2>
+              <p class="body-sm text-faded">Default, hover, and focus states on Auto theme</p>
+              
+              <div class="states-grid">
+                <!-- Default State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Default</p>
+                  <div class="state-box">
+                    <ButtonColorTheme state="auto" variant="with-text" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Border: 0.5px • Opacity: 1
+                  </p>
+                </div>
+
+                <!-- Hover State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Hover</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">↑ Hover me</p>
+                    <ButtonColorTheme state="auto" variant="with-text" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Border: Primary color (solid)
+                  </p>
+                </div>
+
+                <!-- Focus State -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Focus</p>
+                  <div class="state-box">
+                    <p class="body-xxs text-faded hint">Tab</p>
+                    <ButtonColorTheme state="auto" variant="with-text" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Border: 2px thick • Inset: -2px
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens Used</h2>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Spacing</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--spacing-2</code>
+                      <span class="body-xs">Gap between label and toggle</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--spacing-4</code>
+                      <span class="body-xs">Button padding</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Borders & Radius</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--border-sm</code>
+                      <span class="body-xs">0.5px (default border, stroke-width)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--border-lg</code>
+                      <span class="body-xs">2px (focus outer border)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-md</code>
+                      <span class="body-xs">4px (button border radius)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--radius-lg</code>
+                      <span class="body-xs">12px (toggle track radius)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors (Semantic)</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--surface-light-mid</code>
+                      <span class="body-xs">Track & indicator background</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-regular</code>
+                      <span class="body-xs">Text & icon color</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-border-high</code>
+                      <span class="body-xs">Default border (0.2 opacity)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--on-surface-light-primary</code>
+                      <span class="body-xs">Hover border (solid, no opacity)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Typography</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--body-xxs-size</code>
+                      <span class="body-xs">10px label text size</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--body-xxs-line</code>
+                      <span class="body-xs">16px line-height</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--body-xxs-sc-spacing</code>
+                      <span class="body-xs">0.4px letter-spacing (small caps)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-inter</code>
+                      <span class="body-xs">Inter font family</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--font-weight-regular</code>
+                      <span class="body-xs">400 weight</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Icons & Effects</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--icon-xxxxs</code>
+                      <span class="body-xs">8px icon size</span>
+                    </div>
+                    <div class="token-item">
+                      <code>SVG Drop Shadow Filter</code>
+                      <span class="body-xs">dy=1, blur=0.5, opacity=0.1</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Icons (Fixed per state)</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>IconLightning.astro</code>
+                      <span class="body-xs">Auto state (cx=27, center)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>IconLightbulb.astro</code>
+                      <span class="body-xs">Light state (cx=43, right)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>IconLightbulbFilament.astro</code>
+                      <span class="body-xs">Dark state (cx=11, left)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>icons/labels/</code>
+                      <span class="body-xs">Icon components directory</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">State Interactions</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>Default</code>
+                      <span class="body-xs">stroke-opacity: 0.2</span>
+                    </div>
+                    <div class="token-item">
+                      <code>Hover</code>
+                      <span class="body-xs">stroke: primary, opacity: 1</span>
+                    </div>
+                    <div class="token-item">
+                      <code>Focus</code>
+                      <span class="body-xs">2px outer border, opacity: 0.7</span>
+                    </div>
+                    <div class="token-item">
+                      <code>Active (click)</code>
+                      <span class="body-xs">transform: scale(0.98)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Badge Notification Component Section -->
+      <section class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+          <h2 class="heading-md">Notification Badge</h2>
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <div class="section-content" data-section-content aria-hidden="true">
+          <div class="content-inner">
+            <!-- Component Name -->
+            <div class="component-name">
+              <code class="body-sm">BadgeNotification.astro</code>
+            </div>
+            
+            <!-- Interactive Examples -->
+            <section class="section">
+              <h2 class="heading-xs">Notification Badge Variants</h2>
+              <p class="body-sm text-faded">Small circular indicator for warnings and errors</p>
+              
+              <div class="badge-examples">
+                <div class="badge-example-item">
+                  <BadgeNotification variant="warning" />
+                  <p class="body-xs">Warning</p>
+                </div>
+                <div class="badge-example-item">
+                  <BadgeNotification variant="error" />
+                  <p class="body-xs">Error</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- States Visualization -->
+            <section class="section">
+              <h2 class="heading-xs">Component Variants</h2>
+              <p class="body-sm text-faded">Two status indicator colors</p>
+              
+              <div class="states-grid">
+                <!-- Warning Badge -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Warning</p>
+                  <div class="state-box">
+                    <BadgeNotification variant="warning" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Yellow (#FFEA80) • --icon-xxxxs
+                  </p>
+                </div>
+
+                <!-- Error Badge -->
+                <div class="state-demo">
+                  <p class="body-xs text-faded">Error</p>
+                  <div class="state-box">
+                    <BadgeNotification variant="error" />
+                  </div>
+                  <p class="body-xxs text-faded state-description">
+                    Red (#FF6A75) • --icon-xxxxs
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Design Tokens Reference -->
+            <section class="section tokens-section">
+              <h2 class="heading-xs">Design Tokens Used</h2>
+              
+              <div class="tokens-grid">
+                <div class="token-category">
+                  <h3 class="body-sm">Size</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--icon-xxxxs</code>
+                      <span class="body-xs">Fixed dimensions (8px)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>r="4"</code>
+                      <span class="body-xs">Circle radius (4px)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Colors (Semantic)</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>--attention-light-warning</code>
+                      <span class="body-xs">Warning badge fill (#FFEA80)</span>
+                    </div>
+                    <div class="token-item">
+                      <code>--attention-error</code>
+                      <span class="body-xs">Error badge fill (#FF6A75)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Usage</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>Overlay indicator</code>
+                      <span class="body-xs">Place on icons or avatars</span>
+                    </div>
+                    <div class="token-item">
+                      <code>No interaction</code>
+                      <span class="body-xs">Purely visual indicator</span>
+                    </div>
+                    <div class="token-item">
+                      <code>No states</code>
+                      <span class="body-xs">No hover/focus/active</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="token-category">
+                  <h3 class="body-sm">Component Props</h3>
+                  <div class="token-list">
+                    <div class="token-item">
+                      <code>variant</code>
+                      <span class="body-xs">'warning' | 'error'</span>
+                    </div>
+                    <div class="token-item">
+                      <code>default: 'warning'</code>
+                      <span class="body-xs">Yellow badge by default</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 </Layout>
 
 <style>
-  .test-page {
+  .component-library {
     background: var(--surface-light-low, #ffffff);
     min-height: 100vh;
     padding: var(--spacing-24);
@@ -1819,6 +2241,26 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
     margin-bottom: var(--spacing-4);
   }
 
+  /* Badge Examples */
+  .badge-examples {
+    display: flex;
+    gap: var(--spacing-24);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .badge-example-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    align-items: center;
+    padding: var(--spacing-16);
+    background: var(--surface-light-low);
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-md);
+    min-width: 120px;
+  }
+
   /* Tokens Section */
   .tokens-section {
     padding: var(--spacing-24);
@@ -1871,7 +2313,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
 
   /* Responsive */
   @media (max-width: 768px) {
-    .test-page {
+    .component-library {
       padding: var(--spacing-16);
     }
 

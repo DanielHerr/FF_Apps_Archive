@@ -49,7 +49,7 @@ const {
   <div aria-hidden="true" class="border-overlay"></div>
   
   <!-- Button label -->
-  <span class="button-label body-md">
+  <span class="button-label">
     {label}
   </span>
 </button>
@@ -67,6 +67,7 @@ const {
     border: none;
     min-height: 40px;
     min-width: fit-content;
+    outline: none;
   }
   
   /* Border overlay */
@@ -82,7 +83,10 @@ const {
   .button-label {
     position: relative;
     z-index: 1;
-    line-height: 24px;
+    font-family: var(--font-inter);
+    font-size: var(--body-md-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-md-line);
     white-space: nowrap;
     transition: color 0.2s ease;
   }
@@ -122,8 +126,8 @@ const {
   .button[data-variant="secondary"]:focus-visible:not(:disabled) .border-overlay {
     border-width: var(--border-xl);
     border-color: var(--on-surface-light-faded);
-    inset: calc(var(--border-xl) * -0.5);
-    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 0.5));
+    inset: calc(var(--border-xl) * -1);
+    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 1));
   }
   
   /* ========================================
@@ -146,8 +150,9 @@ const {
   
   /* Primary - Hover state */
   .button[data-variant="primary"]:hover:not(:disabled) .border-overlay {
-    border-width: var(--border-xl);
-    inset: calc(var(--border-lg) * -1);
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-faded);
+    inset: calc(var(--border-lg) * -0.5);
     border-radius: calc(var(--radius-md) + calc(var(--border-lg) * 0.5));
   }
   
@@ -155,7 +160,7 @@ const {
   .button[data-variant="primary"]:focus-visible:not(:disabled) .border-overlay {
     border-width: var(--border-xl);
     border-color: var(--on-surface-light-faded);
-    inset: calc(var(--border-xl) * -0.5);
-    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 0.5));
+    inset: calc(var(--border-xl) * -1);
+    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 1));
   }
 </style>

@@ -1,0 +1,289 @@
+---
+/**
+ * ButtonColorTheme Component
+ * Interactive toggle button for color theme selection (Auto/Light/Dark)
+ * 
+ * Props:
+ * - state: 'auto' | 'light' | 'dark' (default: 'auto')
+ * - variant: 'with-text' | 'icon-only' (default: 'with-text')
+ * 
+ * Each state has a FIXED icon that cannot be changed:
+ * - Auto: Lightning icon (center position)
+ * - Light: Lightbulb icon (right position)
+ * - Dark: Lightbulb Filament icon (left position)
+ * 
+ * Interaction:
+ * - Clicking cycles through: auto → light → dark → auto
+ * - Icon stays centered in the toggle
+ * - Circle slides to different positions based on state
+ */
+
+import IconLightning from '../icons/labels/IconLightning.astro';
+import IconLightbulb from '../icons/labels/IconLightbulb.astro';
+import IconLightbulbFilament from '../icons/labels/IconLightbulbFilament.astro';
+
+interface Props {
+  state?: 'auto' | 'light' | 'dark';
+  variant?: 'with-text' | 'icon-only';
+}
+
+const { state = 'auto', variant = 'with-text' } = Astro.props;
+
+// Generate unique ID for this instance
+const uniqueId = `toggle-${Math.random().toString(36).substr(2, 9)}`;
+
+// Determine label based on state
+const labels = {
+  auto: 'AUTO',
+  light: 'LIGHT',
+  dark: 'DARK'
+};
+
+// Determine circle position based on state
+const getCirclePosition = (currentState: string) => {
+  switch (currentState) {
+    case 'light':
+      return 43; // Right position
+    case 'dark':
+      return 11; // Left position
+    case 'auto':
+    default:
+      return 27; // Center position
+  }
+};
+
+const circleX = getCirclePosition(state);
+---
+
+<button class={`button-color-theme ${variant}`} data-state={state} data-toggle-id={uniqueId} aria-label={`Color theme: ${labels[state]}`}>
+  {variant === 'with-text' && (
+    <span class="label">{labels[state]}</span>
+  )}
+  
+  <div class="toggle-container">
+    <!-- Toggle track and indicator SVG -->
+    <svg class="toggle-svg" fill="none" viewBox="0 0 54 24">
+      <!-- Track background (rounded rectangle) -->
+      <rect 
+        x="0" 
+        y="0" 
+        width="54" 
+        height="24" 
+        rx="12" 
+        ry="12" 
+        fill="var(--surface-light-mid)"
+      />
+      
+      <!-- Sliding indicator circles -->
+      <circle 
+        class="indicator-circle"
+        cx={circleX}
+        cy="12" 
+        r="8" 
+        fill="var(--surface-light-mid)" 
+      />
+      <circle 
+        class="indicator-circle-stroke"
+        cx={circleX}
+        cy="12" 
+        r="7.8" 
+        stroke="var(--on-surface-light-border-high)" 
+        stroke-width="var(--border-sm)"
+        fill="none"
+      />
+    </svg>
+    
+    <!-- Icon overlay - stays fixed in the center of toggle -->
+    <div class="icon-overlay">
+      <span class="icon-auto" data-visible={state === 'auto'}><IconLightning /></span>
+      <span class="icon-light" data-visible={state === 'light'}><IconLightbulb /></span>
+      <span class="icon-dark" data-visible={state === 'dark'}><IconLightbulbFilament /></span>
+    </div>
+    <!-- Border overlay - changes on hover/focus -->
+    <div aria-hidden="true" class="border-overlay"></div>
+  </div>
+</button>
+
+<script>
+  // Add click handler to all color theme buttons
+  document.querySelectorAll('.button-color-theme').forEach((button) => {
+    button.addEventListener('click', function(this: HTMLButtonElement) {
+      const currentState = this.getAttribute('data-state') || 'auto';
+      const toggleId = this.getAttribute('data-toggle-id') || '';
+      
+      // Cycle through states: auto → light → dark → auto
+      const nextState = 
+        currentState === 'auto' ? 'light' :
+        currentState === 'light' ? 'dark' : 'auto';
+      
+      // Update button state
+      this.setAttribute('data-state', nextState);
+      
+      // Update label text (if with-text variant)
+      const label = this.querySelector('.label');
+      if (label) {
+        const labels = { auto: 'AUTO', light: 'LIGHT', dark: 'DARK' };
+        label.textContent = labels[nextState as 'auto' | 'light' | 'dark'];
+      }
+      
+      // Update aria-label
+      const labels = { auto: 'AUTO', light: 'LIGHT', dark: 'DARK' };
+      this.setAttribute('aria-label', `Color theme: ${labels[nextState as 'auto' | 'light' | 'dark']}`);
+      
+      // Update circle position (only for this instance's circles)
+      const positions = { auto: 27, light: 43, dark: 11 };
+      const newX = positions[nextState as 'auto' | 'light' | 'dark'];
+      const circles = this.querySelectorAll('.indicator-circle, .indicator-circle-stroke');
+      circles.forEach((circle) => {
+        circle.setAttribute('cx', newX.toString());
+      });
+      
+      // Update filter position (only for this instance's filter)
+      const filter = this.querySelector(`filter[id="filter1_d_${toggleId}"]`);
+      if (filter) {
+        filter.setAttribute('x', (newX - 9).toString());
+      }
+      
+      // Update icon visibility
+      const iconOverlay = this.querySelector('.icon-overlay');
+      if (iconOverlay) {
+        iconOverlay.querySelectorAll('[data-visible]').forEach((icon) => {
+          icon.setAttribute('data-visible', 'false');
+        });
+        const activeIcon = iconOverlay.querySelector(`.icon-${nextState}`);
+        if (activeIcon) {
+          activeIcon.setAttribute('data-visible', 'true');
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .button-color-theme {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-4);
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+    overflow: visible;
+  }
+
+  /* Label typography */
+  .label {
+    font-family: var(--font-inter);
+    font-size: var(--body-xxs-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-xxs-line);
+    letter-spacing: var(--body-xxs-sc-spacing);
+    color: var(--on-surface-light-regular);
+    text-transform: uppercase;
+  }
+
+  /* Toggle container - holds both SVG track and icon overlay */
+  .toggle-container {
+    height: 24px;
+    width: 54px;
+    position: relative;
+  }
+
+  .toggle-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border: var(--border-sm) solid var(--on-surface-light-border-high);
+    border-radius: calc(var(--radius-lg) + 0.5px);
+    pointer-events: none;
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* Icon overlay - stays fixed in center of toggle */
+  .icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--icon-xxxxs);
+    height: var(--icon-xxxxs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: var(--on-surface-light-regular);
+  }
+
+  /* Icon wrapper spans */
+  .icon-overlay span {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-xxxxs);
+    height: var(--icon-xxxxs);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Make icons 8px using icon size token */
+  .icon-overlay span :global(svg) {
+    width: var(--icon-xxxxs);
+    height: var(--icon-xxxxs);
+  }
+
+  .icon-overlay span[data-visible="true"] {
+    opacity: 1;
+  }
+
+  /* Icon-only variant */
+  .button-color-theme.icon-only {
+    padding: var(--spacing-4);
+  }
+
+  /* Ensure smooth transitions for circles */
+  .indicator-circle,
+  .indicator-circle-stroke {
+    transition: cx 0.3s ease;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  }
+
+  /* Hover State */
+  .button-color-theme:not(:focus-visible) .toggle-container:hover .border-overlay {
+    border-color: var(--on-surface-light-primary);
+  }
+
+  .button-color-theme:not(:focus-visible) .toggle-container:hover .indicator-circle-stroke {
+    stroke: var(--on-surface-light-primary);
+  }
+
+  /* Focus State (keyboard only) */
+  .button-color-theme:focus-visible .border-overlay {
+    inset: -2px;
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-regular);
+    border-radius: calc(var(--radius-lg) + 1px);
+  }
+
+  .button-color-theme:focus-visible .indicator-circle-stroke {
+    stroke: var(--on-surface-light-regular);
+  }
+
+  /* Active state - when button is pressed */
+  .button-color-theme:active {
+    transform: scale(0.98);
+  }
+</style>

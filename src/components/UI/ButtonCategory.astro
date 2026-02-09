@@ -68,7 +68,7 @@ const hasIcon = Astro.slots.has('icon');
         )}
         
         <!-- Label -->
-        <span class={variant === 'label' ? 'body-sm' : 'body-xs'}>
+        <span class="text-label">
           {label}
         </span>
       </>
@@ -77,7 +77,7 @@ const hasIcon = Astro.slots.has('icon');
     {variant === 'chip' && (
       <>
         <!-- Label -->
-        <span class="body-xs">
+        <span class="text-label">
           {label}
         </span>
         
@@ -104,7 +104,7 @@ const hasIcon = Astro.slots.has('icon');
         )}
         
         <!-- Label -->
-        <span class="body-xxs">
+        <span class="text-label">
           {label}
         </span>
       </>
@@ -113,7 +113,7 @@ const hasIcon = Astro.slots.has('icon');
     {variant === 'inline' && (
       <>
         <!-- Label -->
-        <span class="body-xs">
+        <span class="text-label">
           {label}
         </span>
         
@@ -145,6 +145,7 @@ const hasIcon = Astro.slots.has('icon');
     box-shadow: var(--shadow-app-icon);
     border-radius: var(--radius-md);
     background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
+    outline: none;
   }
 
   /* Content wrapper */
@@ -153,6 +154,31 @@ const hasIcon = Astro.slots.has('icon');
     z-index: 1;
     display: flex;
     color: var(--on-surface-light-faded);
+  }
+
+  /* Text labels - default typography */
+  .text-label {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Variant-specific typography */
+  .variant-label .text-label {
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+  }
+
+  .variant-chip .text-label,
+  .variant-inline .text-label {
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+  }
+
+  .variant-block .text-label {
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    white-space: nowrap;
+    margin-top: -1px;
   }
 
   /* Icon wrapper */
@@ -217,7 +243,8 @@ const hasIcon = Astro.slots.has('icon');
   }
 
   .variant-label .border-overlay {
-    display: none;
+    border: none;
+    box-shadow: none;
   }
 
   /* Label - Selected State */
@@ -232,7 +259,7 @@ const hasIcon = Astro.slots.has('icon');
     box-shadow: var(--shadow-app-icon);
   }
 
-  .variant-label:hover:not(.active) .border-overlay {
+  .variant-label:hover:not(.active):not(:focus-visible) .border-overlay {
     display: block;
     inset: 0 0 -1px 0;
     border: none;
@@ -241,16 +268,11 @@ const hasIcon = Astro.slots.has('icon');
   }
 
   /* Label - Focus State (keyboard only) */
-  .variant-label:focus-visible {
-    background: var(--surface-light-mid);
-    box-shadow: var(--shadow-app-icon);
-  }
-
   .variant-label:focus-visible .border-overlay {
     display: block;
-    inset: -2px;
+    inset: -4px;
     border: var(--border-xl) solid var(--on-surface-light-faded);
-    border-radius: calc(var(--radius-md) + 2px);
+    border-radius: calc(var(--radius-md) + 4px);
   }
 
   /* ========================================
@@ -279,9 +301,9 @@ const hasIcon = Astro.slots.has('icon');
 
   /* Chip - Focus State (keyboard only) */
   .variant-chip:focus-visible .border-overlay {
-    inset: -2px;
+    inset: -4px;
     border: var(--border-xl) solid var(--on-surface-light-faded);
-    border-radius: calc(var(--radius-md) + 2px);
+    border-radius: calc(var(--radius-md) + 4px);
   }
 
   /* ========================================
@@ -305,11 +327,6 @@ const hasIcon = Astro.slots.has('icon');
     text-align: center;
   }
 
-  .variant-block .body-xxs {
-    white-space: nowrap;
-    margin-top: -1px;
-  }
-
   /* Block - Hover State */
   .variant-block:hover .border-overlay {
     inset: -1px;
@@ -319,9 +336,9 @@ const hasIcon = Astro.slots.has('icon');
 
   /* Block - Focus State (keyboard only) */
   .variant-block:focus-visible .border-overlay {
-    inset: -2px;
+    inset: -4px;
     border: var(--border-xl) solid var(--on-surface-light-faded);
-    border-radius: calc(var(--radius-md) + 2px);
+    border-radius: calc(var(--radius-md) + 4px);
   }
 
   /* ========================================
@@ -350,27 +367,21 @@ const hasIcon = Astro.slots.has('icon');
   }
 
   .variant-inline.active .border-overlay {
-    display: none;
+    border: none;
   }
 
   /* Inline - Hover State */
-  .variant-inline:hover:not(.active) .border-overlay {
+  .variant-inline:hover:not(.active):not(:focus-visible) .border-overlay {
     inset: -1px;
     border: var(--border-lg) solid var(--on-surface-light-primary);
     border-radius: calc(var(--radius-md) + 1px);
   }
 
   /* Inline - Focus State (keyboard only) */
-  .variant-inline:focus-visible:not(.active) .border-overlay {
-    inset: -2px;
+  .variant-inline:focus-visible .border-overlay {
+    inset: -4px;
     border: var(--border-xl) solid var(--on-surface-light-faded);
-    border-radius: calc(var(--radius-md) + 2px);
-  }
-
-  /* Focus outline (keyboard navigation) */
-  .category-button:focus-visible {
-    outline: 2px solid var(--on-surface-light-faded);
-    outline-offset: 2px;
+    border-radius: calc(var(--radius-md) + 4px);
   }
 </style>
 

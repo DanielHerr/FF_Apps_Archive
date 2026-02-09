@@ -75,7 +75,7 @@ const hasIcon = Astro.slots.has('icon');
         </div>
         
         <!-- Label -->
-        <span class="body-sm">
+        <span class="text-label">
           {label}
         </span>
       </>
@@ -84,7 +84,7 @@ const hasIcon = Astro.slots.has('icon');
     {variant === 'inline' && (
       <>
         <!-- Label -->
-        <span class="body-sm">
+        <span class="text-label">
           {label}
         </span>
         
@@ -116,6 +116,7 @@ const hasIcon = Astro.slots.has('icon');
     cursor: pointer;
     transition: all 0.2s ease;
     background: transparent;
+    outline: none;
   }
 
   /* Content wrapper */
@@ -124,6 +125,14 @@ const hasIcon = Astro.slots.has('icon');
     z-index: 1;
     display: flex;
     color: var(--on-surface-light-regular);
+  }
+
+  /* Text labels */
+  .text-label {
+    font-family: var(--font-inter);
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
   }
 
   /* Icon background circle */
@@ -184,7 +193,7 @@ const hasIcon = Astro.slots.has('icon');
   }
 
   .variant-label .border-overlay {
-    display: none;
+    display: block;
   }
 
   /* Label - Active State */
@@ -199,17 +208,14 @@ const hasIcon = Astro.slots.has('icon');
     border-radius: var(--radius-md);
   }
 
-  .variant-label:hover:not(.active) .border-overlay {
-    display: block;
+  .variant-label:hover:not(.active):not(:focus-visible) .border-overlay {
     inset: 0 0 -1px 0;
-    border: none;
     border-bottom: var(--border-lg) solid var(--on-surface-light-primary);
     border-radius: var(--radius-md);
   }
 
   /* Label - Focus State (keyboard only) */
   .variant-label:focus-visible .border-overlay {
-    display: block;
     inset: -4px;
     border: var(--border-xl) solid var(--on-surface-light-faded);
     border-radius: calc(var(--radius-md) + 2px);
@@ -244,17 +250,15 @@ const hasIcon = Astro.slots.has('icon');
     border-radius: var(--radius-md);
   }
 
+  .variant-inline.active .border-overlay {
+    border: none;
+  }
+
   /* Inline - Focus State (keyboard only) */
   .variant-inline:focus-visible .border-overlay {
     inset: -4px;
     border: var(--border-xl) solid var(--on-surface-light-faded);
     border-radius: calc(var(--radius-md) + 2px);
-  }
-
-  /* Focus outline (keyboard navigation) */
-  .app-types-button:focus-visible {
-    outline: 2px solid var(--on-surface-light-faded);
-    outline-offset: 2px;
   }
 </style>
 

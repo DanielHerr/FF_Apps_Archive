@@ -24,7 +24,7 @@
  * <CardAppTypes 
  *   title="Extension" 
  *   description="Browser extensions"
- *   iconColor="--on-surface-any-blue"
+ *   iconColor="--on-surface-any-purple"
  *   gradientStart="--card-gradient-light-purple-start"
  *   gradientEnd="--card-gradient-light-purple-end"
  * >
@@ -69,7 +69,7 @@ const hasIcon = Astro.slots.has('icon');
   <div class="card-content">
     <!-- Header -->
     <div class="card-header">
-      <h3 class="heading-xxxs card-title">
+      <h3 class="card-title">
         {title}
       </h3>
       
@@ -107,6 +107,7 @@ const hasIcon = Astro.slots.has('icon');
     transition: all 0.2s ease;
     border-radius: var(--radius-md);
     background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
+    outline: none;
   }
 
   /* Content wrapper */
@@ -129,6 +130,10 @@ const hasIcon = Astro.slots.has('icon');
 
   /* Title */
   .card-title {
+    font-family: var(--font-metropolis);
+    font-size: var(--heading-xxxs-size);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--heading-xxxs-line);
     color: var(--card-icon-color);
   }
 
@@ -156,6 +161,10 @@ const hasIcon = Astro.slots.has('icon');
 
   /* Description */
   .card-description {
+    font-family: var(--font-inter);
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
     color: var(--card-icon-color);
     width: 100%;
   }
@@ -182,13 +191,7 @@ const hasIcon = Astro.slots.has('icon');
   .app-types-card:focus-visible .border-overlay {
     inset: -2px;
     border-width: var(--border-lg);
-    border-color: var(--on-surface-light-faded);
+    border-color: var(--on-surface-light-regular);
     border-radius: calc(var(--radius-md) + 1px);
-  }
-
-  /* Focus outline (keyboard navigation) */
-  .app-types-card:focus-visible {
-    outline: 2px solid var(--on-surface-light-faded);
-    outline-offset: 2px;
   }
 </style>

@@ -50,7 +50,7 @@ const hasIcon = Astro.slots.has('icon');
     )}
     
     <!-- Button Label -->
-    <span class="button-label body-md">
+    <span class="button-label">
       {label}
     </span>
   </div>
@@ -72,6 +72,7 @@ const hasIcon = Astro.slots.has('icon');
     transition: all 0.2s ease;
     min-height: 40px;
     min-width: fit-content;
+    outline: none;
   }
   
   /* Button content container */
@@ -105,14 +106,18 @@ const hasIcon = Astro.slots.has('icon');
   /* Button label */
   .button-label {
     position: relative;
+    font-family: var(--font-inter);
+    font-size: var(--body-md-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-md-line);
     color: white;
-    line-height: 24px;
     white-space: nowrap;
   }
   
   /* Border overlay */
   .border-overlay {
     position: absolute;
+    display: block;
     inset: calc(var(--border-sm) * -0.5);
     pointer-events: none;
     border-radius: calc(var(--radius-md) + calc(var(--border-sm) * 0.5));
@@ -123,6 +128,7 @@ const hasIcon = Astro.slots.has('icon');
   
   /* Hover state */
   .cta-button:hover .border-overlay {
+    display: block;
     border-width: var(--border-lg);
     border-color: var(--on-surface-light-primary);
     inset: calc(var(--border-lg) * -0.5);
@@ -131,9 +137,10 @@ const hasIcon = Astro.slots.has('icon');
   
   /* Focus state (keyboard only) */
   .cta-button:focus-visible .border-overlay {
+    display: block;
     border-width: var(--border-xl);
     border-color: var(--on-surface-light-faded);
     inset: calc(var(--border-xl) * -1);
-    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 0.5));
+    border-radius: calc(var(--radius-md) + calc(var(--border-xl) * 1));
   }
 </style>
