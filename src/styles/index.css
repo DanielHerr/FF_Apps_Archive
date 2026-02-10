@@ -14,11 +14,11 @@
 /* 4. Global base styles */
 html {
   font-family: var(--body-sm-size);
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--surface-light-low);
+  color: var(--on-surface-light-regular);
 }
 
 a {
-  color: var(--color-link);
+  color: var(--on-surface-light-primary);
   text-decoration: none;
 }

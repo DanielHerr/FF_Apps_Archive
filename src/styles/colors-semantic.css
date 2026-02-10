@@ -12,6 +12,7 @@
  */
 
 :root {
+  /* Default to light mode tokens */
   /* ========================================
      SURFACE / LIGHT MODE
      ======================================== */
@@ -39,8 +40,8 @@
   /* Primary Surface Colors */
   --surface-dark-primary-gradient-start: var(--violet-50);
   --surface-dark-primary-gradient-end: var(--violet-60);
-  --surface-dark-primary: var(--violet-80);
-  --surface-dark-secondary: var(--pink-80);
+  --surface-dark-primary-low: var(--violet-80);
+  --surface-dark-secondary-low: var(--pink-80);
   
   /* Neutral Surface Levels */
   --surface-dark-high: var(--ink-30);
@@ -205,14 +206,139 @@
   --gradient-end: var(--red-50);
 }
 
+/* ========================================
+   SYSTEM PREFERENCE / AUTO THEME
+   Respects prefers-color-scheme for users in "Auto" mode
+   ======================================== */
+
+/* Light mode - explicit fallback (already default but defensive) */
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Light tokens are already set as defaults in :root above */
+    /* This block is intentionally empty but declares explicit support */
+  }
+}
+
+/* Set color-scheme for light mode */
+@supports (color-scheme: light dark) {
+  @media (prefers-color-scheme: light) {
+    html {
+      color-scheme: light;
+    }
+  }
+}
+
+/* Dark mode via system preference - applies when user is in "Auto" */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Override surface tokens for dark mode */
+    --surface-light-primary-gradient-start: var(--surface-dark-primary-gradient-start);
+    --surface-light-primary-gradient-end: var(--surface-dark-primary-gradient-end);
+    --surface-light-primary-low: var(--surface-dark-primary-low);
+    --surface-light-secondary-low: var(--surface-dark-secondary-low);
+    --surface-light-high: var(--surface-dark-high);
+    --surface-light-mid: var(--surface-dark-mid);
+    --surface-light-low: var(--surface-dark-low);
+    --surface-light-background-start: var(--surface-dark-background-start);
+    --surface-light-background-end: var(--surface-dark-background-end);
+    
+    /* Override text/border tokens for dark mode */
+    --on-surface-light-regular: var(--on-surface-dark-regular);
+    --on-surface-light-faded: var(--on-surface-dark-faded);
+    --on-surface-light-border-low: var(--on-surface-dark-border-low);
+    --on-surface-light-border-high: var(--on-surface-dark-border-high);
+    --on-surface-light-primary: var(--on-surface-dark-primary);
+    --on-surface-light-on-primary: var(--on-surface-dark-on-primary);
+    --on-surface-light-scrollbar: var(--on-surface-dark-scrollbar);
+    
+    /* Override app icon background tokens for dark mode */
+    --app-icon-bg-light-blue: var(--app-icon-bg-dark-blue);
+    --app-icon-bg-light-yellow: var(--app-icon-bg-dark-yellow);
+    --app-icon-bg-light-purple: var(--app-icon-bg-dark-purple);
+    --app-icon-bg-light-orange: var(--app-icon-bg-dark-orange);
+    --app-icon-bg-light-red: var(--app-icon-bg-dark-red);
+    
+    /* Override card gradient tokens for dark mode */
+    --card-gradient-light-blue-start: var(--card-gradient-dark-blue-start);
+    --card-gradient-light-blue-end: var(--card-gradient-dark-blue-end);
+    --card-gradient-light-yellow-start: var(--card-gradient-dark-yellow-start);
+    --card-gradient-light-yellow-end: var(--card-gradient-dark-yellow-end);
+    --card-gradient-light-purple-start: var(--card-gradient-dark-purple-start);
+    --card-gradient-light-purple-end: var(--card-gradient-dark-purple-end);
+    --card-gradient-light-orange-start: var(--card-gradient-dark-orange-start);
+    --card-gradient-light-orange-end: var(--card-gradient-dark-orange-end);
+    --card-gradient-light-red-start: var(--card-gradient-dark-red-start);
+    --card-gradient-light-red-end: var(--card-gradient-dark-red-end);
+  }
+}
+
+/* Set color-scheme for dark mode */
+@supports (color-scheme: light dark) {
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+  }
+}
+
+/* ========================================
+   EXPLICIT THEME SELECTION
+   Overrides system preference when user manually selects Light or Dark
+   ======================================== */
+
+/* Light theme - forces light tokens even when system prefers dark */
+/* NOTE: Must use primitives here to break circular reference with dark override */
+html:has(#light_theme:checked) {
+  /* Reset surface tokens to light mode */
+  --surface-light-primary-gradient-start: var(--violet-60);
+  --surface-light-primary-gradient-end: var(--violet-70);
+  --surface-light-primary-low: var(--violet-05);
+  --surface-light-secondary-low: var(--pink-10);
+  --surface-light-high: var(--neutral-gray-light);
+  --surface-light-mid: var(--neutral-white-strong);
+  --surface-light-low: var(--neutral-white);
+  --surface-light-background-start: var(--neutral-white);
+  --surface-light-background-end: var(--neutral-white-strong);
+  
+  /* Reset text/border tokens to light mode */
+  --on-surface-light-regular: var(--ink-05);
+  --on-surface-light-faded: var(--ink-05-70);
+  --on-surface-light-border-low: var(--ink-05-20);
+  --on-surface-light-border-high: var(--ink-05-20);
+  --on-surface-light-primary: var(--violet-70);
+  --on-surface-light-on-primary: var(--neutral-white-strong);
+  --on-surface-light-scrollbar: var(--black-30);
+  
+  /* Reset app icon background tokens to light mode */
+  --app-icon-bg-light-blue: var(--blue-05);
+  --app-icon-bg-light-yellow: var(--yellow-05);
+  --app-icon-bg-light-purple: var(--purple-05);
+  --app-icon-bg-light-orange: var(--orange-05);
+  --app-icon-bg-light-red: var(--red-05);
+  
+  /* Reset card gradient tokens to light mode */
+  --card-gradient-light-blue-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-blue-end: rgb(from var(--blue-50) r g b / 0.03);
+  --card-gradient-light-yellow-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-yellow-end: rgb(from var(--yellow-70) r g b / 0.03);
+  --card-gradient-light-purple-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-purple-end: rgb(from var(--purple-50) r g b / 0.03);
+  --card-gradient-light-orange-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-orange-end: rgb(from var(--orange-60) r g b / 0.03);
+  --card-gradient-light-red-start: rgb(from var(--neutral-white) r g b / 0.03);
+  --card-gradient-light-red-end: rgb(from var(--red-50) r g b / 0.03);
+  
+  color-scheme: light;
+}
+
 /* Dark theme variable overrides - applied to body which is after the theme toggles */
 #dark_theme:checked ~ body,
 #dark_theme:checked ~ * body {
   /* Override surface tokens for dark mode */
   --surface-light-primary-gradient-start: var(--surface-dark-primary-gradient-start);
   --surface-light-primary-gradient-end: var(--surface-dark-primary-gradient-end);
-  --surface-light-primary-low: var(--violet-80);
-  --surface-light-secondary-low: var(--pink-80);
+  --surface-light-primary-low: var(--surface-dark-primary-low);
+  --surface-light-secondary-low: var(--surface-dark-secondary-low);
   --surface-light-high: var(--surface-dark-high);
   --surface-light-mid: var(--surface-dark-mid);
   --surface-light-low: var(--surface-dark-low);
@@ -226,7 +352,7 @@
   --on-surface-light-border-high: var(--on-surface-dark-border-high);
   --on-surface-light-primary: var(--on-surface-dark-primary);
   --on-surface-light-on-primary: var(--on-surface-dark-on-primary);
-  --on-surface-light-scrollbar: var(--white-30);
+  --on-surface-light-scrollbar: var(--on-surface-dark-scrollbar);
   
   /* Override app icon background tokens for dark mode */
   --app-icon-bg-light-blue: var(--app-icon-bg-dark-blue);
@@ -236,25 +362,32 @@
   --app-icon-bg-light-red: var(--app-icon-bg-dark-red);
   
   /* Override card gradient tokens for dark mode */
-  --card-gradient-light-blue-start: rgb(from var(--blue-50) r g b / 0.15);
-  --card-gradient-light-blue-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-yellow-start: rgb(from var(--yellow-70) r g b / 0.15);
-  --card-gradient-light-yellow-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-purple-start: rgb(from var(--purple-50) r g b / 0.15);
-  --card-gradient-light-purple-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-orange-start: rgb(from var(--orange-60) r g b / 0.15);
-  --card-gradient-light-orange-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-red-start: rgb(from var(--red-50) r g b / 0.15);
-  --card-gradient-light-red-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+  --card-gradient-light-blue-start: var(--card-gradient-dark-blue-start);
+  --card-gradient-light-blue-end: var(--card-gradient-dark-blue-end);
+  --card-gradient-light-yellow-start: var(--card-gradient-dark-yellow-start);
+  --card-gradient-light-yellow-end: var(--card-gradient-dark-yellow-end);
+  --card-gradient-light-purple-start: var(--card-gradient-dark-purple-start);
+  --card-gradient-light-purple-end: var(--card-gradient-dark-purple-end);
+  --card-gradient-light-orange-start: var(--card-gradient-dark-orange-start);
+  --card-gradient-light-orange-end: var(--card-gradient-dark-orange-end);
+  --card-gradient-light-red-start: var(--card-gradient-dark-red-start);
+  --card-gradient-light-red-end: var(--card-gradient-dark-red-end);
 }
 
-/* Fallback: also apply to html element */
+/* Set color-scheme for explicit dark theme selection */
+@supports (color-scheme: light dark) {
+  #dark_theme:checked ~ html {
+    color-scheme: dark;
+  }
+}
+
+/* Fallback for modern browsers with :has() support (takes precedence over @media) */
 html:has(#dark_theme:checked) {
   /* Override surface tokens for dark mode */
   --surface-light-primary-gradient-start: var(--surface-dark-primary-gradient-start);
   --surface-light-primary-gradient-end: var(--surface-dark-primary-gradient-end);
-  --surface-light-primary-low: var(--violet-80);
-  --surface-light-secondary-low: var(--pink-80);
+  --surface-light-primary-low: var(--surface-dark-primary-low);
+  --surface-light-secondary-low: var(--surface-dark-secondary-low);
   --surface-light-high: var(--surface-dark-high);
   --surface-light-mid: var(--surface-dark-mid);
   --surface-light-low: var(--surface-dark-low);
@@ -268,7 +401,7 @@ html:has(#dark_theme:checked) {
   --on-surface-light-border-high: var(--on-surface-dark-border-high);
   --on-surface-light-primary: var(--on-surface-dark-primary);
   --on-surface-light-on-primary: var(--on-surface-dark-on-primary);
-  --on-surface-light-scrollbar: var(--white-30);
+  --on-surface-light-scrollbar: var(--on-surface-dark-scrollbar);
   
   /* Override app icon background tokens for dark mode */
   --app-icon-bg-light-blue: var(--app-icon-bg-dark-blue);
@@ -278,14 +411,16 @@ html:has(#dark_theme:checked) {
   --app-icon-bg-light-red: var(--app-icon-bg-dark-red);
   
   /* Override card gradient tokens for dark mode */
-  --card-gradient-light-blue-start: rgb(from var(--blue-50) r g b / 0.15);
-  --card-gradient-light-blue-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-yellow-start: rgb(from var(--yellow-70) r g b / 0.15);
-  --card-gradient-light-yellow-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-purple-start: rgb(from var(--purple-50) r g b / 0.15);
-  --card-gradient-light-purple-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-orange-start: rgb(from var(--orange-60) r g b / 0.15);
-  --card-gradient-light-orange-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
-  --card-gradient-light-red-start: rgb(from var(--red-50) r g b / 0.15);
-  --card-gradient-light-red-end: rgb(from var(--gray-marketing-90) r g b / 0.15);
+  --card-gradient-light-blue-start: var(--card-gradient-dark-blue-start);
+  --card-gradient-light-blue-end: var(--card-gradient-dark-blue-end);
+  --card-gradient-light-yellow-start: var(--card-gradient-dark-yellow-start);
+  --card-gradient-light-yellow-end: var(--card-gradient-dark-yellow-end);
+  --card-gradient-light-purple-start: var(--card-gradient-dark-purple-start);
+  --card-gradient-light-purple-end: var(--card-gradient-dark-purple-end);
+  --card-gradient-light-orange-start: var(--card-gradient-dark-orange-start);
+  --card-gradient-light-orange-end: var(--card-gradient-dark-orange-end);
+  --card-gradient-light-red-start: var(--card-gradient-dark-red-start);
+  --card-gradient-light-red-end: var(--card-gradient-dark-red-end);
+  
+  color-scheme: dark;
 }
