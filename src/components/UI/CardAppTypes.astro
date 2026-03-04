@@ -12,6 +12,7 @@
  * @param appType - The type of app card to display (default: 'All')
  *                  Options: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead'
  * @param onclick - Optional click handler
+ * @param href - When provided, renders as anchor instead of button
  * 
  * Each appType includes predefined:
  * - Title text
@@ -22,19 +23,25 @@
  * 
  * Usage:
  * <CardAppTypes appType="Packaged" onclick="handleClick()" />
- * <CardAppTypes appType="Privileged" />
+ * <CardAppTypes appType="Privileged" href="/privileged/1" />
  * <CardAppTypes /> <!-- defaults to "All" -->
  */
 
 interface Props {
   appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead';
   onclick?: string;
+  /** When provided, renders as anchor instead of button */
+  href?: string;
 }
 
 const { 
   appType = 'All',
-  onclick
+  onclick,
+  href
 } = Astro.props;
+
+// Determine element type
+const Element = href ? 'a' : 'button';
 
 // Import all app type icons
 import IconShapes from '../icons/app-types/IconShapes.astro';
@@ -91,7 +98,8 @@ const config = typeConfigs[appType];
 const IconComponent = config.icon;
 ---
 
-<button 
+<Element 
+  href={href}
   onclick={onclick}
   class="app-types-card"
   data-app-types-card
@@ -122,7 +130,7 @@ const IconComponent = config.icon;
   
   <!-- Border overlay - changes on hover/focus -->
   <div aria-hidden="true" class="border-overlay"></div>
-</button>
+</Element>
 
 <style>
   /* Base Card */
@@ -136,6 +144,7 @@ const IconComponent = config.icon;
     border: none;
     cursor: pointer;
     transition: all 0.2s ease;
+    text-decoration: none;
     border-radius: var(--radius-md);
     background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
     outline: none;

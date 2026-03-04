@@ -1,26 +1,30 @@
 ---
 /**
  * Header Component
- * Main navigation header with four responsive variants
+ * Main navigation header with responsive variants
  * 
  * Variants:
  * - 'mobile': Mobile header with brand, search button, menu button, and close button
  * - 'mobile-search': Mobile search mode with back button and full-width search bar
  * - 'desktop': Desktop header with brand and search bar (centered, max-width 968px)
  * - 'desktop-home': Desktop home header with brand and full-width search bar (max-width 1260px)
+ * - 'responsive': Auto-switches between mobile (<769px) and desktop (>=769px)
+ * - 'responsive-home': Auto-switches between mobile (<769px) and desktop-home (>=769px)
  * 
  * Props:
- * @param variant - Header layout variant (default: 'mobile')
+ * @param variant - Header layout variant (default: 'responsive')
  * @param homeUrl - URL for brand link (default: '/')
  * @param searchDisabled - Whether search bar is disabled (default: false)
  * @param searchButtonDisabled - Whether search button is disabled in mobile variant (default: false)
  * @param showCloseButton - Whether to show close button in mobile variant (default: false)
  * 
  * Usage:
+ * <Header variant="responsive" homeUrl="/" /> <!-- Auto mobile/desktop switching -->
  * <Header variant="mobile" homeUrl="/" searchDisabled={false} searchButtonDisabled={false} showCloseButton={false} />
  * <Header variant="mobile-search" homeUrl="/" searchDisabled={false} />
  * <Header variant="desktop" homeUrl="/" searchDisabled={false} />
  * <Header variant="desktop-home" homeUrl="/" searchDisabled={false} />
+ * <Header variant="responsive-home" homeUrl="/" /> <!-- Auto mobile/desktop-home switching for home page -->
  * 
  * Design System Notes:
  * - Background: --surface-light-mid (neutral white strong)
@@ -28,6 +32,7 @@
  * - Brand text: --on-surface-light-regular
  * - Spacing: 16px padding, 8px/12px gaps
  * - Typography: Public Sans for brand, Inter for search input
+ * - Breakpoint: 769px (--breakpoint-tablet-md)
  */
 
 import ButtonSearch from './ButtonSearch.astro';
@@ -38,27 +43,44 @@ import InputSearchBar from './InputSearchBar.astro';
 import IconRocketColorGradient from '../icons/brand/IconRocketColorGradient.astro';
 
 export interface Props {
-  variant?: 'mobile' | 'mobile-search' | 'desktop' | 'desktop-home';
+  variant?: 'mobile' | 'mobile-search' | 'desktop' | 'desktop-home' | 'responsive' | 'responsive-home';
   homeUrl?: string;
   searchDisabled?: boolean;
   searchButtonDisabled?: boolean;
   showCloseButton?: boolean;
+  /** Show search toggle buttons (popover + checkbox fallback) */
+  showSearchToggle?: boolean;
+  /** Show search unavailable toggle + dialog */
+  showSearchUnavailable?: boolean;
+  /** Checkbox ID for no-JS search toggle fallback */
+  searchToggleCheckboxId?: string;
+  /** Checkbox ID for no-JS search unavailable fallback */
+  searchUnavailableCheckboxId?: string;
 }
 
 const { 
-  variant = 'mobile',
+  variant = 'responsive',
   homeUrl = '/',
   searchDisabled = false,
   searchButtonDisabled = false,
-  showCloseButton = false
+  showCloseButton = false,
+  showSearchToggle = false,
+  showSearchUnavailable = false,
+  searchToggleCheckboxId = 'search_toggle_input',
+  searchUnavailableCheckboxId = 'search_unavailable_input',
 } = Astro.props;
+
+// For responsive variants, render both mobile and desktop
+const showMobile = variant === 'mobile' || variant === 'responsive' || variant === 'responsive-home';
+const showDesktop = variant === 'desktop' || variant === 'responsive';
+const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-home';
 ---
 
 <header class="header" data-variant={variant}>
   <!-- Border Overlay -->
   <div class="border-overlay" aria-hidden="true"></div>
   
-  {variant === 'mobile' && (
+  {showMobile && (
     <!-- Mobile Variant: Brand + Action Buttons -->
     <div class="header-content mobile-content">
       <!-- Brand -->
@@ -72,10 +94,12 @@ const {
         </div>
       </a>
       
+      
+      
       <!-- Action Buttons -->
       <div class="action-buttons">
-        <ButtonSearch disabled={searchButtonDisabled} />
-        <ButtonMenu />
+        {!showSearchToggle && !showSearchUnavailable && <ButtonSearch disabled={searchButtonDisabled} />}
+        <ButtonMenu popovertarget="nav" />
         {showCloseButton && <ButtonClose />}
       </div>
     </div>
@@ -86,12 +110,21 @@ const {
     <div class="header-content mobile-search-content">
       <ButtonBack />
       <div class="search-bar-wrapper">
-        <InputSearchBar disabled={searchDisabled} />
+        <!-- Search Form with Popover + Toggle Buttons -->
+        <InputSearchBar 
+          asForm
+          popover
+          showToggle={showSearchToggle}
+          showUnavailable={showSearchUnavailable}
+          toggleCheckboxId={searchToggleCheckboxId}
+          unavailableCheckboxId={searchUnavailableCheckboxId}
+          disabled={searchDisabled}
+        />
       </div>
     </div>
   )}
   
-  {variant === 'desktop' && (
+  {showDesktop && (
     <!-- Desktop Variant: Centered with Brand + Search Bar -->
     <div class="header-content-wrapper desktop-wrapper">
       <div class="header-content desktop-content">
@@ -108,13 +141,13 @@ const {
         
         <!-- Search Bar -->
         <div class="search-bar-container">
-          <InputSearchBar disabled={searchDisabled} />
+          <InputSearchBar asForm disabled={searchDisabled} />
         </div>
       </div>
     </div>
   )}
   
-  {variant === 'desktop-home' && (
+  {showDesktopHome && (
     <!-- Desktop Home Variant: Brand + Full Search Bar -->
     <div class="header-content desktop-home-content">
       <!-- Brand -->
@@ -130,7 +163,7 @@ const {
       
       <!-- Search Bar -->
       <div class="search-bar-container">
-        <InputSearchBar disabled={searchDisabled} />
+        <InputSearchBar asForm disabled={searchDisabled} />
       </div>
     </div>
   )}
@@ -144,8 +177,9 @@ const {
     position: relative;
     width: 100%;
     height: auto;
-    background: var(--surface-light-mid);
+    background: var(--surface-light-low);
     padding: var(--spacing-16);
+    transition: all 0.2s ease;
   }
 
   /* Border overlay (bottom border) */
@@ -179,7 +213,7 @@ const {
   .brand-link {
     text-decoration: none;
     cursor: pointer;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     transition: all 0.2s ease;
   }
 
@@ -324,5 +358,51 @@ const {
     width: 100%;
     max-width: 968px;
     margin: 0 auto;
+  }
+
+  /* ========================================
+     RESPONSIVE VARIANT
+     Breakpoint: 769px (--breakpoint-tablet-md)
+     ======================================== */
+  
+  /* When responsive: hide desktop on mobile, hide mobile on desktop */
+  .header[data-variant="responsive"] .mobile-content {
+    display: flex;
+  }
+  
+  .header[data-variant="responsive"] .desktop-wrapper {
+    display: none;
+  }
+  
+  @media (min-width: 769px) {
+    .header[data-variant="responsive"] .mobile-content {
+      display: none;
+    }
+    
+    .header[data-variant="responsive"] .desktop-wrapper {
+      display: flex;
+    }
+  }
+
+  /* ========================================
+     RESPONSIVE-HOME VARIANT
+     Switches between mobile and desktop-home
+     ======================================== */
+  .header[data-variant="responsive-home"] .mobile-content {
+    display: flex;
+  }
+  
+  .header[data-variant="responsive-home"] .desktop-home-content {
+    display: none;
+  }
+  
+  @media (min-width: 769px) {
+    .header[data-variant="responsive-home"] .mobile-content {
+      display: none;
+    }
+    
+    .header[data-variant="responsive-home"] .desktop-home-content {
+      display: flex;
+    }
   }
 </style>

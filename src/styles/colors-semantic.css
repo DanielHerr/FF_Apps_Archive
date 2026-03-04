@@ -49,8 +49,8 @@
   --surface-dark-low: var(--gray-marketing-80);
   
   /* Background Gradient */
-  --surface-dark-background-start: var(--gray-marketing-90);
-  --surface-dark-background-end: var(--gray-marketing-80);
+  --surface-dark-background-start: var(--gray-marketing-80);
+  --surface-dark-background-end: var(--gray-marketing-90);
 
 
   /* ========================================

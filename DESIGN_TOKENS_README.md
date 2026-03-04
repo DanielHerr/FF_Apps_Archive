@@ -1,16 +1,35 @@
 # Design Tokens Documentation
 
-Complete design token system for your Astro web application. All tokens are defined as CSS custom properties for easy theming and consistency.
+Complete design token system extracted from Figma Design Library for the Firefox Apps Archive project. All tokens are defined as CSS custom properties for consistency, theming, and easy maintenance.
 
 ## 📁 File Structure
 
 ```
 /src/styles/
-├── tokens.css    # Complete design token system
-├── fonts.css     # Font imports and declarations
-├── theme.css     # Tailwind integration and base styles
-└── tailwind.css  # Tailwind configuration
+├── colors-primitives.css  # Base color palette (raw values)
+├── colors-semantic.css    # Semantic color assignments (light/dark modes)
+├── design-tokens.css      # Typography, spacing, sizing, borders, effects
+├── fonts.css              # Font imports (Inter, Public Sans, Metropolis)
+├── index.css              # Main CSS entry point
+├── scrollbar.css          # Custom scrollbar styles
 ```
+
+## 🎯 Design System Principles
+
+**Font Families:**
+- **Metropolis** - Headings (Bold, weights: 400, 700)
+- **Inter** - Body text (Regular, weights: 400, 700)
+- **Public Sans** - Brand text (weights: 400, 700)
+
+**Color Usage:**
+- Use **semantic tokens** in components (e.g., `--surface-light-mid`, `--on-surface-light-regular`)
+- Avoid **primitive tokens** unless creating new semantic tokens (e.g., `--violet-50`, `--green-40`)
+
+**Typography Requirements:**
+- Always explicitly set: `font-family`, `font-weight`, `font-size`, `line-height`
+- Use design token variables for all typography properties
+
+---
 
 ## 🚀 Quick Start
 
@@ -19,9 +38,7 @@ Complete design token system for your Astro web application. All tokens are defi
 ```astro
 ---
 // src/layouts/Layout.astro
-import '../styles/fonts.css';
-import '../styles/tokens.css';
-import '../styles/theme.css';
+import '../styles/index.css'; // Imports all styles including fonts and tokens
 ---
 
 <html lang="en">
@@ -36,429 +53,508 @@ import '../styles/theme.css';
 </html>
 ```
 
-### Import in Astro Components
+### Basic Component Usage
 
 ```astro
 ---
 // Component.astro
 ---
 
+<div class="card">
+  <h2 class="card-title">Card Title</h2>
+  <p class="card-body">Card body text</p>
+</div>
+
 <style>
-  .button {
-    background: var(--primary);
-    color: var(--primary-foreground);
-    padding: var(--spacing-button-y) var(--spacing-button-x);
-    border-radius: var(--radius-button);
-    font-family: var(--font-family-primary);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
+  .card {
+    background: var(--surface-light-mid);
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-32);
+    gap: var(--spacing-12);
+  }
+  
+  .card-title {
+    /* Typography - Metropolis Bold, 20px/24px */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxs-size);
+    line-height: var(--heading-xxs-line);
+    color: var(--on-surface-light-regular);
+  }
+  
+  .card-body {
+    /* Typography - Inter Regular, 14px/22px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+    color: var(--on-surface-light-regular);
   }
 </style>
 ```
 
-## 🎨 Token Categories
+---
 
-### 1. Colors
+## 🎨 Color Tokens
 
-#### Base Colors
+### Semantic Colors (Light Mode)
+
+Use these semantic tokens in your components:
+
+#### Surface Backgrounds
 ```css
---color-purple-900 to --color-purple-500
---color-neutral-50 to --color-neutral-900
---color-accent-green
---color-accent-red
+--surface-light-mid: #ffffff          /* White - primary surface */
+--surface-light-low: #fafafa          /* Off-white - secondary surface */
+--surface-light-high: #e8e8e8         /* Light gray - elevated surface */
+--surface-light-primary-low: #e6dfff  /* Violet tint - primary accent surface */
+--surface-light-secondary-low: #ffb4db /* Pink tint - secondary accent surface */
 ```
 
-#### Semantic Colors (Light Mode)
+#### Surface Gradients
 ```css
---background, --foreground
---card, --card-foreground
---primary, --primary-foreground
---secondary, --secondary-foreground
---accent, --accent-foreground
---destructive, --destructive-foreground
---success, --success-foreground
---warning, --warning-foreground
---border, --ring
+--surface-light-primary-gradient-start: #7543e3  /* Violet 60 */
+--surface-light-primary-gradient-end: #582acb    /* Violet 70 */
+--surface-light-background-start: #fafafa        /* White to */
+--surface-light-background-end: #ffffff          /* Strong white */
 ```
 
-#### Dark Mode
-Apply via `.dark` class or `[data-theme="dark"]` attribute.
-
-### 2. Typography
-
-#### Font Families
+#### Text & Borders (On Surface)
 ```css
---font-family-primary: 'Inter'        /* Body text */
---font-family-heading: 'Metropolis'   /* Headings */
---font-family-brand: 'Public Sans'    /* Brand text */
---font-family-mono                    /* Code */
+--on-surface-light-regular: #393473      /* Ink 05 - primary text */
+--on-surface-light-faded: rgba(57, 52, 115, 0.7)  /* 70% opacity - secondary text */
+--on-surface-light-border-low: rgba(57, 52, 115, 0.2)  /* 20% opacity - borders */
+--on-surface-light-primary: #582acb      /* Violet 70 - primary accent */
+--on-surface-light-on-primary: #ffffff   /* White - text on primary */
+--on-surface-light-scrollbar: rgba(22, 22, 22, 0.3)  /* Black 30% - scrollbar */
 ```
 
-#### Font Sizes
+#### Attention Colors (Context-Independent)
 ```css
---text-xs: 10px      /* Caption */
---text-sm: 12px      /* Labels */
---text-base: 16px    /* Body */
---text-lg: 18px
---text-xl: 20px
---text-2xl: 24px
---text-3xl: 32px     /* Large headings */
+--attention-click: #0060df      /* Blue - interactive elements */
+--attention-success: #3fe1b0    /* Green - success states */
+--attention-error: #ff6a75      /* Red - error states */
+--attention-light-warning: #ffea80  /* Yellow - warning (light mode) */
 ```
 
-#### Semantic Text Sizes
+#### Category Colors (Any Mode)
 ```css
---text-caption, --text-label, --text-body
---text-h1, --text-h2, --text-h3, --text-h4
---text-brand-primary, --text-brand-secondary
+--on-surface-any-blue: #0060e0
+--on-surface-any-yellow: #c45a28
+--on-surface-any-purple: #b933e1
+--on-surface-any-orange: #e25821
+--on-surface-any-red: #ff505f
 ```
 
-#### Font Weights
+### Dark Mode
+
+Dark mode is automatically applied via `@media (prefers-color-scheme: dark)` or explicit theme selection with radio inputs `#light_theme` and `#dark_theme`.
+
+The semantic tokens (e.g., `--surface-light-mid`) are automatically remapped to dark equivalents:
+- `--surface-light-mid` → `#1f2033` (Gray Marketing 90)
+- `--on-surface-light-regular` → `#ededf0` (Gray Marketing 20)
+- etc.
+
+---
+
+## 📝 Typography Tokens
+
+### Font Families
 ```css
---font-weight-normal: 400
---font-weight-medium: 500
+--font-metropolis: 'Metropolis', sans-serif    /* Headings */
+--font-inter: 'Inter', sans-serif              /* Body text */
+--font-public-sans: 'Public Sans', sans-serif  /* Brand text */
+```
+
+### Font Weights
+```css
+--font-weight-regular: 400
 --font-weight-bold: 700
 ```
 
-#### Line Heights
+### Heading Sizes (Metropolis Bold)
+
+| Token | Size | Line Height | Usage |
+|-------|------|-------------|-------|
+| `--heading-billboard-size` | 128px | auto | Hero/billboard text |
+| `--heading-xxl-size/line` | 64px / 72px | Extra large headings |
+| `--heading-xl-size/line` | 56px / 64px | Large headings |
+| `--heading-lg-size/line` | 48px / 56px | Section headings |
+| `--heading-md-size/line` | 40px / 44px | Page headings |
+| `--heading-sm-size/line` | 32px / 36px | Sub-headings |
+| `--heading-xs-size/line` | 24px / 28px | Card headings |
+| `--heading-xxs-size/line` | 20px / 24px | Small headings |
+| `--heading-xxxs-size/line` | 16px / 20px | Tiny headings (H2) |
+
+### Body Sizes (Inter Regular)
+
+| Token | Size | Line Height | Usage |
+|-------|------|-------------|-------|
+| `--body-lg-size/line` | 18px / 36px | Large body text |
+| `--body-md-size/line` | 16px / 24px | Standard body text |
+| `--body-sm-size/line` | 14px / 22px | Small body text |
+| `--body-xs-size/line` | 12px / 18px | Caption text |
+| `--body-xxs-size/line` | 10px / 16px | Micro text |
+
+### Brand Sizes (Public Sans)
+
+| Token | Size | Line Height | Weight | Usage |
+|-------|------|-------------|--------|-------|
+| `--brand-bold-md-size/line` | 24px / 20px | 700 | Brand headlines |
+| `--brand-regular-md-size/line` | 20px / 20px | 400 | Brand subtext |
+| `--brand-bold-sm-size/line` | 18px / 20px | 700 | Small brand text |
+| `--brand-regular-sm-size/line` | 16px / 20px | 400 | Brand body |
+
+---
+
+## 📏 Spacing & Sizing Tokens
+
+### Spacing Scale (8-point system)
 ```css
---line-height-tight: 1.17
---line-height-snug: 1.25
---line-height-normal: 1.5
---line-height-relaxed: 1.6
+--spacing-2: 2px
+--spacing-4: 4px
+--spacing-8: 8px
+--spacing-12: 12px
+--spacing-16: 16px
+--spacing-20: 20px
+--spacing-24: 24px
+--spacing-28: 28px
+--spacing-32: 32px
+--spacing-36: 36px
+--spacing-40: 40px
+--spacing-44: 44px
+--spacing-48: 48px
+--spacing-52: 52px
+--spacing-56: 56px
+--spacing-60: 60px
+--spacing-64: 64px
 ```
 
-### 3. Spacing & Sizing
-
-#### Spacing Scale
+### Icon Sizes
 ```css
---spacing-1: 4px
---spacing-2: 8px
---spacing-3: 12px
---spacing-4: 16px
---spacing-6: 24px
---spacing-8: 32px
---spacing-12: 48px
-/* ... up to --spacing-96: 384px */
+--icon-xxxxs: 8px    /* Tiny badge */
+--icon-xxxs: 10px    /* Small badge */
+--icon-xxs: 12px     /* Badge/indicator */
+--icon-xs: 14px      /* Small icon */
+--icon-sm: 16px      /* Standard icon */
+--icon-md: 24px      /* Medium icon */
+--icon-lg: 32px      /* Large icon */
 ```
 
-#### Semantic Spacing
+### App Icon Sizes
 ```css
---spacing-xs, --spacing-sm, --spacing-md
---spacing-lg, --spacing-xl, --spacing-2xl
+--app-icon-sm: 52px
+--app-icon-md: 92px
+--app-icon-lg: 138px
 ```
 
-#### Component Spacing
+### Layout Sizes
 ```css
---spacing-section, --spacing-container
---spacing-card, --spacing-button-x
+--layout-min-width: 320px
+--layout-max-width: 1000px
+--content-width: 400px
+--full-width: 1268px
 ```
 
-#### Layout Sizes
+### Breakpoints
 ```css
---max-width-md: 448px
---max-width-lg: 512px
---max-width-xl: 576px
---max-width-container: 1440px
+--breakpoint-mobile-lg: 481px
+--breakpoint-tablet-md: 769px
+--breakpoint-desktop-sm: 1200px
 ```
 
-#### Element Sizes
+---
+
+## 🔲 Border & Radius Tokens
+
+### Border Thickness
 ```css
---size-icon-sm: 16px
---size-icon-md: 20px
---size-avatar-md: 40px
---size-button-md: 40px
+--border-sm: 0.5px
+--border-md: 1px
+--border-lg: 2px
+--border-xl: 4px
 ```
 
-### 4. Border Radius
+### Border Radius
 ```css
---radius-sm: 2px
---radius-md: 4px        /* Base */
---radius-lg: 6px
---radius-xl: 8px
---radius-full: 9999px   /* Circular */
+--radius-md: 4px     /* Base radius */
+--radius-lg: 12px    /* Large radius */
+--radius: 4px        /* Legacy alias */
 ```
 
-#### Component Radius
+---
+
+## ✨ Effects Tokens
+
+### Shadows
 ```css
---radius-button, --radius-input
---radius-card, --radius-modal
+--shadow-app-icon: 0px 1px 1px 0px rgba(0, 0, 0, 0.1)
 ```
 
-### 5. Shadows & Elevation
+### Blur
 ```css
---shadow-xs, --shadow-sm, --shadow-md
---shadow-lg, --shadow-xl, --shadow-2xl
-
---elevation-sm, --elevation-md, --elevation-lg
-
---shadow-card, --shadow-dropdown, --shadow-modal
---shadow-focus
+--blur-app-header: 25px
 ```
 
-### 6. Gradients & Effects
+### Opacity
 ```css
---gradient-primary
---gradient-accent
---gradient-cool
---gradient-overlay-light
---gradient-overlay-dark
+--opacity-app-image: 0.15
+--opacity-contrast: 1
 ```
 
-#### Transitions
-```css
---transition-fast: 150ms
---transition-base: 200ms
---transition-slow: 300ms
-```
-
-#### Backdrop Effects
-```css
---backdrop-blur-sm, --backdrop-blur-md
-```
-
-### 7. Chart Colors
-```css
---chart-1 through --chart-8
---chart-blue, --chart-green, --chart-red
-```
+---
 
 ## 💡 Usage Examples
 
-### Button Component
+### Button with Hover States
+
 ```astro
 <button class="btn-primary">Click me</button>
 
 <style>
   .btn-primary {
-    background: var(--color-purple-700);
-    color: var(--primary-foreground);
-    padding: var(--spacing-3) var(--spacing-6);
-    border-radius: var(--radius-button);
-    font-family: var(--font-family-primary);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    transition: var(--transition-base);
-    box-shadow: var(--shadow-button);
+    /* Layout */
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    padding: var(--spacing-12) var(--spacing-24);
+    
+    /* Typography - Inter Regular, 16px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-md-size);
+    line-height: var(--body-md-line);
+    
+    /* Colors */
+    background: linear-gradient(
+      135deg,
+      var(--surface-light-primary-gradient-start),
+      var(--surface-light-primary-gradient-end)
+    );
+    color: var(--on-surface-light-on-primary);
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-md);
+    
+    /* Interaction */
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
   
-  .btn-primary:hover {
-    box-shadow: var(--shadow-button-hover);
+  .btn-primary:hover:not(:focus-visible) {
     opacity: 0.9;
+  }
+  
+  .btn-primary:focus-visible {
+    outline: var(--border-lg) solid var(--attention-click);
+    outline-offset: 2px;
+  }
+  
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 </style>
 ```
 
-### Card Component
+### Card with Border Overlay Pattern
+
 ```astro
 <div class="card">
-  <h3>Card Title</h3>
-  <p>Card content goes here</p>
+  <div class="border-overlay" aria-hidden="true"></div>
+  <h3 class="card-title">Card Title</h3>
+  <p class="card-description">Card description text goes here.</p>
 </div>
 
 <style>
   .card {
-    background: var(--card);
-    color: var(--card-foreground);
-    padding: var(--spacing-card);
-    border-radius: var(--radius-card);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-card);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    padding: var(--spacing-32);
+    background: var(--surface-light-mid);
+    border-radius: var(--radius-lg);
   }
   
-  .card h3 {
-    font-family: var(--font-family-heading);
-    font-size: var(--text-2xl);
+  /* Border overlay with shadow */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-app-icon);
+    pointer-events: none;
+  }
+  
+  .card-title {
+    /* Typography - Metropolis Bold, 24px/28px */
+    font-family: var(--font-metropolis);
     font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-4);
+    font-size: var(--heading-xs-size);
+    line-height: var(--heading-xs-line);
+    color: var(--on-surface-light-regular);
+    margin: 0;
   }
   
-  .card p {
-    font-family: var(--font-family-primary);
-    font-size: var(--text-base);
-    line-height: var(--line-height-normal);
+  .card-description {
+    /* Typography - Inter Regular, 14px/22px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+    color: var(--on-surface-light-faded);
+    margin: 0;
   }
 </style>
 ```
 
-### Typography Styles
-```astro
-<h1 class="heading-1">Main Heading</h1>
-<p class="body-text">Body paragraph text</p>
-<span class="caption">Caption text</span>
+### Icon with Badge
 
-<style>
-  .heading-1 {
-    font-family: var(--font-family-heading);
-    font-size: var(--text-h1);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-normal);
-    color: var(--foreground);
-  }
-  
-  .body-text {
-    font-family: var(--font-family-primary);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
-    line-height: var(--line-height-normal);
-    color: var(--foreground);
-  }
-  
-  .caption {
-    font-family: var(--font-family-primary);
-    font-size: var(--text-caption);
-    font-weight: var(--font-weight-normal);
-    color: var(--muted-foreground);
-  }
-</style>
-```
-
-### Gradient Background
 ```astro
-<div class="hero-section">
-  <h1>Welcome</h1>
+<div class="icon-wrapper">
+  <svg class="icon"><!-- icon path --></svg>
+  <span class="badge"></span>
 </div>
 
 <style>
-  .hero-section {
-    background: var(--gradient-primary);
-    padding: var(--spacing-section);
-    border-radius: var(--radius-xl);
+  .icon-wrapper {
+    position: relative;
+    display: inline-block;
+    width: var(--icon-md);
+    height: var(--icon-md);
   }
   
-  .hero-section h1 {
-    color: white;
-    font-family: var(--font-family-heading);
-    font-size: var(--text-3xl);
+  .icon {
+    width: 100%;
+    height: 100%;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: var(--icon-xxxxs);
+    height: var(--icon-xxxxs);
+    background: var(--attention-error);
+    border-radius: 50%;
+    border: var(--border-sm) solid var(--surface-light-mid);
   }
 </style>
 ```
 
-### Layout Container
-```astro
-<div class="container">
-  <slot />
-</div>
-
-<style>
-  .container {
-    max-width: var(--max-width-container);
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--spacing-container);
-    padding-right: var(--spacing-container);
-  }
-</style>
-```
-
-## 🌓 Dark Mode Implementation
-
-### Using Class Toggle
-```astro
 ---
-// Layout.astro
----
-
-<html lang="en" class="dark">
-  <!-- Your content -->
-</html>
-
-<script>
-  // Toggle dark mode
-  function toggleDarkMode() {
-    document.documentElement.classList.toggle('dark');
-  }
-</script>
-```
-
-### Using Data Attribute
-```astro
-<html lang="en" data-theme="dark">
-  <!-- Your content -->
-</html>
-
-<script>
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-</script>
-```
-
-### Automatic System Preference
-```astro
-<script>
-  // Detect system preference
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.classList.add('dark');
-  }
-  
-  // Listen for changes
-  window.matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', e => {
-      if (e.matches) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    });
-</script>
-```
 
 ## 🎯 Best Practices
 
-1. **Always use tokens instead of hard-coded values**
-   - ✅ `color: var(--foreground)`
-   - ❌ `color: #393473`
+### ✅ DO:
+1. **Always use semantic color tokens** (e.g., `--on-surface-light-regular`)
+2. **Always set explicit typography** (font-family, font-weight, font-size, line-height)
+3. **Use spacing scale tokens** (e.g., `--spacing-12`, never `12px`)
+4. **Follow hover/focus pattern**: `:hover:not(:focus-visible)` for proper accessibility
+5. **Add active scale**: `:active { transform: scale(0.98); }` for tactile feedback
+6. **Use border overlay pattern** for cards/modals with borders and shadows
 
-2. **Use semantic names for clarity**
-   - ✅ `var(--spacing-button-x)`
-   - ❌ `16px`
-
-3. **Leverage component-specific tokens**
-   - Use `--radius-button` instead of `--radius-md` for buttons
-
-4. **Follow the spacing scale**
-   - Stick to the predefined spacing values for consistency
-
-5. **Use font family tokens**
-   - Always reference `--font-family-primary`, `--font-family-heading`, etc.
-
-6. **Test in both light and dark modes**
-   - Ensure your components look good in both themes
-
-## 🔧 Customization
-
-To customize tokens, edit `/src/styles/tokens.css`:
-
-```css
-:root {
-  /* Override any token */
-  --color-purple-700: rgba(100, 50, 200, 1.00);
-  --radius-base: 8px;
-  --font-family-primary: 'Your Font', sans-serif;
-}
-```
-
-## 📦 Integration with Tailwind
-
-Your tokens are already integrated with Tailwind CSS v4 via `theme.css`. You can use Tailwind utilities with your design system:
-
-```html
-<div class="bg-background text-foreground p-4 rounded-md">
-  Content
-</div>
-```
-
-## 🔍 Token Reference
-
-For a complete reference of all available tokens, see `/src/styles/tokens.css`.
-
-## 📝 Notes
-
-- **Metropolis Font**: This font needs to be hosted locally or purchased. Update `/src/styles/fonts.css` with the correct font files.
-- **Opacity Values**: Transparent colors use opacity tokens for consistency.
-- **Z-Index**: Use the predefined z-index layers to avoid stacking conflicts.
-- **Transitions**: All transitions use easing functions for smooth animations.
+### ❌ DON'T:
+1. **Never use primitive color tokens** directly (e.g., `--violet-50`, `--green-40`)
+2. **Never hardcode values** (use tokens instead)
+3. **Never use Tailwind classes** in Astro components (this project doesn't have Tailwind)
+4. **Never mix focus and hover states** (hover should be overridden by focus)
+5. **Never use fonts** other than Metropolis, Inter, or Public Sans
 
 ---
 
-**Questions or need help?** Refer to the inline comments in `tokens.css` for additional guidance.
+## 🌓 Dark Mode Implementation
+
+Dark mode is automatically handled via CSS media queries and can be manually controlled with theme toggles.
+
+### Automatic (System Preference)
+```css
+@media (prefers-color-scheme: dark) {
+  /* Semantic tokens automatically remap to dark values */
+}
+```
+
+### Manual Theme Selection
+```html
+<!-- In your layout HTML -->
+<input type="radio" name="theme" id="light_theme" />
+<input type="radio" name="theme" id="dark_theme" />
+<input type="radio" name="theme" id="auto_theme" checked />
+
+<body>
+  <!-- Your content -->
+</body>
+```
+
+The CSS automatically handles theme switching:
+- `#light_theme:checked` forces light mode
+- `#dark_theme:checked` forces dark mode
+- `#auto_theme:checked` respects system preference
+
+---
+
+## 📊 Primitive Color Reference
+
+### Color Scales Available
+
+The following primitive color scales are defined in `colors-primitives.css`:
+
+**Chromatic Colors:**
+- Green: `--green-05` to `--green-90` (10 shades)
+- Blue: `--blue-05` to `--blue-90` (10 shades)
+- Violet: `--violet-05` to `--violet-90` (10 shades)
+- Purple: `--purple-05` to `--purple-90` (10 shades)
+- Pink: `--pink-05` to `--pink-90` (10 shades)
+- Red: `--red-05` to `--red-90` (10 shades)
+- Orange: `--orange-05` to `--orange-90` (10 shades)
+- Yellow: `--yellow-05` to `--yellow-90` (10 shades)
+
+**Neutrals:**
+- Standard: `--neutral-black`, `--neutral-white`, `--neutral-gray-*`
+- Marketing Gray: `--gray-marketing-10` to `--gray-marketing-99` (10 shades)
+- Ink (Brand Purple): `--ink-05` to `--ink-90` (10 shades)
+
+**Special:**
+- Opacity variants: `--black-30`, `--white-80`, `--ink-05-70`, etc.
+
+> ⚠️ **Note:** Use semantic tokens instead of primitives in components!
+
+---
+
+## 🔧 Customization
+
+To customize the design system, edit the appropriate CSS files:
+
+### Modify Colors
+Edit `/src/styles/colors-primitives.css` for base colors or `/src/styles/colors-semantic.css` for semantic assignments.
+
+### Modify Typography
+Edit `/src/styles/design-tokens.css`:
+```css
+:root {
+  --heading-xxxs-size: 18px;  /* Changed from 16px */
+  --body-md-size: 15px;       /* Changed from 16px */
+}
+```
+
+### Modify Spacing
+Edit `/src/styles/design-tokens.css`:
+```css
+:root {
+  --spacing-12: 14px;  /* Changed from 12px */
+}
+```
+
+## 📝 Notes
+
+- **Metropolis Font**: This font is loaded locally. If font files aren't available, update `/src/styles/fonts.css` with proper font file paths.
+- **No Tailwind**: This Astro project does NOT use Tailwind CSS. All styling must use regular CSS with design tokens.
+- **Semantic First**: Always prefer semantic tokens over primitive tokens for consistency across light/dark modes.
+- **Typography is Explicit**: Unlike Tailwind, typography styles are never inherited. Always set font-family, font-weight, font-size, and line-height explicitly.
+
+---

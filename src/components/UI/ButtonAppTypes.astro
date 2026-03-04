@@ -29,21 +29,28 @@
  * <ButtonAppTypes appType="Packaged" variant="label" />
  * <ButtonAppTypes appType="Live" variant="inline" active={true} />
  * <ButtonAppTypes appType="All" /> <!-- defaults to variant="label" -->
+ * <ButtonAppTypes appType="All" href="/all/1" /> <!-- renders as anchor -->
  */
 
 interface Props {
-  appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead';
+  appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead' | 'PWA';
   variant?: 'label' | 'inline';
   active?: boolean;
   onclick?: string;
+  /** When provided, renders as anchor instead of button */
+  href?: string;
 }
 
 const { 
   appType = 'All',
   variant = 'label',
   active = false,
-  onclick
+  onclick,
+  href
 } = Astro.props;
+
+// Determine element type
+const Element = href ? 'a' : 'button';
 
 // Import all app type icons
 import IconShapes from '../icons/app-types/IconShapes.astro';
@@ -78,6 +85,11 @@ const typeConfigs = {
     label: 'Dead Hosted',
     icon: IconSmileyXEyes,
     iconBgColor: '--app-icon-bg-light-red'
+  },
+  PWA: {
+    label: 'PWA',
+    icon: IconDownload,
+    iconBgColor: '--app-icon-bg-light-blue'
   }
 };
 
@@ -85,7 +97,8 @@ const config = typeConfigs[appType];
 const IconComponent = config.icon;
 ---
 
-<button 
+<Element 
+  href={href}
   onclick={onclick}
   class={`app-types-button variant-${variant} ${active ? 'active' : ''}`}
   data-app-types-button
@@ -129,10 +142,10 @@ const IconComponent = config.icon;
   
   <!-- Border overlay - changes on hover/active -->
   <div aria-hidden="true" class="border-overlay"></div>
-</button>
+</Element>
 
 <style>
-  /* Base Button */
+  /* Base Button (works for both button and anchor) */
   .app-types-button {
     position: relative;
     display: flex;
@@ -142,6 +155,8 @@ const IconComponent = config.icon;
     transition: all 0.2s ease;
     background: transparent;
     outline: none;
+    text-decoration: none;
+    color: inherit;
   }
 
   /* Content wrapper */
