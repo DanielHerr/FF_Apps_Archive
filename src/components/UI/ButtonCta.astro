@@ -70,8 +70,8 @@ const hasIcon = Astro.slots.has('icon');
     cursor: pointer;
     text-decoration: none;
     transition: all 0.2s ease;
-    min-height: 40px;
-    min-width: fit-content;
+    height: fit-content;
+    width: fit-content;
     outline: none;
   }
   
@@ -110,7 +110,7 @@ const hasIcon = Astro.slots.has('icon');
     font-size: var(--body-md-size);
     font-weight: var(--font-weight-regular);
     line-height: var(--body-md-line);
-    color: white;
+    color: var(--surface-light-mid);
     white-space: nowrap;
   }
   

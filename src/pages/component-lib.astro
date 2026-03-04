@@ -8680,7 +8680,6 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
 
 <style>
   .component-library {
-    background: var(--surface-light-low, #ffffff);
     min-height: 100vh;
     padding: var(--spacing-24);
   }
@@ -8960,7 +8959,7 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background: var(--surface-light-mid);
+    background: var(--surface-light-low);
     padding: var(--spacing-16) var(--spacing-20);
     cursor: pointer;
     transition: background 0.2s ease;
@@ -8990,6 +8989,7 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
   .section-content {
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
+    background: var(--surface-light-low);
   }
 
   .section-content[aria-hidden="false"] {

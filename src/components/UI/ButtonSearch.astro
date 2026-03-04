@@ -6,6 +6,7 @@
  * Props:
  * - disabled: boolean (default: false) - Shows notification badge when disabled
  * - onclick: string (optional) - Click handler attribute
+ * - type: 'button' | 'submit' (default: 'button') - Button type for form submission
  * 
  * States:
  * - Default: Regular opacity with on-surface-light-regular color
@@ -26,11 +27,14 @@ import BadgeNotification from './BadgeNotification.astro';
 interface Props {
   disabled?: boolean;
   onclick?: string;
+  /** Button type: 'button' (default) or 'submit' for form submission */
+  type?: 'button' | 'submit';
 }
 
 const { 
   disabled = false,
-  onclick
+  onclick,
+  type = 'button'
 } = Astro.props;
 ---
 
@@ -39,7 +43,7 @@ const {
   disabled={disabled}
   onclick={onclick}
   aria-label="Search"
-  type="button"
+  type={type}
 >
   <!-- Icon Container -->
   <div class="icon-container">

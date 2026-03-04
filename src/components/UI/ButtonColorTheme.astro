@@ -5,7 +5,10 @@
  * 
  * Props:
  * - state: 'auto' | 'light' | 'dark' (default: 'auto')
- * - variant: 'with-text' | 'icon-only' (default: 'with-text')
+ * - variant: 'with-text' | 'icon-only' | 'responsive' (default: 'with-text')
+ *   - 'with-text': Always shows label text above toggle
+ *   - 'icon-only': Never shows label text
+ *   - 'responsive': Auto-switches - icon-only on mobile (<769px), with-text on desktop (>=769px)
  * 
  * Each state has a FIXED icon that cannot be changed:
  * - Auto: Lightning icon (center position)
@@ -24,10 +27,13 @@ import IconLightbulbFilament from '../icons/labels/IconLightbulbFilament.astro';
 
 interface Props {
   state?: 'auto' | 'light' | 'dark';
-  variant?: 'with-text' | 'icon-only';
+  variant?: 'with-text' | 'icon-only' | 'responsive';
 }
 
 const { state = 'auto', variant = 'with-text' } = Astro.props;
+
+// For responsive variant, show text on desktop (>=769px), hide on mobile
+const showLabel = variant === 'with-text' || variant === 'responsive';
 
 // Generate unique ID for this instance
 const uniqueId = `toggle-${Math.random().toString(36).substr(2, 9)}`;
@@ -55,8 +61,8 @@ const getCirclePosition = (currentState: string) => {
 const circleX = getCirclePosition(state);
 ---
 
-<button class={`button-color-theme ${variant}`} data-state={state} data-toggle-id={uniqueId} aria-label={`Color theme: ${labels[state]}`}>
-  {variant === 'with-text' && (
+<button class="button-color-theme" data-variant={variant} data-state={state} data-toggle-id={uniqueId} aria-label={`Color theme: ${labels[state]}`}>
+  {showLabel && (
     <span class="label">{labels[state]}</span>
   )}
   
@@ -105,60 +111,92 @@ const circleX = getCirclePosition(state);
 </button>
 
 <script>
+  // Map state names to radio input IDs
+  const stateToRadioId: Record<string, string> = {
+    auto: 'auto_theme',
+    light: 'light_theme',
+    dark: 'dark_theme'
+  };
+  
+  // Get current theme state from radio inputs
+  function getCurrentThemeState(): 'auto' | 'light' | 'dark' {
+    if ((document.getElementById('light_theme') as HTMLInputElement)?.checked) return 'light';
+    if ((document.getElementById('dark_theme') as HTMLInputElement)?.checked) return 'dark';
+    return 'auto';
+  }
+  
+  // Update all ButtonColorTheme instances to reflect the current state
+  function syncButtonsToState(state: 'auto' | 'light' | 'dark') {
+    const labels = { auto: 'AUTO', light: 'LIGHT', dark: 'DARK' };
+    const positions = { auto: 27, light: 43, dark: 11 };
+    
+    document.querySelectorAll('.button-color-theme').forEach((button) => {
+      button.setAttribute('data-state', state);
+      button.setAttribute('aria-label', `Color theme: ${labels[state]}`);
+      
+      // Update label text (if with-text variant)
+      const label = button.querySelector('.label');
+      if (label) {
+        label.textContent = labels[state];
+      }
+      
+      // Update circle position
+      const newX = positions[state];
+      const circles = button.querySelectorAll('.indicator-circle, .indicator-circle-stroke');
+      circles.forEach((circle) => {
+        circle.setAttribute('cx', newX.toString());
+      });
+      
+      // Update icon visibility
+      const iconOverlay = button.querySelector('.icon-overlay');
+      if (iconOverlay) {
+        iconOverlay.querySelectorAll('[data-visible]').forEach((icon) => {
+          icon.setAttribute('data-visible', 'false');
+        });
+        const activeIcon = iconOverlay.querySelector(`.icon-${state}`);
+        if (activeIcon) {
+          activeIcon.setAttribute('data-visible', 'true');
+        }
+      }
+    });
+  }
+  
+  // Sync buttons to current state on page load
+  syncButtonsToState(getCurrentThemeState());
+  
+  // Listen for changes to the radio inputs (from theme_buttons labels or other sources)
+  ['auto_theme', 'light_theme', 'dark_theme'].forEach((id) => {
+    const radio = document.getElementById(id) as HTMLInputElement;
+    if (radio) {
+      radio.addEventListener('change', () => {
+        if (radio.checked) {
+          syncButtonsToState(getCurrentThemeState());
+        }
+      });
+    }
+  });
+  
   // Add click handler to all color theme buttons
   document.querySelectorAll('.button-color-theme').forEach((button) => {
     button.addEventListener('click', function(this: HTMLButtonElement) {
       const currentState = this.getAttribute('data-state') || 'auto';
-      const toggleId = this.getAttribute('data-toggle-id') || '';
       
       // Cycle through states: auto → light → dark → auto
       const nextState = 
         currentState === 'auto' ? 'light' :
         currentState === 'light' ? 'dark' : 'auto';
       
-      // Update button state
-      this.setAttribute('data-state', nextState);
-      
-      // Update label text (if with-text variant)
-      const label = this.querySelector('.label');
-      if (label) {
-        const labels = { auto: 'AUTO', light: 'LIGHT', dark: 'DARK' };
-        label.textContent = labels[nextState as 'auto' | 'light' | 'dark'];
+      // Check the corresponding radio input (this triggers the CSS theme change)
+      const radioId = stateToRadioId[nextState];
+      const radio = document.getElementById(radioId) as HTMLInputElement;
+      if (radio) {
+        radio.checked = true;
+        // Dispatch change event so other listeners can react
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
       }
       
-      // Update aria-label
-      const labels = { auto: 'AUTO', light: 'LIGHT', dark: 'DARK' };
-      this.setAttribute('aria-label', `Color theme: ${labels[nextState as 'auto' | 'light' | 'dark']}`);
-      
-      // Update circle position (only for this instance's circles)
-      const positions = { auto: 27, light: 43, dark: 11 };
-      const newX = positions[nextState as 'auto' | 'light' | 'dark'];
-      const circles = this.querySelectorAll('.indicator-circle, .indicator-circle-stroke');
-      circles.forEach((circle) => {
-        circle.setAttribute('cx', newX.toString());
-      });
-      
-      // Update filter position (only for this instance's filter)
-      const filter = this.querySelector(`filter[id="filter1_d_${toggleId}"]`);
-      if (filter) {
-        filter.setAttribute('x', (newX - 9).toString());
-      }
-      
-      // Update icon visibility
-      const iconOverlay = this.querySelector('.icon-overlay');
-      if (iconOverlay) {
-        iconOverlay.querySelectorAll('[data-visible]').forEach((icon) => {
-          icon.setAttribute('data-visible', 'false');
-        });
-        const activeIcon = iconOverlay.querySelector(`.icon-${nextState}`);
-        if (activeIcon) {
-          activeIcon.setAttribute('data-visible', 'true');
-        }
-      }
-      
-      // Apply the theme to the application
-      const html = document.documentElement;
-      html.setAttribute('data-theme', nextState);
+      // Update all ButtonColorTheme instances to match
+      syncButtonsToState(nextState as 'auto' | 'light' | 'dark');
       
       // Store theme preference in localStorage
       localStorage.setItem('color-theme', nextState);
@@ -176,7 +214,7 @@ const circleX = getCirclePosition(state);
     align-items: center;
     justify-content: center;
     gap: var(--spacing-2);
-    padding: var(--spacing-4);
+    padding: 0 var(--spacing-4);
     background: transparent;
     cursor: pointer;
     position: relative;
@@ -189,9 +227,9 @@ const circleX = getCirclePosition(state);
   /* Label typography */
   .label {
     font-family: var(--font-inter);
-    font-size: var(--body-xxs-size);
+    font-size: var(--body-xxs-sc-size);
     font-weight: var(--font-weight-regular);
-    line-height: var(--body-xxs-line);
+    line-height: var(--body-xxs-sc-line);
     letter-spacing: var(--body-xxs-sc-spacing);
     color: var(--on-surface-light-regular);
     text-transform: uppercase;
@@ -200,7 +238,7 @@ const circleX = getCirclePosition(state);
   /* Toggle container - holds both SVG track and icon overlay */
   .toggle-container {
     height: 24px;
-    width: 54px;
+    width: 52px;
     position: relative;
   }
 
@@ -260,8 +298,19 @@ const circleX = getCirclePosition(state);
   }
 
   /* Icon-only variant */
-  .button-color-theme.icon-only {
+  .button-color-theme[data-variant="icon-only"] {
     padding: var(--spacing-4);
+  }
+
+  /* Responsive variant: show text on desktop, hide on mobile */
+  .button-color-theme[data-variant="responsive"] .label {
+    display: none;
+  }
+
+  @media (min-width: 769px) {
+    .button-color-theme[data-variant="responsive"] .label {
+      display: block;
+    }
   }
 
   /* Ensure smooth transitions for circles */

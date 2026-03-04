@@ -14,6 +14,7 @@
  * @param headerText - H1 header text (default: 'Header H1')
  * @param subHeaderText - Sub header text (default: 'Sub Header')
  * @param category - Optional category name (automatically maps to filled icon for 'icon' variant)
+ * @param pagefindMeta - Optional Pagefind metadata key (e.g., 'title') for search indexing
  * 
  * Usage:
  * <SectionHeadline variant="default" headerText="My Title" subHeaderText="My subtitle" />
@@ -28,6 +29,7 @@
  */
 
 import ButtonColorTheme from './ButtonColorTheme.astro';
+import H1 from './H1.astro';
 
 // Import ALL filled category icons for icon variant
 import IconAirplaneTiltFilled from '../icons/categories/IconAirplaneTiltFilled.astro';
@@ -95,13 +97,15 @@ export interface Props {
   headerText?: string;
   subHeaderText?: string;
   category?: string;
+  pagefindMeta?: string;
 }
 
 const { 
   variant = 'default',
   headerText = 'Header H1',
   subHeaderText = 'Sub Header',
-  category
+  category,
+  pagefindMeta
 } = Astro.props;
 
 // Get the icon component for the category (only used in 'icon' variant)
@@ -113,14 +117,14 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     <!-- Default: H1 on top, sub header below -->
     <div class="top-row">
       <div class="h1-container">
-        <h1 class="h1-text">{headerText}</h1>
+        <H1 data-pagefind-meta={pagefindMeta} text={headerText} />
       </div>
       <div class="buttons-container">
-        <ButtonColorTheme variant="icon-only" state="auto" />
+        <ButtonColorTheme variant="responsive" />
       </div>
     </div>
     <div class="sub-header-row">
-      <p class="sub-header-text">{subHeaderText}</p>
+      <p class="sub-header sub-header-text">{subHeaderText}</p>
     </div>
   )}
 
@@ -128,13 +132,13 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     <!-- Inline: H1 left, sub header inline right, button far right -->
     <div class="inline-row">
       <div class="h1-container">
-        <h1 class="h1-text h1-text-inline">{headerText}</h1>
+        <H1 data-pagefind-meta={pagefindMeta} text={headerText} />
       </div>
       <div class="sub-header-inline">
-        <p class="sub-header-text-inline">{subHeaderText}</p>
+        <p class="sub-header sub-header-text-inline">{subHeaderText}</p>
       </div>
       <div class="buttons-container">
-        <ButtonColorTheme variant="icon-only" state="auto" />
+        <ButtonColorTheme variant="responsive" />
       </div>
     </div>
   )}
@@ -143,7 +147,7 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     <!-- Icon: H1 with icon, button far right -->
     <div class="icon-row">
       <div class="h1-with-icon">
-        <h1 class="h1-text h1-text-inline">{headerText}</h1>
+        <H1 data-pagefind-meta={pagefindMeta} text={headerText} />
         {CategoryIcon && (
           <div class="category-icon">
             <CategoryIcon />
@@ -152,7 +156,7 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
       </div>
       <div class="buttons-spacer"></div>
       <div class="buttons-container">
-        <ButtonColorTheme variant="icon-only" state="auto" />
+        <ButtonColorTheme variant="responsive" />
       </div>
     </div>
   )}
@@ -161,10 +165,10 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     <!-- Sub Only: Only sub header with button -->
     <div class="sub-only-row">
       <div class="sub-only-text-container">
-        <p class="sub-only-text">{subHeaderText}</p>
+        <p class="sub-header sub-only-text">{subHeaderText}</p>
       </div>
       <div class="buttons-container-sub">
-        <ButtonColorTheme variant="icon-only" state="auto" />
+        <ButtonColorTheme variant="responsive" />
       </div>
     </div>
   )}
@@ -211,6 +215,19 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     justify-content: center;
   }
 
+  .sub-header {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-md-size);
+    line-height: var(--body-md-line);
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+    transition: all 0.2s ease;
+  }
+
   /* ========================================
      DEFAULT VARIANT
      ======================================== */
@@ -229,7 +246,7 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     min-height: 1px;
   }
 
-  .h1-text {
+  /* .h1-text {
     flex: 1 0 0;
     min-width: 0;
     min-height: 1px;
@@ -242,7 +259,7 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     margin: 0;
     padding: 0;
     white-space: pre-wrap;
-  }
+  } */
 
   .buttons-container {
     display: flex;
@@ -259,15 +276,7 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
   }
 
   .sub-header-text {
-    font-family: var(--font-inter);
-    font-weight: var(--font-weight-regular);
-    font-size: 14px;
-    line-height: 22px;
-    letter-spacing: normal;
-    color: var(--on-surface-light-faded);
-    margin: 0;
-    padding: 0;
-    white-space: pre-wrap;
+    
   }
 
   /* ========================================
@@ -282,10 +291,10 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     min-height: 1px;
   }
 
-  .h1-text-inline {
+  /* .h1-text-inline {
     flex: initial;
     white-space: nowrap;
-  }
+  } */
 
   .sub-header-inline {
     display: flex;
@@ -297,15 +306,6 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
   }
 
   .sub-header-text-inline {
-    font-family: var(--font-inter);
-    font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: normal;
-    color: var(--on-surface-light-faded);
-    margin: 0;
-    padding: 0;
-    white-space: pre-wrap;
   }
 
   /* ========================================
@@ -351,7 +351,6 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     display: flex;
     flex: 1 0 0;
     gap: var(--spacing-12);
-    align-items: center;
     min-width: 0;
     min-height: 1px;
   }
@@ -366,15 +365,6 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
   }
 
   .sub-only-text {
-    font-family: var(--font-inter);
-    font-weight: var(--font-weight-regular);
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: normal;
-    color: var(--on-surface-light-faded);
-    margin: 0;
-    padding: 0;
-    white-space: pre-wrap;
   }
 
   .buttons-container-sub {
@@ -383,5 +373,23 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     height: 100%;
     align-items: flex-end;
     padding-left: var(--spacing-24);
+  }
+
+  /* ========================================
+     RESPONSIVE: DESKTOP (769px and above)
+     Single breakpoint: --tablet-md at 769px
+     ======================================== */
+
+  @media (min-width: 769px) {
+
+    .h1-container :global(.heading) {
+      font-size: var(--heading-xs-size);
+      line-height: var(--heading-xs-line);
+    }
+
+    .sub-header {
+      font-size: var(--body-lg-size);
+      line-height: var(--body-lg-line);
+    }
   }
 </style>

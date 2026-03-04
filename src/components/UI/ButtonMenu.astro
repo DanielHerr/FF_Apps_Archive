@@ -8,6 +8,7 @@
  * - opacity: Custom opacity value (default: 0.7)
  * - ariaLabel: Accessibility label
  * - disabled: Whether the button is disabled
+ * - popovertarget: ID of popover element to toggle (for nav menu)
  * 
  * States:
  * - Default: Faded icon (70% opacity or custom)
@@ -24,13 +25,16 @@ export interface Props {
   opacity?: number;
   ariaLabel?: string;
   disabled?: boolean;
+  /** ID of popover element to toggle (e.g., 'nav') */
+  popovertarget?: string;
 }
 
 const { 
   size = 'md',
   opacity = 0.7,
   ariaLabel = 'Menu',
-  disabled = false
+  disabled = false,
+  popovertarget
 } = Astro.props;
 
 // Map size prop to pixel values
@@ -49,6 +53,7 @@ const buttonSize = sizeMap[size];
   type="button"
   aria-label={ariaLabel}
   disabled={disabled}
+  popovertarget={popovertarget}
   style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
 >
   <span class="icon-wrapper">

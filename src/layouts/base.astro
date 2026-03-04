@@ -1,9 +1,14 @@
 ---
-import Header from "../components/header.astro"
-import Footer from "../components/footer.astro"
-import Navigation from "../components/navigation.astro"
+// ↓ Deprecated component imports (replaced by UI versions)
+//import Header from "../components/header.astro"
+//import Footer from "../components/footer.astro"
+//import Navigation from "../components/navigation.astro"
+import Header from "../components/UI/Header.astro"
+import Footer from "../components/UI/Footer.astro"
+import Navigation from "../components/UI/MenuNavSidebar.astro"
+import SectionHeadline from "../components/UI/SectionHeadline.astro"
 import Metadata from "../components/common_metadata.astro"
-import Theme from "../components/theme_inputs.astro"
+// import Theme from "../components/theme_buttons.astro"
 import "../styles/index.css";
 import Hidden_Inputs from "../components/hidden_inputs.astro"
 
@@ -44,7 +49,7 @@ let { title, searchable } = Astro.props
 					<header>
 
 						<slot name="header">
-							<h2 data-pagefind-meta="title">{ title }</h2>
+							<SectionHeadline headerText={title} subHeaderText="" pagefindMeta="title" />
 						</slot>
 
 					</header>

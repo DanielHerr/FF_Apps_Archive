@@ -7,11 +7,14 @@
  * 
  * Features:
  * - App Types section with 5 options (All, Packaged, Privileged, Hosted, Dead Hosted)
- * - Categories section with full category list (27 categories)
+ * - Categories section loaded from categories.json
+ * - Works Offline special category
+ * - Hidden PWA link (shows when navigator.install is available)
  * - Uses H2 headings for section titles
  * - Uses ButtonAppTypes (label variant) with simplified appType API
  * - Uses ButtonCategory (label variant) for categories with automatic icon selection
  * - Width: 260px (matches design spec)
+ * - Supports popover attribute for toggle behavior
  * 
  * Design Tokens:
  * - Spacing: var(--spacing-24) between sections, var(--spacing-12) between header and buttons
@@ -24,9 +27,10 @@
 import H2 from './H2.astro';
 import ButtonAppTypes from './ButtonAppTypes.astro';
 import ButtonCategory from './ButtonCategory.astro';
+import categories from '../../categories.json';
 ---
 
-<nav class="menu-nav-sidebar" aria-label="Main navigation">
+<nav id="nav" class="menu-nav-sidebar" aria-label="Site Navigation" popover>
   <!-- App Types Section -->
   <div class="menu-section">
     <div class="section-header">
@@ -34,11 +38,14 @@ import ButtonCategory from './ButtonCategory.astro';
     </div>
     
     <div class="button-list">
-      <ButtonAppTypes appType="All" variant="label" active={false} />
-      <ButtonAppTypes appType="Packaged" variant="label" active={false} />
-      <ButtonAppTypes appType="Privileged" variant="label" active={false} />
-      <ButtonAppTypes appType="Live" variant="label" active={false} />
-      <ButtonAppTypes appType="Dead" variant="label" active={false} />
+      <ButtonAppTypes appType="All" variant="label" href="/all/1" />
+      <ButtonAppTypes appType="Packaged" variant="label" href="/packaged/1" />
+      <ButtonAppTypes appType="Privileged" variant="label" href="/privileged/1" />
+      <ButtonAppTypes appType="Live" variant="label" href="/hosted/1" />
+      <ButtonAppTypes appType="Dead" variant="label" href="/dead/1" />
+      <div id="pwas_link" class="pwa-link" hidden>
+        <ButtonAppTypes appType="PWA" variant="label" href="/pwa" />
+      </div>
     </div>
   </div>
 
@@ -49,39 +56,22 @@ import ButtonCategory from './ButtonCategory.astro';
     </div>
     
     <div class="button-list">
-      <ButtonCategory variant="label" category="Books" active={false} />
-      <ButtonCategory variant="label" category="Books & Comics" active={false} />
-      <ButtonCategory variant="label" category="Business" active={false} />
-      <ButtonCategory variant="label" category="Education" active={false} />
-      <ButtonCategory variant="label" category="Entertainment" active={false} />
-      <ButtonCategory variant="label" category="Food & Drink" active={false} />
-      <ButtonCategory variant="label" category="Games" active={false} />
-      <ButtonCategory variant="label" category="Health & Fitness" active={false} />
-      <ButtonCategory variant="label" category="Humor" active={false} />
-      <ButtonCategory variant="label" category="Internet" active={false} />
-      <ButtonCategory variant="label" category="Kids" active={false} />
-      <ButtonCategory variant="label" category="Lifestyle" active={false} />
-      <ButtonCategory variant="label" category="Maps & Navigation" active={false} />
-      <ButtonCategory variant="label" category="Music" active={false} />
-      <ButtonCategory variant="label" category="News" active={false} />
-      <ButtonCategory variant="label" category="News & Weather" active={false} />
-      <ButtonCategory variant="label" category="Personalization" active={false} />
-      <ButtonCategory variant="label" category="Photo & Video" active={false} />
-      <ButtonCategory variant="label" category="Productivity" active={false} />
-      <ButtonCategory variant="label" category="Reference" active={false} />
-      <ButtonCategory variant="label" category="Science & Tech" active={false} />
-      <ButtonCategory variant="label" category="Shopping" active={false} />
-      <ButtonCategory variant="label" category="Social" active={false} />
-      <ButtonCategory variant="label" category="Sports" active={false} />
-      <ButtonCategory variant="label" category="Travel" active={false} />
-      <ButtonCategory variant="label" category="Utilities" active={false} />
-      <ButtonCategory variant="label" category="Weather" active={false} />
+      {categories.map((cat) => (
+        <ButtonCategory 
+          variant="label" 
+          category={cat.name} 
+          href={`/${cat.slug}/1`} 
+        />
+      ))}
+      <ButtonCategory variant="label" category="Works Offline" href="/works-offline/1" />
     </div>
   </div>
 </nav>
 
 <style>
-  /* Main Container */
+  /* ========================================
+     MAIN CONTAINER
+     ======================================== */
   .menu-nav-sidebar {
     display: flex;
     flex-direction: column;
@@ -91,9 +81,77 @@ import ButtonCategory from './ButtonCategory.astro';
     margin: 0;
     background: var(--surface-light-low);
     border-right: var(--border-sm) solid var(--on-surface-light-border-low);
+    
+    /* Sticky sidebar that fills viewport height */
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    align-self: flex-start;
+    scrollbar-width: thin;
+    overflow-y: auto;
+    height: 100cqh;
   }
 
-  /* Section Container */
+  /* ========================================
+     RESPONSIVE BEHAVIOR
+     Breakpoint: 769px (--breakpoint-tablet-md)
+     ======================================== */
+  
+  /* Small screens: Hidden by default, shown via popover or checkbox */
+  @media (max-width: 768px) {
+    .menu-nav-sidebar {
+      display: none;
+      position: absolute;
+      width: 100%;
+      max-height: none;
+      border-right: var(--border-sm) solid var(--on-surface-light-border-low);
+    }
+    
+    /* Checkbox fallback for no-JS */
+    :global(#nav_toggle_input:checked ~ #scroller) .menu-nav-sidebar {
+      display: flex;
+    }
+    
+    /* Hide main/footer when nav is open via checkbox */
+    :global(#nav_toggle_input:checked ~ #scroller main),
+    :global(#nav_toggle_input:checked ~ #scroller footer) {
+      display: none;
+    }
+  }
+  
+  /* Popover support */
+  @supports selector(:popover-open) {
+    .menu-nav-sidebar {
+      /* Reset popover default styles */
+      border: none;
+      border-right: var(--border-sm) solid var(--on-surface-light-border-low);
+    }
+    
+    @media (max-width: 768px) {
+      .menu-nav-sidebar:popover-open {
+        display: flex;
+      }
+      
+      /* Hide main/footer when nav popover is open */
+      :global(body:has(.menu-nav-sidebar:popover-open)) :global(main),
+      :global(body:has(.menu-nav-sidebar:popover-open)) :global(footer) {
+        display: none;
+      }
+    }
+  }
+  
+  /* Anchor positioning for popover (when supported) */
+  @supports selector(:popover-open) and (anchor-name: --name) {
+    @media (max-width: 768px) {
+      .menu-nav-sidebar {
+        top: anchor(--header bottom);
+      }
+    }
+  }
+
+  /* ========================================
+     SECTION CONTAINER
+     ======================================== */
   .menu-section {
     display: flex;
     flex-direction: column;
@@ -102,16 +160,25 @@ import ButtonCategory from './ButtonCategory.astro';
     padding: 0 var(--spacing-36) 0 var(--spacing-36);
   }
 
-  /* Section Header */
+  /* ========================================
+     SECTION HEADER
+     ======================================== */
   .section-header {
     padding: 0 var(--spacing-8);
   }
 
-  /* Button List - no gap for seamless vertical list */
+  /* ========================================
+     BUTTON LIST
+     ======================================== */
   .button-list {
     display: flex;
     flex-direction: column;
     gap: 0;
     width: 100%;
+  }
+  
+  /* PWA link wrapper - inherits hidden from JS */
+  .pwa-link {
+    display: contents;
   }
 </style>
