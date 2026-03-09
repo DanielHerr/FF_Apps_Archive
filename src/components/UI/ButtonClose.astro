@@ -24,13 +24,22 @@ export interface Props {
   opacity?: number;
   ariaLabel?: string;
   disabled?: boolean;
+  /** ID of popover element to close (e.g., 'nav') */
+  popovertarget?: string;
+  /** Action for popover (default: 'hide') */
+  popovertargetaction?: 'hide' | 'toggle';
+  /** Checkbox ID for no-JS fallback toggle */
+  fallbackCheckboxId?: string;
 }
 
 const { 
   size = 'md',
   opacity = 0.7,
   ariaLabel = 'Close',
-  disabled = false
+  disabled = false,
+  popovertarget,
+  popovertargetaction = 'hide',
+  fallbackCheckboxId
 } = Astro.props;
 
 // Map size prop to pixel values
@@ -42,19 +51,57 @@ const sizeMap = {
 };
 
 const buttonSize = sizeMap[size];
+const hasPopover = !!popovertarget;
+const hasCheckboxFallback = !!fallbackCheckboxId;
 ---
 
-<button 
-  class="button-close" 
-  type="button"
-  aria-label={ariaLabel}
-  style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
-  disabled={disabled}
->
-  <span class="icon-wrapper">
-    <IconX />
-  </span>
-</button>
+{hasPopover && (
+  <!-- Button for popover API -->
+  <button 
+    class="button-close button-close-popover" 
+    type="button"
+    aria-label={ariaLabel}
+    style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
+    disabled={disabled}
+    popovertarget={popovertarget}
+    popovertargetaction={popovertargetaction}
+  >
+    <span class="icon-wrapper">
+      <IconX />
+    </span>
+  </button>
+)}
+
+{hasPopover && hasCheckboxFallback && (
+  <!-- Label fallback for no-JS (checkbox toggle) -->
+  <label 
+    class="button-close button-close-label"
+    for={fallbackCheckboxId}
+    tabindex="0"
+    role="button"
+    aria-label={ariaLabel}
+    style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
+  >
+    <span class="icon-wrapper">
+      <IconX />
+    </span>
+  </label>
+)}
+
+{!hasPopover && (
+  <!-- Simple button (no popover) -->
+  <button 
+    class="button-close" 
+    type="button"
+    aria-label={ariaLabel}
+    style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
+    disabled={disabled}
+  >
+    <span class="icon-wrapper">
+      <IconX />
+    </span>
+  </button>
+)}
 
 <style>
   .button-close {
@@ -70,6 +117,23 @@ const buttonSize = sizeMap[size];
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.2s ease;
+  }
+  
+  /* Progressive enhancement: hide label when popover supported */
+  @supports selector(:popover-open) {
+    .button-close-label {
+      display: none;
+    }
+  }
+  
+  /* No-JS fallback: hide popover button, show label */
+  @supports not selector(:popover-open) {
+    .button-close-popover {
+      display: none;
+    }
+    .button-close-label {
+      display: inline-flex;
+    }
   }
 
   .icon-wrapper {

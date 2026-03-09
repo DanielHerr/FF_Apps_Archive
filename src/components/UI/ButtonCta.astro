@@ -31,6 +31,9 @@ const {
 import IconGithubLogo from '../icons/brand/IconGithubLogo.astro';
 
 const hasIcon = Astro.slots.has('icon');
+
+// Detect external links (http:// or https://)
+const isExternal = href?.startsWith('http://') || href?.startsWith('https://');
 ---
 
 <a 
@@ -38,6 +41,7 @@ const hasIcon = Astro.slots.has('icon');
   onclick={onclick}
   class="cta-button"
   data-cta-button
+  {...isExternal && { target: "_blank", rel: "noopener noreferrer" }}
 >
   <div class="button-content">
     <!-- Icon Slot -->

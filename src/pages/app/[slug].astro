@@ -50,8 +50,8 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 	</div>
 	<p class="app_text_blocks" set:html={description}></p>
 	<hr>
-	{ homepage && <p>Homepage: <a href={ homepage }>{ homepage }</a></p> }
-	<p>Support: <a href={ supporturl }>Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
+	{ homepage && <p>Homepage: <a href={ homepage } target="_blank" rel="noopener noreferrer">{ homepage }</a></p> }
+	<p>Support: <a href={ supporturl } target="_blank" rel="noopener noreferrer">Web</a>, <a href={ "mailto:" + supportemail }>Email</a></p>
 	<p>Categories:
 		<ul>
 			{ app.data.categories.map(slug => <li data-pagefind-filter="category"><a href={ "/" + slug + "/1" }>{ categories.find(c => c.slug == slug).name }</a></li>) }

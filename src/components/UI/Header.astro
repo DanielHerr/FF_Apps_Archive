@@ -4,7 +4,7 @@
  * Main navigation header with responsive variants
  * 
  * Variants:
- * - 'mobile': Mobile header with brand, search button, menu button, and close button
+ * - 'mobile': Mobile header with brand, search button, menu button (toggles to close when nav open)
  * - 'mobile-search': Mobile search mode with back button and full-width search bar
  * - 'desktop': Desktop header with brand and search bar (centered, max-width 968px)
  * - 'desktop-home': Desktop home header with brand and full-width search bar (max-width 1260px)
@@ -16,11 +16,15 @@
  * @param homeUrl - URL for brand link (default: '/')
  * @param searchDisabled - Whether search bar is disabled (default: false)
  * @param searchButtonDisabled - Whether search button is disabled in mobile variant (default: false)
- * @param showCloseButton - Whether to show close button in mobile variant (default: false)
+ * 
+ * Features:
+ * - Menu/Close button toggle: Menu button toggles to close button when nav popover is open
+ * - Search toggle: Search button swaps to mobile-search variant with back button
+ * - Progressive enhancement: Uses popover API with checkbox fallback for no-JS
  * 
  * Usage:
  * <Header variant="responsive" homeUrl="/" /> <!-- Auto mobile/desktop switching -->
- * <Header variant="mobile" homeUrl="/" searchDisabled={false} searchButtonDisabled={false} showCloseButton={false} />
+ * <Header variant="mobile" homeUrl="/" searchDisabled={false} searchButtonDisabled={false} />
  * <Header variant="mobile-search" homeUrl="/" searchDisabled={false} />
  * <Header variant="desktop" homeUrl="/" searchDisabled={false} />
  * <Header variant="desktop-home" homeUrl="/" searchDisabled={false} />
@@ -40,6 +44,7 @@ import ButtonMenu from './ButtonMenu.astro';
 import ButtonClose from './ButtonClose.astro';
 import ButtonBack from './ButtonBack.astro';
 import InputSearchBar from './InputSearchBar.astro';
+import Modal from './Modal.astro';
 import IconRocketColorGradient from '../icons/brand/IconRocketColorGradient.astro';
 
 export interface Props {
@@ -47,7 +52,6 @@ export interface Props {
   homeUrl?: string;
   searchDisabled?: boolean;
   searchButtonDisabled?: boolean;
-  showCloseButton?: boolean;
   /** Show search toggle buttons (popover + checkbox fallback) */
   showSearchToggle?: boolean;
   /** Show search unavailable toggle + dialog */
@@ -63,7 +67,6 @@ const {
   homeUrl = '/',
   searchDisabled = false,
   searchButtonDisabled = false,
-  showCloseButton = false,
   showSearchToggle = false,
   showSearchUnavailable = false,
   searchToggleCheckboxId = 'search_toggle_input',
@@ -72,6 +75,7 @@ const {
 
 // For responsive variants, render both mobile and desktop
 const showMobile = variant === 'mobile' || variant === 'responsive' || variant === 'responsive-home';
+const showMobileSearch = variant === 'mobile-search' || variant === 'responsive' || variant === 'responsive-home';
 const showDesktop = variant === 'desktop' || variant === 'responsive';
 const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-home';
 ---
@@ -81,7 +85,7 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
   <div class="border-overlay" aria-hidden="true"></div>
   
   {showMobile && (
-    <!-- Mobile Variant: Brand + Action Buttons -->
+    <!-- Mobile Variant: Brand + Action Buttons (hidden when search active) -->
     <div class="header-content mobile-content">
       <!-- Brand -->
       <a href={homeUrl} class="brand brand-link">
@@ -94,30 +98,22 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
         </div>
       </a>
       
-      
-      
       <!-- Action Buttons -->
       <div class="action-buttons">
-        {!showSearchToggle && !showSearchUnavailable && <ButtonSearch disabled={searchButtonDisabled} />}
+        <ButtonSearch disabled={searchButtonDisabled} toggleCheckboxId={searchToggleCheckboxId} />
         <ButtonMenu popovertarget="nav" />
-        {showCloseButton && <ButtonClose />}
+        <ButtonClose popovertarget="nav" popovertargetaction="hide" fallbackCheckboxId="nav_toggle_input" ariaLabel="Close menu" />
       </div>
     </div>
   )}
   
-  {variant === 'mobile-search' && (
-    <!-- Mobile Search Variant: Back Button + Search Bar -->
+  {showMobileSearch && (
+    <!-- Mobile Search Variant: Back Button + Search Bar (shown when search active) -->
     <div class="header-content mobile-search-content">
-      <ButtonBack />
+      <ButtonBack toggleCheckboxId={searchToggleCheckboxId} />
       <div class="search-bar-wrapper">
-        <!-- Search Form with Popover + Toggle Buttons -->
         <InputSearchBar 
           asForm
-          popover
-          showToggle={showSearchToggle}
-          showUnavailable={showSearchUnavailable}
-          toggleCheckboxId={searchToggleCheckboxId}
-          unavailableCheckboxId={searchUnavailableCheckboxId}
           disabled={searchDisabled}
         />
       </div>
@@ -167,6 +163,15 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
       </div>
     </div>
   )}
+  
+  {/* Search Unavailable Modal - shown on hover when search is disabled due to missing WebAssembly */}
+  <Modal 
+    id="search_unavailable_modal"
+    asDialog
+    title="Search Unavailable"
+    body="Search requires JavaScript and WebAssembly support. Please enable JavaScript and use a modern browser that supports WebAssembly to use search functionality."
+    showBadge
+  />
 </header>
 
 <style>
@@ -176,9 +181,11 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
   .header {
     position: relative;
     width: 100%;
-    height: auto;
+    min-width: 320px;
+    min-height: 64px;
     background: var(--surface-light-low);
     padding: var(--spacing-16);
+    overflow: hidden; /* Clip off-screen sliding elements */
     transition: all 0.2s ease;
   }
 
@@ -277,16 +284,40 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
     gap: var(--spacing-12);
     height: 32px;
   }
+  
+  /* Menu/Close button toggle based on nav popover state */
+  /* Default: show menu button, hide close button */
+  .action-buttons :global(.button-close-popover),
+  .action-buttons :global(.button-close-label) {
+    display: none;
+  }
+  
+  /* When nav popover is open: hide menu, show close */
+  @supports selector(:popover-open) {
+    :global(body:has(#nav:popover-open)) .action-buttons :global(.button-menu-popover) {
+      display: none;
+    }
+    
+    :global(body:has(#nav:popover-open)) .action-buttons :global(.button-close-popover) {
+      display: inline-flex;
+    }
+  }
+  
+  /* No-JS fallback: checkbox toggle */
+  @supports not selector(:popover-open) {
+    :global(body:has(#nav_toggle_input:checked)) .action-buttons :global(.button-menu-label) {
+      display: none;
+    }
+    
+    :global(body:has(#nav_toggle_input:checked)) .action-buttons :global(.button-close-label) {
+      display: inline-flex;
+    }
+  }
 
   /* ========================================
      MOBILE SEARCH VARIANT
      ======================================== */
-  .mobile-search-content {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-12);
-    width: 100%;
-  }
+  /* Main styles defined in MOBILE SEARCH STATE TOGGLE section below */
 
   .search-bar-wrapper {
     flex: 1 0 0;
@@ -403,6 +434,51 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
     
     .header[data-variant="responsive-home"] .desktop-home-content {
       display: flex;
+    }
+  }
+
+  /* ========================================
+     MOBILE SEARCH STATE TOGGLE
+     Checkbox-based toggle between mobile and mobile-search variants
+     ======================================== */
+  
+  /* Default: mobile-search-content positioned for slide-in animation */
+  .mobile-search-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    padding: var(--spacing-16);
+    background: var(--surface-light-low);
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    z-index: 10;
+  }
+  
+  /* No transition when reset by resize */
+  .mobile-search-content.no-transition {
+    transition: none !important;
+  }
+  
+  /* When search active (mobile only): show mobile-search sliding from right */
+  @media (max-width: 768px) {
+    :global(body:has(#search_toggle_input:checked)) .mobile-search-content {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  
+  /* Desktop: always hide mobile-search-content */
+  @media (min-width: 769px) {
+    .mobile-search-content {
+      display: none !important;
     }
   }
 </style>

@@ -13,10 +13,13 @@
  * 
  * Props:
  * @param defaultExpanded - Whether menu starts expanded (default: false)
+ * @param selectedLetter - Currently selected letter (default: "A")
+ * @param basePath - Base path for navigation links (e.g., "/all/")
  * 
  * Usage:
  * <MenuAlphabetPagination />
  * <MenuAlphabetPagination defaultExpanded={true} />
+ * <MenuAlphabetPagination selectedLetter="B" basePath="/all/" />
  */
 
 import ButtonAlphabetMenuExpansion from './ButtonAlphabetMenuExpansion.astro';
@@ -24,9 +27,15 @@ import ButtonsAlphabetPagination from './ButtonsAlphabetPagination.astro';
 
 interface Props {
   defaultExpanded?: boolean;
+  selectedLetter?: string;
+  basePath?: string;
 }
 
-const { defaultExpanded = false } = Astro.props;
+const { 
+  defaultExpanded = false,
+  selectedLetter = 'A',
+  basePath
+} = Astro.props;
 ---
 
 <div class="alphabet-menu" data-expanded={defaultExpanded}>
@@ -41,7 +50,7 @@ const { defaultExpanded = false } = Astro.props;
     
     <!-- Alphabet buttons wrapper -->
     <div class="buttons-wrapper">
-      <ButtonsAlphabetPagination />
+      <ButtonsAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
     </div>
   </div>
 </div>
@@ -51,6 +60,22 @@ const { defaultExpanded = false } = Astro.props;
   document.querySelectorAll('.alphabet-menu').forEach((menu) => {
     const expansionButtonWrapper = menu.querySelector('.expansion-button-wrapper');
     const expansionButton = expansionButtonWrapper?.querySelector('button');
+    const buttonsWrapper = menu.querySelector('.buttons-wrapper');
+    
+    // Auto-scroll to selected letter when collapsed
+    if (menu.getAttribute('data-expanded') === 'false' && buttonsWrapper) {
+      const selectedButton = buttonsWrapper.querySelector('[data-selected="true"]');
+      if (selectedButton) {
+        // Use requestAnimationFrame to ensure DOM is ready
+        requestAnimationFrame(() => {
+          selectedButton.scrollIntoView({ 
+            behavior: 'instant', 
+            block: 'nearest', 
+            inline: 'center' 
+          });
+        });
+      }
+    }
     
     if (expansionButton && expansionButtonWrapper) {
       expansionButton.addEventListener('click', () => {

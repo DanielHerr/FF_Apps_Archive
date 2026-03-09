@@ -3,19 +3,34 @@ import * as Content from "astro:content"
 
 import Base from "../../layouts/base.astro"
 import AppsList from "../../components/apps_list.astro"
-import Pagination from "../../components/pagination.astro"
+
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+import MenuPageNavButtons from "../../components/UI/MenuPageNavButtons.astro"
 
 import { live } from "../../validate_hosted_apps.js"
 
-const characters = [ "1", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
+const characters = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1" ]
+const basePath = "/all/"
 
 export async function getStaticPaths() {
-	const characters = [ "1", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ]
+	const characters = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1" ]
 	return characters.map(page => ({
 		params: { page },
 })) }
 
 let { page } = Astro.params
+
+// Convert URL page param to UI display letter ("1" → "#", others stay same)
+const selectedLetter = page === "1" ? "#" : page
+
+// Calculate prev/next pages
+const currentIndex = characters.indexOf(page)
+const prevPage = currentIndex > 0 ? characters[currentIndex - 1] : null
+const nextPage = currentIndex < characters.length - 1 ? characters[currentIndex + 1] : null
+const previousHref = prevPage ? basePath + prevPage : undefined
+const nextHref = nextPage ? basePath + nextPage : undefined
 
 let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
 
@@ -29,17 +44,48 @@ let apps = packaged.concat(live).filter(function(app) {
 })
 ---
 
-<Base title={"Page " + page + " - All Apps"}>
+<Base title={"All Apps \"" + selectedLetter + "\"" } searchable={true}>
+	<HeadlineAppType slot="header" variant="all" />
 	<Fragment slot="imports">
 		<link rel="stylesheet" href="/lists.css">
-		<link rel="stylesheet" href="/pagination.css">
-		<script src="/pagination.js" defer></script>
 	</Fragment>
 	<link slot="metadata" rel="canonical" href="/all/">
 
-	<h2 slot="header">All Apps - Page {page}</h2>
+	<!-- Mobile: Collapsible alphabet menu -->
+	<div class="mobile-only">
+		<MenuAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
+	</div>
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<div class="desktop-only">
+		<ButtonsAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
+	</div>
 
-			<Pagination current={page} />
-			<AppsList apps={ apps }/>
-			<Pagination current={page} />
+	<AppsList apps={ apps }/>
+
+	<!-- Bottom: Prev/Next navigation -->
+	<MenuPageNavButtons 
+		previousHref={previousHref}
+		nextHref={nextHref}
+		disablePrevious={!prevPage}
+		disableNext={!nextPage}
+	/>
 </Base>
+
+<style>
+	.desktop-only {
+		display: none;
+	}
+	.mobile-only {
+		display: block;
+		padding: var(--spacing-16) 0;
+	}
+	@media (min-width: 768px) {
+		.desktop-only {
+			display: block;
+		}
+		.mobile-only {
+			display: none;
+		}
+	}
+</style>

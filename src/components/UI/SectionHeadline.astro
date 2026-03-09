@@ -228,6 +228,11 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
     transition: all 0.2s ease;
   }
 
+  .h1-container :global(.heading) {
+    
+    color: var(--on-surface-light-faded);
+  }
+
   /* ========================================
      DEFAULT VARIANT
      ======================================== */
@@ -381,8 +386,12 @@ const CategoryIcon = category ? categoryIconMap[category] : null;
      ======================================== */
 
   @media (min-width: 769px) {
+    .section-headline {
+      padding-top: var(--spacing-20);
+      padding-bottom: var(--spacing-24);
+    }
 
-    .h1-container :global(.heading) {
+    .h1-container :global(.heading), .h1-with-icon :global(.heading) {
       font-size: var(--heading-xs-size);
       line-height: var(--heading-xs-line);
     }

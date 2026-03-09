@@ -26,12 +26,16 @@ const {
   href,
   label = href
 } = Astro.props;
+
+// Detect external links (http:// or https://)
+const isExternal = href.startsWith('http://') || href.startsWith('https://');
 ---
 
 <span class="link-wrapper">
   <a 
     href={href}
     class="link"
+    {...isExternal && { target: "_blank", rel: "noopener noreferrer" }}
   >
     {label}
   </a>
@@ -46,9 +50,7 @@ const {
      ======================================== */
   .link-wrapper {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline;
   }
 
   /* ========================================
@@ -57,7 +59,7 @@ const {
   .link {
     position: relative;
     z-index: 1;
-    display: block;
+    display: inline;
     padding: 0 2px;
     
     /* Typography - Explicit tokens per guidelines */
@@ -73,7 +75,7 @@ const {
     text-decoration-style: solid;
     
     cursor: pointer;
-    white-space: nowrap;
+    overflow-wrap: break-word;
     transition: all 0.2s ease;
   }
 

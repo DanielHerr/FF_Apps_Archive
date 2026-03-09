@@ -15,12 +15,14 @@
 // Import UI components
 import Header from '../components/UI/Header.astro';
 import Footer from '../components/UI/Footer.astro';
+import Navigation from '../components/UI/MenuNavSidebar.astro';
 import SectionHeadline from '../components/UI/SectionHeadline.astro';
 import H1 from '../components/UI/H1.astro';
 import CardAppTypes from '../components/UI/CardAppTypes.astro';
 import ButtonCategory from '../components/UI/ButtonCategory.astro';
 import ButtonCta from '../components/UI/ButtonCta.astro';
 import Link from '../components/UI/Link.astro';
+import SearchGraphic from '../components/UI/SearchGraphic.astro';
 import Metadata from '../components/common_metadata.astro';
 import Hidden_Inputs from '../components/hidden_inputs.astro';
 
@@ -35,11 +37,11 @@ const pageTitle = "FF Apps Archive";
 
 // App Types data
 const appTypes = [
-  { type: 'All' as const, href: '/all/1' },
-  { type: 'Packaged' as const, href: '/packaged/1' },
-  { type: 'Privileged' as const, href: '/privileged/1' },
-  { type: 'Live' as const, href: '/hosted/1' },
-  { type: 'Dead' as const, href: '/dead/1' }
+  { type: 'All' as const, href: '/all/A' },
+  { type: 'Packaged' as const, href: '/packaged/A' },
+  { type: 'Privileged' as const, href: '/privileged/A' },
+  { type: 'Live' as const, href: '/hosted/A' },
+  { type: 'Dead' as const, href: '/dead/A' }
 ];
 
 // Categories data now imported from ../categories.json
@@ -81,14 +83,23 @@ const footerLinks = [
 
   <body id="body" data-pagefind-body>
     <Hidden_Inputs/>
+    <input type="checkbox" id="nav_toggle_input" tabindex="-1">
     
     <!-- Custom Home Header -->
     <div class="home-header-wrapper">
       <Header variant="responsive-home" />
     </div>
     
+    <!-- Navigation Sidebar (mobile popover only, hidden on desktop for home page) -->
+    <Navigation desktopHidden />
+    
+    <!-- Search Active State: Shows blank background with SearchGraphic -->
+    <div id="search_active_container" class="search-active-container">
+      <SearchGraphic />
+    </div>
+    
     <!-- Main Content Container -->
-    <main class="home-container">
+    <main id="home_main" class="home-container">
       <!-- Hero Section with SectionHeadline component -->
       <section class="page-heading">
         <SectionHeadline 
@@ -121,16 +132,16 @@ const footerLinks = [
             <ButtonCategory 
               variant="block" 
               category={category.name}
-              href={`/${category.slug}/1`}
+              href={`/${category.slug}/A`}
             />
           ))}
           <ButtonCategory 
             variant="block" 
             category="Works Offline"
-            href="/works-offline/1"
+            href="/works-offline/A"
           />
         </div>
-        <p id="pwas_link" hidden><a href="pwa/1">Progressive Web Apps (PWAs) - can be installed in modern web browsers</a></p>
+        <p id="pwas_link" hidden><a href="pwa/A">Progressive Web Apps (PWAs) - can be installed in modern web browsers</a></p>
       </section>
       
       <!-- Footer Links Section -->
@@ -163,7 +174,7 @@ const footerLinks = [
             </p>
             <ButtonCta 
               label="Contribute" 
-              href="https://github.com/ffapps-archive/ffapps-archive" 
+              href="https://github.com/DanielHerr/FF_Apps_Archive" 
             />
           </div>
           
@@ -205,7 +216,6 @@ const footerLinks = [
     top: 0;
     width: 100%;
     z-index: 100;
-    min-width: 320px;
   }
   
   /* Main Container */
@@ -214,8 +224,7 @@ const footerLinks = [
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: 100%;
-    min-width: 320px;
+	  /* min-height: none; */
   }
   
   /* Section Base */
@@ -249,11 +258,6 @@ const footerLinks = [
     justify-content: center;
     width: 100%;
     max-width: 1000px;
-    padding: var(--spacing-16) 0 0 0;
-  }
-
-  .page-heading :global(.section-headline) {
-    padding-top: 0;
   }
   
   /* ========================================
@@ -323,7 +327,7 @@ const footerLinks = [
     transition: all 0.2s ease;
   }
 
-  /* Override Link component typography for list paragraph */
+  /* Override Link component typography for links paragraph */
   .links-paragraph :global(.link) {
     font-size: var(--body-sm-size);
     font-weight: var(--font-weight-regular);
@@ -429,11 +433,6 @@ const footerLinks = [
     /* Sections - increase padding */
     .section {
       padding: var(--spacing-24);
-    }
-    
-    /* Hero section */
-    .page-heading {
-      padding: var(--spacing-24) 0 var(--spacing-24) 0;
     }
     
     /* App types section - more space */

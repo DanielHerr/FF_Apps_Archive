@@ -5,6 +5,12 @@ interface Props {
   disabled?: boolean;
   name?: string;
   id?: string;
+  required?: boolean;
+  type?: 'text' | 'email' | 'tel' | 'url' | 'password';
+  /** Render as textarea for multi-line input */
+  multiline?: boolean;
+  /** Number of visible text rows for textarea (default: 4) */
+  rows?: number;
 }
 
 const { 
@@ -12,20 +18,37 @@ const {
   value = '',
   disabled = false,
   name,
-  id
+  id,
+  required = false,
+  type = 'text',
+  multiline = false,
+  rows = 4
 } = Astro.props;
 ---
 
 <div class="input-wrapper">
-  <input
-    type="text"
-    class="input-text"
-    placeholder={placeholder}
-    value={value}
-    disabled={disabled}
-    name={name}
-    id={id}
-  />
+  {multiline ? (
+    <textarea
+      class="input-text input-textarea"
+      placeholder={placeholder}
+      disabled={disabled}
+      name={name}
+      id={id}
+      required={required}
+      rows={rows}
+    >{value}</textarea>
+  ) : (
+    <input
+      type={type}
+      class="input-text"
+      placeholder={placeholder}
+      value={value}
+      disabled={disabled}
+      name={name}
+      id={id}
+      required={required}
+    />
+  )}
   
   <!-- Border overlay - changes on hover/focus without affecting layout -->
   <div aria-hidden="true" class="border-overlay"></div>
@@ -86,6 +109,18 @@ const {
   .input-text:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  /* Textarea variant */
+  .input-textarea {
+    resize: vertical;
+    min-height: 100px;
+    transition: none;
+  }
+
+  /* Disable transition on border overlay when textarea is present */
+  .input-textarea ~ .border-overlay {
+    transition: none;
   }
 
   /* ========================================

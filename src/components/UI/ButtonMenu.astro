@@ -27,6 +27,8 @@ export interface Props {
   disabled?: boolean;
   /** ID of popover element to toggle (e.g., 'nav') */
   popovertarget?: string;
+  /** Checkbox ID for no-JS fallback toggle */
+  fallbackCheckboxId?: string;
 }
 
 const { 
@@ -34,7 +36,8 @@ const {
   opacity = 0.7,
   ariaLabel = 'Menu',
   disabled = false,
-  popovertarget
+  popovertarget,
+  fallbackCheckboxId = 'nav_toggle_input'
 } = Astro.props;
 
 // Map size prop to pixel values
@@ -48,8 +51,9 @@ const sizeMap = {
 const buttonSize = sizeMap[size];
 ---
 
+<!-- Button for popover API -->
 <button 
-  class="button-menu" 
+  class="button-menu button-menu-popover" 
   type="button"
   aria-label={ariaLabel}
   disabled={disabled}
@@ -60,6 +64,21 @@ const buttonSize = sizeMap[size];
     <IconList />
   </span>
 </button>
+
+<!-- Label fallback for no-JS (checkbox toggle) -->
+<label 
+  class="button-menu button-menu-label"
+  for={fallbackCheckboxId}
+  tabindex="0"
+  role="button"
+  aria-controls={popovertarget}
+  aria-label={ariaLabel}
+  style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
+>
+  <span class="icon-wrapper">
+    <IconList />
+  </span>
+</label>
 
 <style>
   .button-menu {
@@ -126,5 +145,31 @@ const buttonSize = sizeMap[size];
 
   .button-menu:disabled .icon-wrapper {
     opacity: 0.4;
+  }
+
+  /* ========================================
+     PROGRESSIVE ENHANCEMENT
+     Show label by default (no-JS), hide when popover supported
+     ======================================== */
+  
+  /* Default: show label, hide button */
+  .button-menu-popover {
+    display: none;
+  }
+  
+  .button-menu-label {
+    display: inline-flex;
+    cursor: pointer;
+  }
+  
+  /* When popover supported: show button, hide label */
+  @supports selector(:popover-open) {
+    .button-menu-popover {
+      display: inline-flex;
+    }
+    
+    .button-menu-label {
+      display: none;
+    }
   }
 </style>

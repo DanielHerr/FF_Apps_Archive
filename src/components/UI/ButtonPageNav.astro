@@ -7,6 +7,7 @@
  * - variant: 'next' | 'previous' (default: 'next') - Controls nested label variant
  * - disabled: boolean (default: false)
  * - onclick: string (optional)
+ * - href: string (optional) - When provided, renders as anchor tag
  * 
  * States:
  * - Default: Faded border, shadow
@@ -27,27 +28,45 @@ interface Props {
   variant?: 'next' | 'previous';
   disabled?: boolean;
   onclick?: string;
+  href?: string;
 }
 
 const { 
   variant = 'next',
   disabled = false,
-  onclick
+  onclick,
+  href
 } = Astro.props;
+
+// Render as anchor if href is provided and not disabled
+const isLink = href && !disabled;
 ---
 
-<button 
-  class="button-page-nav"
-  disabled={disabled}
-  onclick={onclick}
-  aria-label={variant === 'next' ? 'Next page' : 'Previous page'}
-  type="button"
->
-  <div class="button-inner">
-    <LabelPageNavButton variant={variant} />
-  </div>
-  <div class="button-border" aria-hidden="true"></div>
-</button>
+{isLink ? (
+  <a 
+    class="button-page-nav"
+    href={href}
+    aria-label={variant === 'next' ? 'Next page' : 'Previous page'}
+  >
+    <div class="button-inner">
+      <LabelPageNavButton variant={variant} />
+    </div>
+    <div class="button-border" aria-hidden="true"></div>
+  </a>
+) : (
+  <button 
+    class="button-page-nav"
+    disabled={disabled}
+    onclick={onclick}
+    aria-label={variant === 'next' ? 'Next page' : 'Previous page'}
+    type="button"
+  >
+    <div class="button-inner">
+      <LabelPageNavButton variant={variant} />
+    </div>
+    <div class="button-border" aria-hidden="true"></div>
+  </button>
+)}
 
 <style>
   /* Base Button */
@@ -63,6 +82,7 @@ const {
     cursor: pointer;
     outline: none;
     transition: all 0.2s ease;
+    text-decoration: none; /* For anchor variant */
   }
 
   /* Button Inner Container */
@@ -90,7 +110,7 @@ const {
      STATE: DEFAULT
      ======================================== */
   .button-page-nav .button-border {
-    border: var(--border-md) solid var(--on-surface-light-border-low);
+    border: var(--border-md) solid var(--on-surface-light-border-high);
     box-shadow: var(--shadow-app-icon);
   }
 
@@ -117,7 +137,7 @@ const {
   }
 
   .button-page-nav:disabled .button-border {
-    border: var(--border-md) solid var(--on-surface-light-border-low);
+    border: var(--border-md) solid var(--on-surface-light-border-high);
     box-shadow: none;
   }
 

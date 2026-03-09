@@ -4,13 +4,28 @@ import * as Content from "astro:content"
 import Base from "../../layouts/base.astro"
 import AppsList from "../../components/apps_list.astro"
 
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
+const basePath = "/privileged/"
+
 let privileged = await Content.getCollection("metadata", ({ data }) => data.app_type == "privileged")
 ---
 
 <Base title="All Privileged Apps">
+	<HeadlineAppType slot="header" variant="privileged" />
 	<link slot="imports" rel="stylesheet" href="/lists.css">
 
-	<h2 slot="header">All Privileged Apps</h2>
+	<!-- Mobile: Collapsible alphabet menu -->
+	<div class="mobile-only">
+		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<div class="desktop-only">
+		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
 
 	<AppsList apps={ privileged }/>
 </Base>

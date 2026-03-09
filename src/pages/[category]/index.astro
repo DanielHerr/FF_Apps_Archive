@@ -7,11 +7,17 @@ import AppsList from "../../components/apps_list.astro"
 import categories from "../../categories.json" with { type: "json" }
 import { live } from "../../validate_hosted_apps.js"
 
+import SectionHeadline from "../../components/UI/SectionHeadline.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
 export async function getStaticPaths() {
 	return categories.map(category => ({ params: { category: category.slug }, props: { category } }))
 }
 
 let { category } = Astro.props
+
+const basePath = "/" + category.slug + "/"
 
 let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
 let apps = packaged.concat(live).filter(app => app.data.categories.includes(category.slug))
@@ -19,13 +25,37 @@ let apps = packaged.concat(live).filter(app => app.data.categories.includes(cate
 ---
 
 <Base title={category.name}>
+	<SectionHeadline slot="header" variant="icon" headerText={category.name} category={category.name} pagefindMeta="title" />
+	
 	<link slot="imports" rel="stylesheet" href="/lists.css">
-	<link slot="icon" rel="icon" href={"/icons/" + category.slug + ".png"} type="image/png">
 
-	<Fragment slot="header">
-		<img src={"/icons/" + category.slug + ".png"} alt="" width="40" height="40">
-		<h2>{category.name}</h2>
-	</Fragment>
+	<!-- Mobile: Collapsible alphabet menu -->
+	<div class="mobile-only">
+		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<div class="desktop-only">
+		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
 
 	<AppsList apps={apps}/>
 </Base>
+
+<style>
+	.desktop-only {
+		display: none;
+	}
+	.mobile-only {
+		display: block;
+		padding: var(--spacing-16) 0;
+	}
+	@media (min-width: 768px) {
+		.desktop-only {
+			display: block;
+		}
+		.mobile-only {
+			display: none;
+		}
+	}
+</style>

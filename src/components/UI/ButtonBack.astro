@@ -24,13 +24,16 @@ export interface Props {
   opacity?: number;
   ariaLabel?: string;
   disabled?: boolean;
+  /** Checkbox ID for toggling search state (renders as label instead of button) */
+  toggleCheckboxId?: string;
 }
 
 const { 
   size = 'md',
   opacity = 0.7,
   ariaLabel = 'Back',
-  disabled = false
+  disabled = false,
+  toggleCheckboxId,
 } = Astro.props;
 
 // Map size prop to pixel values
@@ -42,19 +45,37 @@ const sizeMap = {
 };
 
 const buttonSize = sizeMap[size];
+
+// Render as label when toggleCheckboxId is provided (for checkbox toggle)
+const isLabel = !!toggleCheckboxId;
 ---
 
-<button 
-  class="button-back" 
-  type="button"
-  aria-label={ariaLabel}
-  disabled={disabled}
-  style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
->
-  <span class="icon-wrapper">
-    <IconCaretLeft />
-  </span>
-</button>
+{isLabel ? (
+  <label 
+    class="button-back"
+    for={toggleCheckboxId}
+    tabindex="0"
+    role="button"
+    aria-label={ariaLabel}
+    style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
+  >
+    <span class="icon-wrapper">
+      <IconCaretLeft />
+    </span>
+  </label>
+) : (
+  <button 
+    class="button-back" 
+    type="button"
+    aria-label={ariaLabel}
+    disabled={disabled}
+    style={`--button-size: ${buttonSize}; --button-opacity: ${opacity};`}
+  >
+    <span class="icon-wrapper">
+      <IconCaretLeft />
+    </span>
+  </button>
+)}
 
 <style>
   .button-back {

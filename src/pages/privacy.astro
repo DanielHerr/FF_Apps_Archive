@@ -1,0 +1,197 @@
+---
+import Base from "../layouts/base.astro"
+
+import H1 from "../components/UI/H1.astro"
+import H2 from "../components/UI/H2.astro"
+import Link from "../components/UI/Link.astro"
+---
+
+<Base title="Privacy Policy" subtitle="Last Updated: December 10, 2025" searchable>
+    <section class="introduction">
+        <H1 text="Introduction" />
+        <p>Firefox Apps Archive ("FFAA," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard information when you visit our website at <Link href="/" label="https://ffapps.danielherr.software/" /> (the "Site").</p>
+    </section>
+
+    <section>
+        <H1 text="Information We Collect" />
+        <H2 text="Contact Form Submission" />
+        <p>When you submit a message through our contact form at <Link href="/contact" label="https://ffapps.danielherr.software/contact" />, we collect:</p>
+        <ul>
+            <li>First and last name</li>
+            <li>Email address</li>
+            <li>Message content</li>
+        </ul>
+        <p>This information is stored through Netlify and retained indefinitely to allow us to respond to your inquiries and maintain records of correspondence.</p>
+
+        <H2 text="Automated Analytics" />
+        <p>We use Cloudflare for website infrastructure, which collects basic aggregated statistics including:</p>
+        <ul>
+            <li>Country of origin</li>
+            <li>Web browser type</li>
+            <li>Operating system</li>
+        </ul>
+        <p>This information is collected in aggregate form only and does not enable us to identify individual users.</p>
+    </section>
+
+    <section>
+        <H1 text="Information We Do Not Collect" />
+        <p>We do not use cookies or any other tracking technologies on our Site. Beyond the contact form data and aggregated Cloudflare statistics mentioned above, we do not collect:</p>
+        <ul>
+            <li>Personally identifiable browsing behavior or detailed usage analytics</li>
+            <li>IP addresses linked to individual users</li>
+            <li>Precise location data</li>
+            <li>Any other personal information beyond what you voluntarily provide through the contact form</li>
+        </ul>
+    </section>
+
+    <section>
+        <H1 text="How We Use Your Information" />
+        <p>We use the information collected through our contact form solely to:</p>
+        <ul>
+            <li>Respond to your inquiries and communications</li>
+            <li>Provide support related to the Firefox Apps Archive project</li>
+            <li>Maintain records of correspondence</li>
+        </ul>
+    </section>
+
+    <section>
+        <H1 text="Data Storage and Security" />
+        <p>Contact form submissions are processed and stored by Netlify, our hosting provider. While we implement reasonable measures to protect your information, no method of transmission over the internet is completely secure.</p>
+    </section>
+
+    <section>
+        <H1 text="Third-Party Services" />
+        <p>We use the following third-party services:</p>
+        <ul>
+            <li><strong>Netlify:</strong> Website hosting and contact form processing</li>
+            <li><strong>Cloudflare:</strong> Website infrastructure and security, which collects aggregated statistics (country, browser, operating system)</li>
+        </ul>
+    </section>
+
+    <section>
+        <H1 text="Your Rights" />
+        <p>Depending on your location, you may have certain rights regarding your personal information, including:</p>
+        <ul>
+            <li>The right to access the information we hold about you</li>
+            <li>The right to request correction or deletion of your information</li>
+            <li>The right to withdraw consent for future communications</li>
+        </ul>
+        <p>To exercise these rights, please contact us using the information below.</p>
+    </section>
+
+    <section>
+        <H1 text="Children's Privacy" />
+        <p>Our Site is not directed to children under the age of 13, and we do not knowingly collect personal information from children.</p>
+    </section>
+
+    <section>
+        <H1 text="Changes To This Privacy Policy" />
+        <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date.</p>
+    </section>
+
+    <section>
+        <H1 text="Open Source Project" />
+        <p>Firefox Apps Archive is an open-source project dedicated to archiving historical Firefox apps. Our code and project information is publicly available.</p>
+    </section>
+
+    <section>
+        <H1 text="Contact Us" />
+        <p>If you have questions about this Privacy Policy or wish to exercise your privacy rights, please contact us through our contact form at: <Link href="/contact" label="https://ffapps.danielherr.software/contact" /></p>
+    </section>
+
+    <div class="instructions">
+        <p class="links-paragraph">
+            This privacy policy applies only to information collected through the Firefox Apps Archive website and does not apply to information collected offline or through other channels.
+        </p>
+    </div>
+
+</Base>
+
+<style>
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-8);
+        padding: var(--spacing-16) 0;
+        justify-content: left;
+        align-content: start;
+    }
+
+    section :global(h2.heading) {
+        color: var(--on-surface-light-faded);
+    }
+
+    section p, section ul, section :global(.link) {
+        /* Typography - Inter Regular, 16px/24px */
+        font-family: var(--font-inter);
+        font-weight: var(--font-weight-regular);
+        font-size: var(--body-xs-size);
+        line-height: var(--body-xs-line);
+        font-style: normal;
+        
+        /* Color - Primary text on surface */
+        color: var(--on-surface-light-regular);
+    }
+
+    ul {
+        list-style: disc;
+        padding-left: var(--spacing-24);
+    }
+    
+    .links-paragraph {
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-regular);
+        line-height: var(--body-sm-line);
+        transition: all 0.2s ease;
+    }
+
+    /* Override Link component typography for links paragraph */
+    .links-paragraph :global(.link) {
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-regular);
+        line-height: var(--body-sm-line);
+    }
+
+    .instructions {
+        background: var(--surface-light-high);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-8);
+    }
+
+    @media (min-width: 769px) {
+        :global(.section-headline) {
+			padding-bottom: 0 !important;
+		}
+        
+        section :global(h1.heading) {
+            font-size: var(--heading-xs-size);
+            line-height: var(--heading-xs-line);
+        }
+
+        section :global(h2.heading) {
+            font-size: var(--heading-xxs-size);
+            line-height: var(--heading-xxs-line);
+        }
+
+        section p, section ul, section :global(.link){
+            font-size: var(--body-sm-size);
+            line-height: var(--body-sm-line);
+        }
+
+        ul {
+            padding-left: var(--spacing-36);
+        }
+
+        /* Typography - Desktop overrides */
+        .links-paragraph {
+            font-size: var(--body-md-size);
+            line-height: var(--body-md-line);
+        }
+
+        /* Override Link component typography for paragraph links - Desktop */
+        .links-paragraph :global(.link) {
+            font-size: var(--body-md-size);
+            line-height: var(--body-md-line);
+        }
+    }
+</style>

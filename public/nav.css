@@ -25,7 +25,7 @@ popover and anchor, checkbox/radio hack fallback
 } */
 
 /* large screen, left nav */
-@media(min-width: 800px) {
+@media(min-width: 769px) {
 	#flexer {
 		display: -moz-box; display: -webkit-box;
 		display: -webkit-flex; display: flex;
