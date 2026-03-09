@@ -8,28 +8,44 @@
  * - Wrapping grid layout with center alignment
  * - Side borders (left/right only)
  * - Controlled selection via selectedLetter prop
+ * - Navigation links when basePath is provided
  * 
  * Props:
  * @param selectedLetter - Currently selected letter (default: "A")
+ * @param basePath - Base path for navigation links (e.g., "/all/"). When provided, buttons become links.
+ * 
+ * URL Mapping:
+ * - "All" → basePath (e.g., "/all/")
+ * - "#" → basePath + "1" (e.g., "/all/1")
+ * - Letters A-Z → basePath + letter (e.g., "/all/A")
  * 
  * Usage:
  * <ButtonsAlphabetPagination selectedLetter="A" />
- * <ButtonsAlphabetPagination selectedLetter="All" />
+ * <ButtonsAlphabetPagination selectedLetter="A" basePath="/all/" />
  */
 
 import ButtonLetter from './ButtonLetter.astro';
 
 interface Props {
   selectedLetter?: string;
+  basePath?: string;
 }
 
-const { selectedLetter = 'A' } = Astro.props;
+const { selectedLetter = 'A', basePath } = Astro.props;
 
 // All available letters including "All" and "#"
 const letters = [
-  'All', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'M', 
+  'All', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'
 ];
+
+// Generate href for a letter
+function getHref(letter: string): string | undefined {
+  if (!basePath) return undefined;
+  if (letter === 'All') return basePath;
+  if (letter === '#') return basePath + '1';
+  return basePath + letter;
+}
 ---
 
 <div class="alphabet-pagination">
@@ -42,6 +58,7 @@ const letters = [
       <ButtonLetter 
         letter={letter}
         selected={letter === selectedLetter}
+        href={getHref(letter)}
       />
     ))}
   </div>
@@ -85,5 +102,12 @@ const letters = [
     column-gap: var(--spacing-12);
     width: 100%;
     border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 769px) {
+    .letters-grid {
+      row-gap: 12px;
+      padding: var(--spacing-12) 0;
+    }
   }
 </style>

@@ -262,6 +262,39 @@ const unavailableDialogId = `${uniqueId}-unavailable`;
     background: none;
   }
 
+  /* Popover - use :global to avoid scoping issues with :popover-open */
+  :global(form.search-bar-wrapper[popover]:not(:popover-open)) {
+    display: none;
+  }
+
+  /* Popover positioning - when form is used as a popover and open */
+  :global(form.search-bar-wrapper[popover]:popover-open) {
+    display: inline-flex !important;
+    position: fixed;
+    inset: unset;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-16);
+    background: var(--surface-light-low);
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    z-index: 100;
+  }
+
+  /* Hide mobile search popover on desktop (covered by desktop search bar) */
+  @media (min-width: 769px) {
+    :global(form.search-bar-wrapper[popover]) {
+      display: none !important;
+    }
+  }
+
+  /* Support anchor positioning where available */
+  @supports (anchor-name: --header) {
+    :global(form.search-bar-wrapper[popover]:popover-open) {
+      top: anchor(--header bottom);
+    }
+  }
+
   .search-bar-inner {
     position: relative;
     display: flex;

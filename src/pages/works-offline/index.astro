@@ -6,18 +6,28 @@ import AppsList from "../../components/apps_list.astro"
 
 import { live } from "../../validate_hosted_apps.js"
 
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
+const basePath = "/works-offline/"
+
 let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
 let apps = packaged.concat(live).filter(app => app.data.is_offline)
 ---
 
 <Base title="Works Offline">
-	<link slot="imports" rel="stylesheet" href="/lists.css" />
-	<link slot="icon" rel="icon" href={"/icons/works-offline.png"} type="image/png">
+	<link slot="imports" rel="stylesheet" href="/lists.css">
 
-	<Fragment slot="header">
-		<img src="/icons/works-offline.png" alt="" width="40" height="40">
-				<h2>Works Offline</h2>
-	</Fragment>
+	<!-- Mobile: Collapsible alphabet menu -->
+	<div class="mobile-only">
+		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<div class="desktop-only">
+		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
 
 	<AppsList apps={ apps }/>
 </Base>

@@ -1,19 +1,13 @@
 ---
-// ↓ Deprecated component imports (replaced by UI versions)
-//import Header from "../components/header.astro"
-//import Footer from "../components/footer.astro"
-//import Navigation from "../components/navigation.astro"
-import Header from "../components/UI/Header.astro"
-import Footer from "../components/UI/Footer.astro"
-import Navigation from "../components/UI/MenuNavSidebar.astro"
-import SectionHeadline from "../components/UI/SectionHeadline.astro"
-import SearchGraphic from "../components/UI/SearchGraphic.astro"
+import Header from "../components/header.astro"
+import Footer from "../components/footer.astro"
+import Navigation from "../components/navigation.astro"
 import Metadata from "../components/common_metadata.astro"
-// import Theme from "../components/theme_buttons.astro"
+import Theme from "../components/theme_buttons.astro"
 import "../styles/index.css";
 import Hidden_Inputs from "../components/hidden_inputs.astro"
 
-let { title, subtitle, searchable } = Astro.props
+let { title, searchable } = Astro.props
 ---
 
 <!doctype html>
@@ -44,24 +38,21 @@ let { title, subtitle, searchable } = Astro.props
 		<Hidden_Inputs/>
 		<Header/>
 		<input type="checkbox" id="nav_toggle_input" tabindex="-1">
-		
-		<!-- Search Active State: Shows blank background with SearchGraphic -->
-		<div id="search_active_container" class="search-active-container">
-			<SearchGraphic />
-		</div>
-		
 		<div id="scroller">
 			<div id="flexer">
 				<main data-pagefind-body={ searchable ? "" : null }>
 					<header>
+
 						<slot name="header">
-							<SectionHeadline headerText={title} subHeaderText={subtitle} pagefindMeta="title" />
+							<h2 data-pagefind-meta="title">{ title }</h2>
 						</slot>
+
 					</header>
 
 					<slot/>
+
 				</main>
-				<Navigation />
+				<Navigation/>
 			</div>
 			<Footer/>
 		</div>

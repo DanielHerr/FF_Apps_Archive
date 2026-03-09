@@ -65,9 +65,13 @@ body > header label, body > header button {
 main {
 	overflow: auto;
 	background: var(--surface-light-mid);
+    min-width: 320px;
 	max-width: 1000px;
+    width: 100%;
+	min-height: calc(100vh - 64px);
 	padding-left: var(--spacing-16);
 	padding-right: var(--spacing-16);
+	padding-bottom: var(--spacing-16);
 }
 main header img {
 	float: left;
@@ -79,7 +83,8 @@ main header img {
 		display: none;
 	}
 }
-@media(max-width: 600px) {
+
+/* @media(max-width: 600px) {
 	#long_header {
 		position: absolute;
 		width: 1px;
@@ -104,7 +109,7 @@ main header img {
 	#short_header {
 		display: none;
 	}
-}
+} */
 
 /* #light_theme:checked ~ * {
 	background: white;
@@ -150,7 +155,59 @@ html:has(#dark_theme:checked) {
 } */
 
 
-#search_toggle_input:checked ~ #scroller, #search_unavailable_input:checked ~ #scroller {
+/* ========================================
+   SEARCH ACTIVE STATE (Mobile)
+   ======================================== */
+
+/* Search active container: hidden by default */
+#search_active_container {
+	display: none;
+}
+
+/* Mobile: toggle search active state via checkbox */
+@media (max-width: 768px) {
+	#search_toggle_input:checked ~ #search_active_container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		width: 100%;
+		height: 100%;
+		padding: var(--spacing-24);
+		background: var(--surface-light-mid);
+	}
+	
+	#search_toggle_input:checked ~ #scroller {
+		display: none;
+	}
+	
+	/* Hide home page main when search active */
+	#search_toggle_input:checked ~ main,
+	#search_toggle_input:checked ~ .home-container {
+		display: none;
+	}
+	
+	/* Header toggle: swap mobile-content to mobile-search-content when search active */
+	#search_toggle_input:checked ~ .header .mobile-content,
+	#search_toggle_input:checked ~ * .header .mobile-content {
+		display: none !important;
+	}
+	
+	#search_toggle_input:checked ~ .header .mobile-search-content,
+	#search_toggle_input:checked ~ * .header .mobile-search-content {
+		display: flex !important;
+	}
+}
+
+/* Desktop: never show search active container */
+@media (min-width: 769px) {
+	#search_active_container {
+		display: none !important;
+	}
+}
+
+/* Legacy: Old search toggle styles (for backward compatibility) */
+#search_unavailable_input:checked ~ #scroller {
 	display: none;
 }
 #search_toggle_input:checked ~ header #search_form {
@@ -221,4 +278,44 @@ html:has(#dark_theme:checked) {
 	#search_toggle_label {
 		display: none;
 	}
+}
+
+/* ========================================
+   SEARCH UNAVAILABLE STATE (JS applied)
+   ======================================== */
+[data-search-disabled="true"] {
+	cursor: not-allowed;
+}
+
+/* Disable hover/active effects on search button */
+.button-search[data-search-disabled="true"],
+.button-search[data-search-disabled="true"]:hover,
+.button-search[data-search-disabled="true"]:active {
+	opacity: 0.5;
+}
+
+.button-search[data-search-disabled="true"] .icon-container,
+.button-search[data-search-disabled="true"]:hover .icon-container,
+.button-search[data-search-disabled="true"]:active .icon-container {
+	color: var(--on-surface-light-faded) !important;
+	transform: none !important;
+}
+
+/* Disabled search bar */
+.search-bar-wrapper[data-search-disabled="true"] {
+	opacity: 0.5;
+}
+
+/* Search unavailable modal positioning - centered horizontally, below header */
+#search_unavailable_modal {
+	width: 98%;
+	position: fixed;
+	top: 68px; /* 64px header + 4px gap */
+	left: 50%;
+	transform: translateX(-50%);
+	margin: 0;
+	z-index: 9999;
+	max-width: calc(100vw - 32px);
+	box-sizing: border-box;
+	align-items: center;
 }

@@ -6,12 +6,47 @@ import AppsList from "../../components/apps_list.astro"
 
 import { live } from "../../validate_hosted_apps.js"
 
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
+const basePath = "/all/"
+
 let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
 let apps = packaged.concat(live)
 ---
 
 <Base title="All Apps">
+	<HeadlineAppType slot="header" variant="all" />
 	<link slot="imports" rel="stylesheet" href="/lists.css">
+
+	<!-- Mobile: Collapsible alphabet menu -->
+	<div class="mobile-only">
+		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<div class="desktop-only">
+		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
 
 	<AppsList apps={ apps }>
 </Base>
+
+<style>
+	.desktop-only {
+		display: none;
+	}
+	.mobile-only {
+		display: block;
+		padding: var(--spacing-16) 0;
+	}
+	@media (min-width: 768px) {
+		.desktop-only {
+			display: block;
+		}
+		.mobile-only {
+			display: none;
+		}
+	}
+</style>

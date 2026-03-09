@@ -1,73 +1,215 @@
 ---
 import Base from "../layouts/base.astro"
+
+import LabelSectionNumber from "../components/UI/LabelSectionNumber.astro"
+import Link from "../components/UI/Link.astro"
 ---
 
-<Base title="Sideloading" searchable>
-	<h2 slot="header">Firefox OS v1.2+ Sideloading Instructions</h2>
+<Base title="Sideloading Instructions" subtitle="Firefox OS v1.2+" searchable>
+	<ol>
+		<li class="default-list">
+			<header>
+				<LabelSectionNumber number="1" />
+			</header>
+			<ol>
+				<li>Download an old version of Firefox on Windows, Linux, or Mac which has WebIDE, such as <Link href="https://ftp.mozilla.org/pub/firefox/releases/45.9.0esr/" label="v45 ESR" /></li>
+				<li>Enable ADB and Devtools debugging on Firefox OS device in Developer settings</li>
+			</ol>
+		</li>
 
-<ol>
-	<li>Download an old version of Firefox on Windows, Linux, or Mac which has WebIDE, such as <a href="https://ftp.mozilla.org/pub/firefox/releases/45.9.0esr/">v45 ESR.</a></li>
+		<li class="split-list">
+			<header>
+				<LabelSectionNumber number="2" />
+				<p>Choose one of the following options:</p>
+			</header>
+			
+			<ul>
+				<li>
+					<header>
+						<p>ADB Helper Firefox extension</p>
+					</header>
+					<ol>
+						<li><Link href="https://archive.mozilla.org/pub/labs/fxos-simulator/adb-helper/" label="Download ADB Helper extension" /></li>
 
-	<li>Enable ADB and Devtools debugging on Firefox OS device in Developer settings</li>
+						<li>Run Firefox and navigate to <code>about:config</code></li>
 
-	<li>Choose one of the following options:
-		<ol>
-			<li>
-				Option 1: ADB Helper Firefox extension
-				<ol>
-					<li><a href="https://archive.mozilla.org/pub/labs/fxos-simulator/adb-helper/">Download ADB Helper extension</a></li>
+						<li>Search for <code>xpinstall.signatures.required</code> and switch to false</li>
 
-					<li>Run Firefox and navigate to "about:config"</li>
+						<li>Restart Firefox and open Addons page</li>
 
-					<li>Search for "xpinstall.signatures.required" and switch to false</li>
+						<li>Use the addons menu to install extension from file or drag onto page</li>
 
-					<li>Restart Firefox and open Addons page</li>
+						<li>Open WebIDE from the Developers entry in the Firefox menu</li>
 
-					<li>Use the addons menu to install extension from file or drag onto page</li>
+						<li>Select Firefox OS device under USB Devices</li>
+					</ol>
+				</li>
 
-					<li>Open WebIDE from the Developers entry in the Firefox menu</li>
+				<li>
+					<header>
+						<p>ADB system tool installation</p>
+					</header>
+					<ol>
+						<li>Install ADB using your package manager using a terminal or command prompt
+							<p>
+								Debian/Ubuntu Linux: 
+								<br>
+								<code>sudo apt install adb</code>
+							</p>
+							<p>
+								Windows 10/11:
+								<br>
+								<code>winget install Google.PlatformTools</code>
+							</p>
+						</li>
 
-					<li>Select Firefox OS device under USB Devices</li>
-				</ol>
-			</li>
+						<li>Setup forwarding:
+							<br>
+							<code>adb forward tcp:6000 localfilesystem:/data/local/debugger-socket</code>
+						</li>
 
-			<li>
-				Option 2: ADB system tool installation
-				<ol>
-					<li>Install ADB using your package manager using a terminal or command prompt
-<br>
-Debian/Ubuntu Linux:
-<br>
-<code>sudo apt install adb</code>
-<br>
-Windows 10/11:
-<br>
-<code>winget install Google.PlatformTools</code></li>
+						<li>Open WebIDE from the Developers entry in the Firefox menu</li>
 
-					<li>Setup forwarding:
-						<br>
-<code>adb forward tcp:6000 localfilesystem:/data/local/debugger-socket</code>
-</li>
+						<li>Select Remote Runtime and enter <code>localhost:6000</code></li>	
+					</ol>
+				</li>
+			</ul>
+		</li>
+		
+		<li class="default-list">
+			<header>
+				<LabelSectionNumber number="3" />
+			</header>
+			<ol>
+				<li>Approve debugging connection on Firefox OS device</li>
 
-					<li>Open WebIDE from the Developers entry in the Firefox menu</li>
+				<li>Open Packaged App and select desired extracted app</li>
 
-					<li>Select Remote Runtime and enter <code>localhost:6000</code></li>
-				</ol>
-			</li>
-		</ol>
-	</li>
+				<li>Install and Run desired app</li>
+			</ol>
+		</li>	
+	</ol>
 
-	<li>Approve debugging connection on Firefox OS device</li>
-
-	<li>Open Packaged App and select desired extracted app</li>
-
-	<li>Install and Run desired app</li>
-</ol>
-
-<p>On Windows you may need to install drivers.
-	On the Fx0 this can be done by enabling "Install PC programs" in device settings on the Fx0 then running the executable inside the mounted storage drive.
-	<a href="https://developer.android.com/studio/run/oem-usb">Drivers for other models may be found online.</a>
-	If you can’t get recognized by ADB and can’t find drivers, try using Linux.
-</p>
-
+	<p class="note">On Windows you may need to install drivers.
+		On the Fx0 this can be done by enabling "Install PC programs" in device settings on the Fx0 then running the executable inside the mounted storage drive.
+		<Link href="https://developer.android.com/studio/run/oem-usb" label="Drivers for other models may be found online." />
+		If you can’t get recognized by ADB and can’t find drivers, try using Linux.
+	</p>
 </Base>
+
+<style>
+	ol {
+		list-style: none;
+	}
+	ol li ol, ul li ol {
+		display: flex;
+		flex-direction: column;
+		list-style: disc;
+		gap: var(--spacing-16);
+	}
+	ul {
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		padding: var(--spacing-16) 0;
+	}
+	ul li header {
+		justify-content: center;
+	}
+	ul li header p {
+		font-size: var(--body-xxs-sc-size);
+		line-height: var(--body-xxs-sc-line);
+		text-transform: uppercase;
+	}
+	ul li{
+		flex: 1;
+		min-width: 0;
+	}
+	ul ol li {
+		display: list-item;
+	}
+	ul ol li p {
+		padding-top: var(--spacing-16);
+	}
+
+    li, li p, ol :global(.link), p :global(.link), p.note {
+        /* Typography - Inter Regular, 16px/24px */
+        font-family: var(--font-inter);
+        font-weight: var(--font-weight-regular);
+        font-size: var(--body-sm-size);
+        line-height: var(--body-sm-line);
+        font-style: normal;
+        
+        /* Color - Primary text on surface */
+        color: var(--on-surface-light-regular);
+
+        /* Allow long strings without spaces to wrap */
+        overflow-wrap: break-word;
+    }	
+
+	li header :global(.label-container) {
+		margin-right: var(--spacing-8);
+	}
+	
+	.default-list {
+		display: flex;
+		flex-direction: row;
+		padding: var(--spacing-16) 0 var(--spacing-16) 0;
+	}
+	.default-list ol, ul li ol {
+		margin-left: var(--spacing-16);
+	}
+
+	.split-list header {
+		display: flex;
+		flex-direction: row;
+		gap: 0;
+		align-items: center;
+		padding: var(--spacing-16) 0 var(--spacing-8) 0;
+	}
+	.split-list ul {
+		border: var(--border-md) solid var(--on-surface-light-border-high);
+		border-style: solid none solid none;
+	}
+
+	p.note {
+        background: var(--surface-light-high);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-8);
+	}
+
+	code {
+        font-size: var(--body-xs-size);
+        line-height: var(--body-xs-line);
+		color: var(--on-surface-light-primary);
+	}
+
+	 @media (min-width: 769px) {
+		:global(.section-headline) {
+			padding-bottom: 0 !important;
+		}
+		li header :global(.label-container) {
+			width: 32px;
+			height: 32px;
+			margin-right: var(--spacing-12);
+		}
+		.split-list header {
+			gap: var(--spacing-8);
+		}
+		li, li p, ol :global(.link), p :global(.link), p.note {
+            font-size: var(--body-md-size);
+            line-height: var(--body-md-line);
+        }
+		ul li header {
+			justify-content: left;
+		}
+		.default-list ol, ul li ol {
+			margin-left: var(--spacing-24);
+		}
+
+		code {
+			font-size: var(--body-sm-size);
+			line-height: var(--body-sm-line);
+		}
+	}
+</style>

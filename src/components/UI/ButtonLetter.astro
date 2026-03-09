@@ -11,40 +11,58 @@
  * - Disabled: 40% opacity
  * 
  * Props:
- * @param letter - Single letter to display (A-Z)
+ * @param letter - Single letter to display (A-Z, "All", "#")
  * @param selected - Whether button is currently selected
  * @param disabled - Whether button is disabled
+ * @param href - Optional URL to navigate to (renders as anchor when provided)
  * 
  * Usage:
  * <ButtonLetter letter="A" />
  * <ButtonLetter letter="B" selected={true} />
  * <ButtonLetter letter="C" disabled={true} />
+ * <ButtonLetter letter="A" href="/all/A" />
  */
 
 interface Props {
   letter: string;
   selected?: boolean;
   disabled?: boolean;
+  href?: string;
 }
 
 const { 
   letter,
   selected = false,
-  disabled = false
+  disabled = false,
+  href
 } = Astro.props;
+
+// Render as anchor if href is provided and not selected/disabled
+const isLink = href && !selected && !disabled;
 ---
 
-<button 
-  class="button-letter"
-  data-selected={selected}
-  disabled={disabled}
-  aria-pressed={selected}
->
-  <span class="letter-text">{letter}</span>
-  
-  <!-- Border overlay for hover/focus states -->
-  <span aria-hidden="true" class="border-overlay"></span>
-</button>
+{isLink ? (
+  <a 
+    class="button-letter"
+    href={href}
+    data-selected={selected}
+    aria-current={selected ? "page" : undefined}
+  >
+    <span class="letter-text">{letter}</span>
+    <span aria-hidden="true" class="border-overlay"></span>
+  </a>
+) : (
+  <button 
+    class="button-letter"
+    data-selected={selected}
+    disabled={disabled}
+    aria-pressed={selected}
+    type="button"
+  >
+    <span class="letter-text">{letter}</span>
+    <span aria-hidden="true" class="border-overlay"></span>
+  </button>
+)}
 
 <style>
   /* ========================================
@@ -56,12 +74,15 @@ const {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-width: 44px;
+    height: 44px;
     padding: var(--spacing-4) var(--spacing-12);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-app-icon);
     cursor: pointer;
     transition: all 0.2s ease;
     border: none;
+    text-decoration: none; /* For anchor variant */
     
     /* Default state - light purple background */
     background: var(--surface-light-primary-low);
@@ -144,5 +165,11 @@ const {
 
   .button-letter:disabled:active {
     transform: none;
+  }
+
+  @media (min-width: 769px) {
+    .button-letter {
+      height: var(--spacing-28);
+    }
   }
 </style>

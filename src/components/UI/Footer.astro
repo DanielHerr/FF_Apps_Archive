@@ -61,6 +61,7 @@ import Link from './Link.astro';
     justify-content: center;
     gap: var(--spacing-8);
     width: 100%;
+    min-width: 320px;
     height: auto;
     padding: var(--spacing-16);
     background: var(--surface-light-mid);
@@ -92,9 +93,9 @@ import Link from './Link.astro';
     /* Override typography for footer links */
     font-family: var(--font-inter);
     font-weight: var(--font-weight-regular);
-    font-size: 10px;
-    line-height: normal;
-    letter-spacing: 0.4px;
+    font-size: var(--body-xxs-sc-size);
+    line-height: var(--body-xxs-sc-line);
+    letter-spacing: var(--body-xxs-sc-spacing);
     text-transform: uppercase;
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -108,8 +109,8 @@ import Link from './Link.astro';
     /* Typography with explicit tokens */
     font-family: var(--font-inter);
     font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 18px;
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
     letter-spacing: normal;
     
     /* Layout - flex to tightly hug content */
@@ -132,8 +133,8 @@ import Link from './Link.astro';
     /* Override typography for attribution link */
     font-family: var(--font-inter);
     font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 18px;
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
     letter-spacing: normal;
     color: var(--on-surface-light-faded);
     text-decoration: underline;
@@ -154,8 +155,8 @@ import Link from './Link.astro';
     /* Typography with explicit tokens */
     font-family: var(--font-inter);
     font-weight: var(--font-weight-regular);
-    font-size: 10px;
-    line-height: 16px;
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
     letter-spacing: normal;
     
     /* Layout */

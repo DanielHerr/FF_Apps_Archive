@@ -8,7 +8,7 @@
  * - 'packaged': Packaged Apps section
  * - 'privileged': Privileged Apps section
  * - 'hosted': Hosted Apps section
- * - 'dead-hosted': Dead Hosted Apps section
+ * - 'dead': Dead Hosted Apps section
  * 
  * Props:
  * @param variant - App type variant (default: 'all')
@@ -27,7 +27,7 @@
 import SectionHeadline from './SectionHeadline.astro';
 
 export interface Props {
-  variant?: 'all' | 'packaged' | 'privileged' | 'hosted' | 'dead-hosted';
+  variant?: 'all' | 'packaged' | 'privileged' | 'hosted' | 'dead';
 }
 
 const { variant = 'all' } = Astro.props;
@@ -50,7 +50,7 @@ const contentMap = {
     headerText: 'Hosted Apps',
     subHeaderText: 'Hosted apps are retrieved offsite and some of them can be installed from this archive.'
   },
-  'dead-hosted': {
+  'dead': {
     headerText: 'Dead Hosted Apps',
     subHeaderText: 'Dead hosted apps cannot be installed from this archive.'
   }

@@ -1,7 +1,56 @@
 ---
 import Base from "../layouts/base.astro"
+
+import Button from "../components/UI/Button.astro"
 ---
 
-<Base title="Contact">
-	<p>Your message has been sent.</p>
+<Base title="Contact Us" subtitle="">
+	<div class="content">
+		<p class="message-header">Your message has been sent</p>
+		<p class="message">Thank you for reaching out to us! We value your feedback and inquiries.</p>
+	</div>
+    <div class="button-container">
+      <a class="home-button" href="/"><Button label="Back Home" /></a>
+    </div>
 </Base>
+
+<style>
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-16);
+		align-items: center;
+		padding: var(--spacing-32) 0;
+	}
+
+	.message {
+		font-family: var(--font-inter);
+		font-weight: var(--font-weight-regular);
+		font-size: var(--body-lg-size);
+		line-height: var(--body-lg-line);
+		color: var(--on-surface-light-regular);
+	}
+
+	.message-header {
+		font-family: var(--font-metropolis);
+		font-weight: var(--font-weight-bold);
+		font-size: var(--heading-lg-size);
+		line-height: var(--heading-lg-line);
+		color: var(--on-surface-light-regular);
+	}
+
+	.button-container {
+		display: flex;
+		justify-content: center;
+	}
+
+	.home-button {
+		width: 100%;
+	}
+
+	@media (min-width: 769px) {
+		.home-button {
+			width: 288px;
+		}
+	}
+</style>

@@ -1,29 +1,32 @@
-fieldset {
+form[name="FFAA Contact"] fieldset {
 	border: none;
-	padding: 0;
+	/* padding: 0;
 	margin: 0;
-	margin-bottom: 1em;
+	margin-bottom: 1em; */
 }
 
-label {
+form[name="FFAA Contact"] label {
 	display: block;
 }
-fieldset label {
+
+form[name="FFAA Contact"] fieldset label {
 	margin-top: 0;
 }
 
-input, button {
+form[name="FFAA Contact"] input,
+form[name="FFAA Contact"] button {
 	font-size: 1em;
 }
-input:user-invalid {
+
+form[name="FFAA Contact"] input:user-invalid {
 	border-color: red;
 }
 
-textarea {
+form[name="FFAA Contact"] textarea {
 	display: block;
 	font-size: 1em;
 }
 
-button {
+/* form[name="FFAA Contact"] button {
 	margin-top: 1em;
-}
+} */

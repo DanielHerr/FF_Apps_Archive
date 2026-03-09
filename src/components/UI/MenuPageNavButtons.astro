@@ -8,10 +8,11 @@
  * - 12px gap between buttons
  * - 12px vertical padding
  * - Buttons grow equally to fill space
- * - Previous button defaults to disabled state
+ * - Supports href links for navigation
  * 
  * Usage:
  * <MenuPageNavButtons />
+ * <MenuPageNavButtons previousHref="/all/A" nextHref="/all/C" />
  */
 
 import ButtonPageNav from './ButtonPageNav.astro';
@@ -21,13 +22,17 @@ interface Props {
   disableNext?: boolean;
   onPreviousClick?: string;
   onNextClick?: string;
+  previousHref?: string;
+  nextHref?: string;
 }
 
 const { 
   disablePrevious = true,
   disableNext = false,
   onPreviousClick,
-  onNextClick
+  onNextClick,
+  previousHref,
+  nextHref
 } = Astro.props;
 ---
 
@@ -36,11 +41,13 @@ const {
     variant="previous" 
     disabled={disablePrevious}
     onclick={onPreviousClick}
+    href={previousHref}
   />
   <ButtonPageNav 
     variant="next" 
     disabled={disableNext}
     onclick={onNextClick}
+    href={nextHref}
   />
 </nav>
 

@@ -1,8 +1,16 @@
 ---
 import Base from "../layouts/base.astro"
+
+import SectionHeadline from "../components/UI/SectionHeadline.astro"
 ---
 
-<Base title="Search">
+<Base title="Search Results">
+	<SectionHeadline
+		slot="header"
+		variant="sub-only" 
+		subHeaderText="Search Results"
+    />
+
 	<Fragment slot="imports">
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
 		<script src="/pagefind/pagefind-ui.js" defer></script>

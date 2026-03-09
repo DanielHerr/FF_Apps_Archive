@@ -4,11 +4,46 @@ import * as Content from "astro:content"
 import Base from "../../layouts/base.astro"
 import AppsList from "../../components/apps_list.astro"
 
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
+const basePath = "/packaged/"
+
 let packaged = await Content.getCollection("metadata", ({ data }) => data.app_type == "packaged")
 ---
 
 <Base title="All Packaged Apps">
+	<HeadlineAppType slot="header" variant="packaged" />
 	<link slot="imports" rel="stylesheet" href="/lists.css">
+
+	<!-- Mobile: Collapsible alphabet menu -->
+	<div class="mobile-only">
+		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<div class="desktop-only">
+		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+	</div>
 
 	<AppsList apps={ packaged }/>
 </Base>
+
+<style>
+	.desktop-only {
+		display: none;
+	}
+	.mobile-only {
+		display: block;
+		padding: var(--spacing-16) 0;
+	}
+	@media (min-width: 768px) {
+		.desktop-only {
+			display: block;
+		}
+		.mobile-only {
+			display: none;
+		}
+	}
+</style>

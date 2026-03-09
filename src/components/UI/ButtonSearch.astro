@@ -7,6 +7,7 @@
  * - disabled: boolean (default: false) - Shows notification badge when disabled
  * - onclick: string (optional) - Click handler attribute
  * - type: 'button' | 'submit' (default: 'button') - Button type for form submission
+ * - popovertarget: string (optional) - ID of popover element to toggle (for search form popover)
  * 
  * States:
  * - Default: Regular opacity with on-surface-light-regular color
@@ -29,34 +30,109 @@ interface Props {
   onclick?: string;
   /** Button type: 'button' (default) or 'submit' for form submission */
   type?: 'button' | 'submit';
+  /** ID of popover element to toggle (for search form popover) - deprecated */
+  popovertarget?: string;
+  /** Checkbox ID for CSS-only search toggle (renders as label) */
+  toggleCheckboxId?: string;
 }
 
 const { 
   disabled = false,
   onclick,
-  type = 'button'
+  type = 'button',
+  popovertarget,
+  toggleCheckboxId,
 } = Astro.props;
+
+// Determine render mode
+const isCheckboxToggle = !!toggleCheckboxId;
+const isPopoverToggle = !!popovertarget && !toggleCheckboxId;
 ---
 
-<button 
-  class="button-search"
-  disabled={disabled}
-  onclick={onclick}
-  aria-label="Search"
-  type={type}
->
-  <!-- Icon Container -->
-  <div class="icon-container">
-    <IconMagnifyingGlass />
-  </div>
-  
-  <!-- Notification Badge - Only visible when disabled -->
-  {disabled && (
-    <div class="badge-container">
-      <BadgeNotification variant="warning" />
+{/* Mode 1: Checkbox toggle - renders as label only (CSS-only approach) */}
+{isCheckboxToggle && (
+  <label 
+    class="button-search"
+    for={toggleCheckboxId}
+    tabindex="0"
+    role="button"
+    aria-label="Search"
+  >
+    <div class="icon-container">
+      <IconMagnifyingGlass />
     </div>
-  )}
-</button>
+    
+    {disabled && (
+      <div class="badge-container">
+        <BadgeNotification variant="warning" />
+      </div>
+    )}
+  </label>
+)}
+
+{/* Mode 2: Popover toggle - button + label fallback (progressive enhancement) */}
+{isPopoverToggle && (
+  <>
+    <button 
+      class="button-search button-search-popover"
+      disabled={disabled}
+      onclick={onclick}
+      aria-label="Search"
+      type={type}
+      popovertarget={popovertarget}
+    >
+      <div class="icon-container">
+        <IconMagnifyingGlass />
+      </div>
+      
+      {disabled && (
+        <div class="badge-container">
+          <BadgeNotification variant="warning" />
+        </div>
+      )}
+    </button>
+
+    <label 
+      class="button-search button-search-label"
+      for="search_toggle_input"
+      tabindex="0"
+      role="button"
+      aria-controls={popovertarget}
+      aria-label="Search"
+    >
+      <div class="icon-container">
+        <IconMagnifyingGlass />
+      </div>
+      
+      {disabled && (
+        <div class="badge-container">
+          <BadgeNotification variant="warning" />
+        </div>
+      )}
+    </label>
+  </>
+)}
+
+{/* Mode 3: Simple button (for form submit, etc.) */}
+{!isCheckboxToggle && !isPopoverToggle && (
+  <button 
+    class="button-search"
+    disabled={disabled}
+    onclick={onclick}
+    aria-label="Search"
+    type={type}
+  >
+    <div class="icon-container">
+      <IconMagnifyingGlass />
+    </div>
+    
+    {disabled && (
+      <div class="badge-container">
+        <BadgeNotification variant="warning" />
+      </div>
+    )}
+  </button>
+)}
 
 <style>
   /* Base Button */
@@ -138,5 +214,36 @@ const {
   /* Active press state */
   .button-search:active:not(:disabled) {
     transform: scale(0.95);
+  }
+
+  /* ========================================
+     PROGRESSIVE ENHANCEMENT
+     Show label by default (no-JS), hide when popover supported
+     ======================================== */
+  
+  /* Default: show label (fallback), hide button (when used as toggle) */
+  .button-search-popover[popovertarget] {
+    display: none;
+  }
+  
+  .button-search-label {
+    display: flex;
+    cursor: pointer;
+  }
+  
+  /* When popover supported: show button, hide label */
+  @supports selector(:popover-open) {
+    .button-search-popover[popovertarget] {
+      display: flex;
+    }
+    
+    .button-search-label {
+      display: none;
+    }
+  }
+  
+  /* Buttons without popovertarget (e.g., submit) always visible */
+  .button-search-popover:not([popovertarget]) {
+    display: flex;
   }
 </style>
