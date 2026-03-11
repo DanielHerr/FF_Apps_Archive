@@ -288,6 +288,9 @@
 
 /* Light theme - forces light tokens even when system prefers dark */
 /* NOTE: Must use primitives here to break circular reference with dark override */
+/* theme-light class used for instant load (set by head script), data-theme for persistence, :has() for radio sync */
+html.theme-light,
+html[data-theme="light"],
 html:has(#light_theme:checked) {
   /* Reset surface tokens to light mode */
   --surface-light-primary-gradient-start: var(--violet-60);
@@ -381,6 +384,9 @@ html:has(#light_theme:checked) {
 }
 
 /* Fallback for modern browsers with :has() support (takes precedence over @media) */
+/* theme-dark class used for instant load (set by head script), data-theme for persistence, :has() for radio sync */
+html.theme-dark,
+html[data-theme="dark"],
 html:has(#dark_theme:checked) {
   /* Override surface tokens for dark mode */
   --surface-light-primary-gradient-start: var(--surface-dark-primary-gradient-start);

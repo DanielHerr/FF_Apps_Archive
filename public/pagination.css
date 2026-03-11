@@ -1,4 +1,4 @@
-.pages ol {
+/* .pages ol {
 	padding: 0;
 }
 .pages div ol, .hybrid ol {
@@ -46,17 +46,17 @@ details {
 }
 .hybrid[open] ol {
 	white-space: normal;
-}
+} */
 
-@media(prefers-color-scheme: dark) {
+/* @media(prefers-color-scheme: dark) {
 	.pages li {
 		background: midnightblue;
 	}
 	select {
 		background: midnightblue;
-} }
+} } */
 
-.details_polyfill summary {
+/* .details_polyfill summary {
 	display: block;
 }
 .details_polyfill details > summary:before {
@@ -64,4 +64,4 @@ details {
 }
 .details_polyfill details[open] > summary:before {
 	content: "▼ ";
-}
+} */

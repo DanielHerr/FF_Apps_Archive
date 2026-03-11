@@ -118,8 +118,14 @@ const circleX = getCirclePosition(state);
     dark: 'dark_theme'
   };
   
-  // Get current theme state from radio inputs
+  // Get current theme state - check localStorage first, then radio inputs
   function getCurrentThemeState(): 'auto' | 'light' | 'dark' {
+    // First try localStorage (most reliable, set by head script)
+    try {
+      const saved = localStorage.getItem('color-theme');
+      if (saved === 'light' || saved === 'dark') return saved;
+    } catch (e) {}
+    // Fallback to radio inputs
     if ((document.getElementById('light_theme') as HTMLInputElement)?.checked) return 'light';
     if ((document.getElementById('dark_theme') as HTMLInputElement)?.checked) return 'dark';
     return 'auto';
@@ -133,6 +139,8 @@ const circleX = getCirclePosition(state);
     document.querySelectorAll('.button-color-theme').forEach((button) => {
       button.setAttribute('data-state', state);
       button.setAttribute('aria-label', `Color theme: ${labels[state]}`);
+      // Mark as synced so CSS can reveal it (hides server-rendered 'auto' flash)
+      button.setAttribute('data-synced', '');
       
       // Update label text (if with-text variant)
       const label = button.querySelector('.label');
@@ -164,6 +172,17 @@ const circleX = getCirclePosition(state);
   // Sync buttons to current state on page load
   syncButtonsToState(getCurrentThemeState());
   
+  // Reveal page now that theme is fully synced (removes FOUC hiding)
+  // Use double-rAF to ensure styles are computed and painted before reveal
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      document.documentElement.classList.remove('no-fouc');
+      setTimeout(function() {
+        document.documentElement.classList.remove('no-transitions');
+      }, 50);
+    });
+  });
+  
   // Listen for changes to the radio inputs (from theme_buttons labels or other sources)
   ['auto_theme', 'light_theme', 'dark_theme'].forEach((id) => {
     const radio = document.getElementById(id) as HTMLInputElement;
@@ -193,6 +212,23 @@ const circleX = getCirclePosition(state);
         radio.checked = true;
         // Dispatch change event so other listeners can react
         radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      
+      // Clear inline CSS variables set by head/body scripts so CSS selectors take over
+      // Also update data-theme and classList for proper specificity
+      const html = document.documentElement;
+      html.style.cssText = ''; // Clear inline vars on html
+      document.body.style.cssText = ''; // Clear inline vars on body
+      html.classList.remove('theme-dark', 'theme-light');
+      
+      if (nextState === 'auto') {
+        html.removeAttribute('data-theme');
+        // For auto, check system preference to set correct class
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        html.classList.add(prefersDark ? 'theme-dark' : 'theme-light');
+      } else {
+        html.setAttribute('data-theme', nextState);
+        html.classList.add('theme-' + nextState);
       }
       
       // Update all ButtonColorTheme instances to match

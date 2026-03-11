@@ -4,56 +4,89 @@
  * 
  * Displays support contact information with email and website links.
  * Each link includes an icon, label, and clickable URL.
+ * Only shows rows that have actual values - empty fields are hidden.
  * 
  * Props:
- * @param emailLink - Email support link (href and display text, e.g., "support@website.com")
+ * @param emailLink - Email support link (href and display text, e.g., "mailto:support@website.com")
  * @param websiteLink - Website support link (href and display text, e.g., "https://www.website.com")
  * 
  * Usage:
  * <SectionSupport 
- *   emailLink="support@website.com"
+ *   emailLink="mailto:support@website.com"
  *   websiteLink="https://www.website.com"
  * />
  */
 
+import H2 from './H2.astro';
 import IconEnvelope from '../icons/labels/IconEnvelope.astro';
 import IconLink from '../icons/labels/IconLink.astro';
 
 interface Props {
-  emailLink: string;
-  websiteLink: string;
+  emailLink?: string;
+  websiteLink?: string;
 }
 
 const { 
-  emailLink,
-  websiteLink
+  emailLink = '',
+  websiteLink = ''
 } = Astro.props;
+
+// Extract display text from email link (remove mailto: prefix)
+const emailDisplay = emailLink.startsWith('mailto:') ? emailLink.slice(7) : emailLink;
+
+// Check if we have actual values
+const hasEmail = emailLink && emailLink !== 'mailto:';
+const hasWebsite = websiteLink && websiteLink.length > 0;
 ---
 
 <section class="section-support">
   <div class="support-heading">
-    <h2 class="heading-text">Support</h2>
+    <H2 text="Support" />
   </div>
   
-  <div class="support-row">
-    <div class="icon-wrapper">
-      <IconEnvelope />
+  {hasEmail ? (
+    <div class="support-row">
+      <div class="icon-wrapper">
+        <IconEnvelope />
+      </div>
+      <div class="label-text">Email</div>
+      <div class="link-wrapper">
+        <a href={emailLink} class="support-link">{emailDisplay}</a>
+      </div>
     </div>
-    <div class="label-text">Email</div>
-    <div class="link-wrapper">
-      <a href={emailLink} class="support-link">{emailLink}</a>
+  ) : (
+    <div class="support-row disabled">
+      <div class="icon-wrapper">
+        <IconEnvelope />
+      </div>
+      <div class="label-text">Email</div>
+      <div class="link-wrapper">
+        <span class="support-none">N/A</span>
+      </div>
     </div>
-  </div>
+  )}
   
-  <div class="support-row">
-    <div class="icon-wrapper">
-      <IconLink />
+  {hasWebsite ? (
+    <div class="support-row">
+      <div class="icon-wrapper">
+        <IconLink />
+      </div>
+      <div class="label-text">Website</div>
+      <div class="link-wrapper">
+        <a href={websiteLink} class="support-link">{websiteLink}</a>
+      </div>
     </div>
-    <div class="label-text">Website</div>
-    <div class="link-wrapper">
-      <a href={websiteLink} class="support-link">{websiteLink}</a>
+  ) : (
+    <div class="support-row disabled">
+      <div class="icon-wrapper">
+        <IconLink />
+      </div>
+      <div class="label-text">Website</div>
+      <div class="link-wrapper">
+        <span class="support-none">N/A</span>
+      </div>
     </div>
-  </div>
+  )}
 </section>
 
 <style>
@@ -207,5 +240,34 @@ const {
     outline: var(--border-lg) solid var(--on-surface-light-faded);
     outline-offset: 2px;
     opacity: 0.8;
+  }
+
+  /* ========================================
+     DISABLED ROW STATE
+     ======================================== */
+  .support-row.disabled {
+    opacity: 0.5;
+  }
+
+  /* ========================================
+     N/A PLACEHOLDER
+     ======================================== */
+  .support-none {
+    /* Typography - Label XS (10px/16px) with Inter Medium, Small Caps */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    
+    /* Semantic color - faded to indicate unavailable */
+    color: var(--on-surface-light-faded);
+  }
+
+  @media (min-width: 769px) {
+    .section-support {
+      width: fit-content;
+    }
   }
 </style>

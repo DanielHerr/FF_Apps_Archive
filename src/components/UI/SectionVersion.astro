@@ -19,6 +19,8 @@
  * />
  */
 
+import H2 from './H2.astro';
+
 interface Props {
   version: string;
   appSize: string;
@@ -36,8 +38,8 @@ const {
 
 <section class="section-version">
   <div class="version-heading">
-    <h2 class="version-label">Version</h2>
-    <h2 class="version-number">{version}</h2>
+    <H2 text="Version" />
+    <H2 text={version} />
   </div>
   
   <div class="version-details">
@@ -108,11 +110,6 @@ const {
     gap: 8px;
     width: 100%;
     flex-shrink: 0;
-    
-    /* Base text styling */
-    font-size: var(--body-xs-size);
-    line-height: var(--body-xs-line);
-    color: var(--on-surface-light-faded);
   }
 
   /* ========================================
@@ -131,6 +128,7 @@ const {
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
+    transition: all 0.3s ease;
     
     /* Typography - Body XS (12px/18px) with Inter Regular */
     font-family: var(--font-inter);
@@ -157,19 +155,31 @@ const {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 18px;
+    min-height: 18px;
     width: 100%;
     flex-shrink: 0;
     white-space: pre-wrap;
+    transition: all 0.3s ease;
     
     /* Typography - Body XS (12px/18px) with Public Sans SemiBold */
     font-family: var(--font-public-sans);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-bold);
     font-size: var(--body-xs-size);
     line-height: var(--body-xs-line);
     letter-spacing: normal;
     
     /* Semantic color */
     color: var(--on-surface-light-regular);
+  }
+
+  @media (min-width: 769px) {
+    .section-version {
+      width: fit-content;
+    }
+
+    .field-label, .field-value {
+      font-size: var(--body-sm-size);
+      line-height: var(--body-sm-line);
+    }
   }
 </style>

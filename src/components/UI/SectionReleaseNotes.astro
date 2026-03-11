@@ -13,6 +13,8 @@
  * />
  */
 
+import H2 from './H2.astro';
+
 interface Props {
   releaseNotes: string;
 }
@@ -24,7 +26,7 @@ const {
 
 <section class="section-release-notes">
   <div class="release-notes-heading">
-    <h2 class="heading-text">Release Notes</h2>
+    <H2 text="Release Notes" />
   </div>
   
   <div class="release-notes-body">
@@ -84,6 +86,7 @@ const {
     width: 100%;
     flex-shrink: 0;
     white-space: pre-wrap;
+    transition: all 0.3s ease;
     
     /* Typography - Body XS (12px/18px) with Inter Regular */
     font-family: var(--font-inter);
@@ -95,4 +98,11 @@ const {
     /* Semantic color */
     color: var(--on-surface-light-faded);
   }
+
+  @media (min-width: 769px) {
+     .release-notes-body {
+       font-size: var(--body-sm-size);
+       line-height: var(--body-sm-line);
+     }
+   }
 </style>

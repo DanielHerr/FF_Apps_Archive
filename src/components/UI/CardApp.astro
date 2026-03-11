@@ -147,23 +147,40 @@ const appTypeIconMap: Record<string, any> = {
   'Dead': IconSmileyXEyes,
 };
 
+// Normalize backend appType values to CardApp values
+const normalizeAppType = (type: string): 'Packaged' | 'Privileged' | 'Live' | 'Dead' => {
+  const normalized = type.toLowerCase();
+  if (normalized === 'packaged') return 'Packaged';
+  if (normalized === 'privileged') return 'Privileged';
+  if (normalized === 'hosted') return 'Live'; // hosted apps default to Live
+  if (normalized === 'dead') return 'Dead';
+  return 'Live';
+};
+
 interface Props {
+  href?: string;
   appIconSrc?: string;
   appTitle?: string;
   categories?: string[];
-  appType?: 'Packaged' | 'Privileged' | 'Live' | 'Dead';
-  starRating?: string;
-  userCount?: string;
+  appType?: 'Packaged' | 'Privileged' | 'Live' | 'Dead' | 'packaged' | 'privileged' | 'hosted';
+  starRating?: string | number;
+  userCount?: string | number;
 }
 
 const { 
+  href,
   appIconSrc,
   appTitle = 'App Name',
   categories = ['Games', 'Music'],
-  appType = 'Live',
-  starRating = '5.0',
-  userCount = '100'
+  appType: rawAppType = 'Live',
+  starRating: rawStarRating = '5.0',
+  userCount: rawUserCount = '100'
 } = Astro.props;
+
+// Normalize props
+const appType = normalizeAppType(String(rawAppType));
+const starRating = String(rawStarRating);
+const userCount = String(rawUserCount);
 
 // Get category icons based on category names
 const category1 = categories[0] || 'Games';
@@ -202,12 +219,83 @@ const statusProps = statusConfig[appType] || statusConfig['Live'];
 const StatusIcon = appTypeIconMap[appType] || IconCloud;
 ---
 
-<div class="card-app" tabindex="0">
-  <!-- Border Overlay (for interactive states) -->
-  <div class="border-overlay" aria-hidden="true"></div>
-  
-  <!-- Left Column: Icons -->
-  <div class="icons-column">
+{href ? (
+  <a href={href} class="card-app">
+    <!-- Border Overlay (for interactive states) -->
+    <div class="border-overlay" aria-hidden="true"></div>
+    
+    <!-- Left Column: Icons -->
+    <div class="icons-column">
+      <!-- App Icon -->
+      <AppIcon src={appIconSrc} alt={appTitle} size="sm" />
+      
+      <!-- Category Icons -->
+      <div class="category-icons">
+        <div class="category-icon-wrapper">
+          <CategoryIcon1 />
+        </div>
+        {CategoryIcon2 && (
+          <div class="category-icon-wrapper">
+            <CategoryIcon2 />
+          </div>
+        )}
+      </div>
+    </div>
+    
+    <!-- Right Column: Content -->
+    <div class="content-column">
+      <!-- App Title -->
+      <div class="title-wrapper">
+        <H2 text={appTitle} />
+      </div>
+      
+      <!-- Details Section -->
+      <div class="details-section">
+        <!-- Category Text -->
+        <div class="category-text-wrapper">
+          <span class="category-text">{categoryText}</span>
+        </div>
+        
+        <!-- Stars and Ratings -->
+        <div class="stars-ratings-wrapper">
+          <!-- Stars -->
+          <div class="stars-group">
+            <div class="star-icon-wrapper">
+              <IconStar />
+            </div>
+            <span class="rating-text">{starRating}</span>
+          </div>
+          
+          <!-- Users/Ratings -->
+          <div class="users-group">
+            <div class="users-icon-wrapper">
+              <IconUsers />
+            </div>
+            <span class="rating-text">{userCount}</span>
+          </div>
+        </div>
+        
+        <!-- App Status Tag -->
+        <div class="status-wrapper">
+          <TagAppStatus 
+            text={statusProps.text}
+            variant="card"
+            showHostedChip={statusProps.showHostedChip}
+            hostedChipVariant={statusProps.hostedChipVariant}
+          >
+            <StatusIcon slot="icon" />
+          </TagAppStatus>
+        </div>
+      </div>
+    </div>
+  </a>
+) : (
+  <div class="card-app" tabindex="0">
+    <!-- Border Overlay (for interactive states) -->
+    <div class="border-overlay" aria-hidden="true"></div>
+    
+    <!-- Left Column: Icons -->
+    <div class="icons-column">
     <!-- App Icon -->
     <AppIcon src={appIconSrc} alt={appTitle} size="sm" />
     
@@ -271,6 +359,7 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
     </div>
   </div>
 </div>
+)}
 
 <style>
   /* ========================================
@@ -279,11 +368,12 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
   .card-app {
     position: relative;
     display: flex;
+    flex-direction: row;
     gap: var(--spacing-8);
     align-items: flex-start;
     padding: var(--spacing-12);
     border-radius: var(--radius-md);
-    min-width: 284px;
+    width: 284px;
     
     /* Gradient Background */
     background: linear-gradient(
@@ -298,6 +388,10 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
     
     /* Transition for smooth state changes */
     transition: transform 0.15s ease;
+    
+    /* Reset anchor styles when used as link */
+    text-decoration: none;
+    color: inherit;
   }
   
   /* ========================================
@@ -307,22 +401,21 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
     position: absolute;
     inset: -0.5px;
     border-radius: calc(var(--radius-md) + 0.5px);
-    border: 1px solid var(--on-surface-light-border-low);
     pointer-events: none;
     transition: border-color 0.2s ease, border-width 0.2s ease;
   }
   
   /* Hover State - Override on focus */
   .card-app:hover:not(:focus-visible) .border-overlay {
-    border-color: var(--on-surface-light-primary);
+    border: 1px solid var(--on-surface-light-primary);
   }
   
   /* Focus State */
   .card-app:focus-visible .border-overlay {
     inset: -1px;
+    border: 1px solid var(--on-surface-light-primary);
     border-radius: calc(var(--radius-md) + 1px);
     border-width: 2px;
-    border-color: var(--on-surface-light-primary);
   }
   
   /* Active/Click State - Tactile feedback */
@@ -512,6 +605,7 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
   .status-wrapper {
     display: flex;
     align-items: center;
+    justify-content: right;
     width: 100%;
     border-radius: var(--radius-md);
   }

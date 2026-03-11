@@ -10,7 +10,7 @@ import Button from "../components/UI/Button.astro"
 		<p class="message">Thank you for reaching out to us! We value your feedback and inquiries.</p>
 	</div>
     <div class="button-container">
-      <a class="home-button" href="/"><Button label="Back Home" /></a>
+      <Button label="Back Home" href="/" />
     </div>
 </Base>
 
@@ -44,12 +44,12 @@ import Button from "../components/UI/Button.astro"
 		justify-content: center;
 	}
 
-	.home-button {
+	.button-container :global(.button) {
 		width: 100%;
 	}
 
 	@media (min-width: 769px) {
-		.home-button {
+		.button-container :global(.button) {
 			width: 288px;
 		}
 	}

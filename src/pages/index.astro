@@ -64,6 +64,18 @@ const footerLinks = [
 <!doctype html>
 <html lang="en">
   <head>
+    <script is:inline>
+      try {
+        var theme = localStorage.getItem('color-theme');
+        if (theme === 'light' || theme === 'dark' || theme === 'auto') {
+          document.documentElement.setAttribute('data-theme', theme);
+        } else {
+          document.documentElement.setAttribute('data-theme', 'auto');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'auto');
+      }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/dialog_polyfill.css">
