@@ -126,7 +126,7 @@ const {
   
   .menu-container {
     position: relative;
-    display: flex;
+    display: grid;
     width: 100%;
     padding: var(--spacing-8) 0;
     background: linear-gradient(
@@ -136,6 +136,9 @@ const {
     );
     border-top-left-radius: var(--radius-md);
     border-top-right-radius: var(--radius-md);
+    
+    /* Smooth transitions */
+    transition: grid-template-rows 0.3s ease, gap 0.3s ease;
   }
   
   /* Border overlay for bottom border */
@@ -148,40 +151,66 @@ const {
     pointer-events: none;
   }
   
+  /* Buttons wrapper - always present, height animated */
+  .buttons-wrapper {
+    transition: opacity 0.25s ease, max-height 0.3s ease;
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  
+  .buttons-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Expansion button wrapper */
+  .expansion-button-wrapper {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  
+  /* Icon rotation animation handled via CSS */
+  .expansion-button-wrapper :global(button) {
+    transition: transform 0.2s ease;
+  }
+  
+  .expansion-button-wrapper :global(.icon-wrapper) {
+    transition: transform 0.3s ease;
+  }
+  
+  .expansion-button-wrapper[data-expanded="true"] :global(.icon-wrapper) {
+    transform: rotate(180deg);
+  }
+  
   /* ========================================
      COLLAPSED STATE - Horizontal Layout
      ======================================== */
   
-  /* Collapsed: Horizontal row layout */
+  /* Collapsed: Horizontal row layout using grid */
   .alphabet-menu[data-expanded="false"] .menu-container {
-    flex-direction: row;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto;
     gap: var(--spacing-4);
     align-items: center;
   }
   
   /* Collapsed: Buttons on left, fill remaining space, scrollable */
   .alphabet-menu[data-expanded="false"] .buttons-wrapper {
-    flex: 1 0 0;
+    grid-column: 1;
+    grid-row: 1;
     min-width: 0;
-    order: 1;
     overflow-x: auto;
     overflow-y: clip;
-    /* Hide scrollbar */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    max-height: 48px;
+    opacity: 1;
     /* Add right border for collapsed state */
     border-right: var(--border-sm) solid var(--on-surface-light-border-low);
   }
   
-  /* Hide scrollbar for webkit browsers */
-  .alphabet-menu[data-expanded="false"] .buttons-wrapper::-webkit-scrollbar {
-    display: none;
-  }
-  
   /* Collapsed: Expansion button on right, fixed size */
   .alphabet-menu[data-expanded="false"] .expansion-button-wrapper {
-    flex-shrink: 0;
-    order: 2;
+    grid-column: 2;
+    grid-row: 1;
   }
   
   /* Collapsed: Prevent wrapping in nested component, align to start */
@@ -199,23 +228,30 @@ const {
      EXPANDED STATE - Vertical Layout
      ======================================== */
   
-  /* Expanded: Vertical column layout */
+  /* Expanded: Vertical column layout using grid */
   .alphabet-menu[data-expanded="true"] .menu-container {
-    flex-direction: column;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
     gap: var(--spacing-8);
-    align-items: flex-end;
+    align-items: start;
   }
   
   /* Expanded: Expansion button at top-right */
   .alphabet-menu[data-expanded="true"] .expansion-button-wrapper {
-    order: 1;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
   
   /* Expanded: Alphabet buttons below, full width */
   .alphabet-menu[data-expanded="true"] .buttons-wrapper {
-    order: 2;
+    grid-column: 1 / -1;
+    grid-row: 2;
     width: 100%;
     overflow: visible;
+    max-height: 500px;
+    opacity: 1;
+    border-right: none;
   }
   
   /* Expanded: Remove side borders from nested component */

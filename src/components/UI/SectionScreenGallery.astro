@@ -5,7 +5,7 @@
  * Displays a gallery of app screenshots with two responsive variants.
  * 
  * Variants:
- * - mobile: Horizontal scrolling strip of images
+ * - mobile: Horizontal scrolling strip of images with tap-to-enlarge overlay
  * - desktop: Preview area with navigation + thumbnails strip below
  * 
  * Props:
@@ -25,6 +25,7 @@
  * - Selected thumbnail border uses --on-surface-light-primary
  * - Image aspect ratio is 960:640 (3:2) with object-fit cover
  * - Mobile variant: horizontal scroll with momentum scrolling
+ * - Mobile overlay: fullscreen lightbox on tap, tap again or Escape to close
  * - Desktop variant: preview with nav buttons + clickable thumbnail strip
  */
 
@@ -55,11 +56,22 @@ const uniqueId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
   {variant === 'mobile' ? (
     <!-- Mobile Variant: Horizontal Scrolling Gallery -->
     <div class="mobile-gallery">
-      {images.map((image) => (
-        <div class="mobile-image-wrapper">
+      {images.map((image, index) => (
+        <button 
+          class="mobile-image-wrapper"
+          data-mobile-image-index={index}
+          aria-label={`View screenshot ${index + 1} fullscreen`}
+        >
           <img src={image} alt="App screenshot" class="mobile-image" />
-        </div>
+        </button>
       ))}
+    </div>
+    
+    <!-- Mobile Fullscreen Overlay -->
+    <div class="mobile-overlay" data-mobile-overlay aria-hidden="true">
+      <button class="mobile-overlay-backdrop" aria-label="Close fullscreen view">
+        <img src="" alt="App screenshot fullscreen" class="mobile-overlay-image" data-overlay-image />
+      </button>
     </div>
   ) : (
     <!-- Desktop Variant: Preview + Thumbnails -->
@@ -182,6 +194,66 @@ const uniqueId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
   
   // Re-initialize on navigation (for Astro view transitions)
   document.addEventListener('astro:page-load', initScreenGalleries);
+
+  // Mobile overlay functionality
+  function initMobileOverlays() {
+    const mobileGalleries = document.querySelectorAll('.section-screen-gallery[data-variant="mobile"]');
+    
+    mobileGalleries.forEach((gallery) => {
+      const overlay = gallery.querySelector('[data-mobile-overlay]') as HTMLElement;
+      const overlayImage = gallery.querySelector('[data-overlay-image]') as HTMLImageElement;
+      const mobileImages = gallery.querySelectorAll('[data-mobile-image-index]') as NodeListOf<HTMLButtonElement>;
+      
+      if (!overlay || !overlayImage || !mobileImages.length) return;
+      
+      // Open overlay when mobile image is tapped
+      mobileImages.forEach((imageButton) => {
+        imageButton.addEventListener('click', () => {
+          const img = imageButton.querySelector('img') as HTMLImageElement;
+          if (img) {
+            overlayImage.src = img.src;
+            overlay.setAttribute('aria-hidden', 'false');
+            overlay.setAttribute('data-visible', 'true');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+      
+      // Close overlay when backdrop is tapped
+      overlay.addEventListener('click', () => {
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.removeAttribute('data-visible');
+        document.body.style.overflow = '';
+      });
+      
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.getAttribute('data-visible') === 'true') {
+          overlay.setAttribute('aria-hidden', 'true');
+          overlay.removeAttribute('data-visible');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  }
+  
+  // Initialize mobile overlays
+  initMobileOverlays();
+  document.addEventListener('astro:page-load', initMobileOverlays);
+
+  // Close all mobile overlays on resize (e.g., switching to desktop view)
+  function closeAllMobileOverlays() {
+    const overlays = document.querySelectorAll('[data-mobile-overlay][data-visible="true"]') as NodeListOf<HTMLElement>;
+    overlays.forEach((overlay) => {
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.removeAttribute('data-visible');
+    });
+    if (overlays.length > 0) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  window.addEventListener('resize', closeAllMobileOverlays);
 </script>
 
 <style>
@@ -231,6 +303,16 @@ const uniqueId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
     height: 100%;
     aspect-ratio: 960 / 640; /* 3:2 ratio - width calculated from height */
     flex-shrink: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+
+  .mobile-image-wrapper:active {
+    transform: scale(0.98);
   }
 
   .mobile-image {
@@ -393,5 +475,48 @@ const uniqueId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
     outline: var(--border-lg) solid var(--on-surface-light-faded);
     outline-offset: 2px;
     opacity: 0.8;
+  }
+
+  /* ========================================
+     MOBILE OVERLAY (Fullscreen Lightbox)
+     ======================================== */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .mobile-overlay[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-overlay-backdrop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-16);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-overlay-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    pointer-events: none;
   }
 </style>

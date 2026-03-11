@@ -1,5 +1,23 @@
 <input type="radio" id="auto_theme"  name="theme" tabindex="-1" checked>
 <input type="radio" id="light_theme" name="theme" tabindex="-1">
 <input type="radio" id="dark_theme"  name="theme" tabindex="-1">
+<script>
+// Theme persistence - runs synchronously to avoid FOUC
+// Must execute immediately after radio inputs are in DOM
+(function() {
+  try {
+    var saved = localStorage.getItem('color-theme');
+    if (saved && (saved === 'light' || saved === 'dark' || saved === 'auto')) {
+      var radioId = saved + '_theme';
+      var radio = document.getElementById(radioId);
+      if (radio) {
+        (radio as HTMLInputElement).checked = true;
+      }
+    }
+  } catch (e) {
+    // localStorage may be unavailable (private browsing, etc.)
+  }
+})();
+</script>
 <input type="checkbox" id="search_toggle_input" tabindex="-1">
 <input type="checkbox" id="search_unavailable_input" tabindex="-1">

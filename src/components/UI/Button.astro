@@ -18,6 +18,11 @@
  * @param type - Button type ('button' | 'submit' | 'reset')
  * @param disabled - Whether the button is disabled
  * @param onclick - Optional click handler attribute
+ * @param id - Optional element id
+ * @param href - If provided, renders as anchor link instead of button
+ * @param download - If true/string, makes link downloadable (only with href)
+ * 
+ * Supports arbitrary data-* attributes via spread.
  */
 
 interface Props {
@@ -27,6 +32,10 @@ interface Props {
   disabled?: boolean;
   onclick?: string;
   class?: string;
+  id?: string;
+  href?: string;
+  download?: boolean | string;
+  [key: `data-${string}`]: string | boolean | undefined;
 }
 
 const { 
@@ -35,18 +44,42 @@ const {
   type = 'button',
   disabled = false,
   onclick,
+  id,
+  href,
+  download,
+  class: customClass,
+  ...dataAttrs
 } = Astro.props;
 
-const customClass = Astro.props.class;
+// Determine if we should render as anchor or button
+const Element = href ? 'a' : 'button';
+
+// Build common props - filter out undefined values
+const commonProps = {
+  ...(id && { id }),
+  class: `button${customClass ? ' ' + customClass : ''}`,
+  'data-variant': variant,
+  'data-button': true,
+  ...dataAttrs
+};
+
+// Element-specific props - only include when defined/truthy
+const buttonProps = !href ? {
+  type,
+  ...(disabled && { disabled: true }),
+  ...(onclick && { onclick }),
+} : {};
+
+const anchorProps = href ? {
+  href,
+  ...(download !== undefined && { download: download === true ? '' : download }),
+} : {};
 ---
 
-<button 
-  type={type}
-  disabled={disabled}
-  onclick={onclick}
-  class={`button ${customClass || ''}`}
-  data-variant={variant}
-  data-button
+<Element 
+  {...commonProps}
+  {...buttonProps}
+  {...anchorProps}
 >
   <!-- Border overlay - changes on hover/active -->
   <div aria-hidden="true" class="border-overlay"></div>
@@ -55,7 +88,7 @@ const customClass = Astro.props.class;
   <span class="button-label">
     {label}
   </span>
-</button>
+</Element>
 
 <style>
   .button {
@@ -72,6 +105,7 @@ const customClass = Astro.props.class;
     height: 38px;
     min-width: fit-content;
     outline: none;
+    text-decoration: none;
   }
   
   /* Border overlay */

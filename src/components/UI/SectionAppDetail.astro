@@ -194,7 +194,7 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
     display: flex;
     gap: var(--spacing-24);
     align-items: flex-start;
-    padding-top: var(--spacing-48);
+    padding-top: var(--spacing-40);
     padding-bottom: var(--spacing-8);
     width: 100%;
     flex: 1 0 0;
@@ -230,10 +230,10 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
 
   .stars .body-xxs,
   .ratings .body-xxs {
-    font-family: var(--font-family-inter);
+    font-family: var(--font-inter);
     font-weight: var(--font-weight-regular);
-    font-size: 12px;
-    line-height: 18px;
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
     letter-spacing: var(--letter-spacing-xs);
     color: var(--on-surface-light-regular);
   }
@@ -247,13 +247,13 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
   }
 
   .star-icon {
-    width: 10px;
-    height: 10px;
+    width: var(--icon-xxxs);
+    height: var(--icon-xxxs);
   }
 
   .users-icon {
-    width: 14px;
-    height: 14px;
+    width: var(--icon-xs);
+    height: var(--icon-xs);
   }
 
   .publisher-link {
@@ -268,5 +268,53 @@ const StatusIcon = appTypeIconMap[appType] || IconCloud;
     font-weight: var(--font-weight-regular);
     font-size: var(--body-sm-size);
     line-height: var(--body-sm-line);
+  }
+
+  /* Override H1 component typography to heading-xs */
+  .app-title :global(.heading) {
+    font-size: var(--heading-xs-size);
+    line-height: var(--heading-xs-line);
+  }
+
+  /* ========================================
+     RESPONSIVE: DESKTOP (769px and above)
+     ======================================== */
+  @media (min-width: 769px) {
+    .content {
+      padding-top: var(--spacing-16);
+    }
+    /* AppIcon: md -> lg */
+    .content :global(.app-icon-md) {
+      width: var(--app-icon-lg);
+      height: var(--app-icon-lg);
+    }
+
+    /* App Title: heading-xs -> heading-sm */
+    .app-title :global(.heading) {
+      font-size: var(--heading-sm-size);
+      line-height: var(--heading-sm-line);
+    }
+
+    /* Star and Ratings text: body-xs -> body-lg */
+    .stars .body-xxs,
+    .ratings .body-xxs {
+      font-size: var(--body-lg-size);
+      line-height: var(--body-lg-line);
+    }
+    .star-icon {
+      width: var(--icon-sm);
+      height: var(--icon-sm);
+    }
+
+    .users-icon {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
+
+    /* Status Tag text: body-xxs -> body-sm */
+    .app-title :global(.tag-text) {
+      font-size: var(--body-sm-size);
+      line-height: var(--body-sm-line);
+    }
   }
 </style>

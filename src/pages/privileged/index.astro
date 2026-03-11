@@ -29,3 +29,21 @@ let privileged = await Content.getCollection("metadata", ({ data }) => data.app_
 
 	<AppsList apps={ privileged }/>
 </Base>
+
+<style>
+	.desktop-only {
+		display: none;
+	}
+	.mobile-only {
+		display: block;
+		padding: var(--spacing-16) 0;
+	}
+	@media (min-width: 768px) {
+		.desktop-only {
+			display: block;
+		}
+		.mobile-only {
+			display: none;
+		}
+	}
+</style>

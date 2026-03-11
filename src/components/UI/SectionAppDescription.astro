@@ -11,30 +11,34 @@
  * 
  * Props:
  * @param description - HTML string containing the app description
- * @param maxHeight - Maximum height in pixels before showing read more (default: 242)
+ * @param mobileMaxHeight - Maximum height in pixels on mobile before showing read more (default: 242)
+ * @param desktopMaxHeight - Maximum height in pixels on desktop (769px+) before showing read more (default: 400)
  * 
  * Usage:
  * <SectionAppDescription 
  *   description="<p>Lorem ipsum...</p>"
- *   maxHeight={242}
+ *   mobileMaxHeight={242}
+ *   desktopMaxHeight={400}
  * />
  */
 
 interface Props {
   description: string;
-  maxHeight?: number;
+  mobileMaxHeight?: number;
+  desktopMaxHeight?: number;
 }
 
 const { 
   description,
-  maxHeight = 242
+  mobileMaxHeight = 242,
+  desktopMaxHeight = 400
 } = Astro.props;
 
 // Generate unique ID for this instance
 const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
-<section class="section-app-description" data-max-height={maxHeight} data-instance-id={uniqueId}>
+<section class="section-app-description" data-mobile-max-height={mobileMaxHeight} data-desktop-max-height={desktopMaxHeight} data-instance-id={uniqueId}>
   <div 
     class="description-text"
     data-collapsed="true"
@@ -59,6 +63,7 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
 <script>
   function initAppDescription() {
     const sections = document.querySelectorAll('.section-app-description');
+    const DESKTOP_BREAKPOINT = 769;
     
     sections.forEach((section) => {
       const descriptionText = section.querySelector('.description-text') as HTMLElement;
@@ -68,11 +73,19 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
       
       if (!descriptionText || !readMoreSection || !button || !buttonText) return;
       
-      const maxHeight = parseInt(section.getAttribute('data-max-height') || '242');
+      const mobileMaxHeight = parseInt(section.getAttribute('data-mobile-max-height') || '242');
+      const desktopMaxHeight = parseInt(section.getAttribute('data-desktop-max-height') || '400');
       let fullHeight = 0;
+      
+      // Get current max height based on viewport
+      function getCurrentMaxHeight(): number {
+        return window.innerWidth >= DESKTOP_BREAKPOINT ? desktopMaxHeight : mobileMaxHeight;
+      }
       
       // Check if content overflows
       function checkOverflow() {
+        const maxHeight = getCurrentMaxHeight();
+        
         // Temporarily remove max-height to get full height
         const currentMaxHeight = descriptionText.style.maxHeight;
         const currentTransition = descriptionText.style.transition;
@@ -108,6 +121,7 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
       button.addEventListener('click', () => {
         const isCollapsed = descriptionText.dataset.collapsed === 'true';
         const isAnimating = descriptionText.dataset.animating === 'true';
+        const maxHeight = getCurrentMaxHeight();
         
         // Prevent clicking during animation
         if (isAnimating) return;
@@ -194,6 +208,7 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
   .description-text {
     position: relative;
     width: 100%;
+    padding: var(--spacing-8) 0;
     flex-shrink: 0;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -211,7 +226,9 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
     
     /* Smooth height and color transitions */
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                color 0.3s ease;
+                color 0.3s ease,
+                font-size 0.3s ease,
+                line-height 0.3s ease;
   }
 
   /* Collapsed state - faded color with overflow hidden */
@@ -230,7 +247,7 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
     left: 0;
     right: 0;
     height: 120px;
-    background: linear-gradient(to bottom, transparent, var(--surface-light-low));
+    background: linear-gradient(to bottom, transparent, var(--surface-light-mid));
     pointer-events: none;
   }
 
@@ -343,5 +360,13 @@ const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
     background: var(--surface-light-primary-low);
     outline: var(--border-lg) solid var(--on-surface-light-faded);
     outline-offset: 0;
+  }
+
+  @media (min-width: 769px) {
+    .description-text {
+      padding: var(--spacing-12) 0;
+      font-size: var(--body-md-size);
+      line-height: var(--body-md-line);
+    }
   }
 </style>

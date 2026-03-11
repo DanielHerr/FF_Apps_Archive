@@ -38,8 +38,10 @@ const { text = "Warning text" } = Astro.props;
     /* Layout */
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--spacing-4);
     padding: var(--spacing-8);
+    width: 100%;
     
     /* Background - Warning color */
     background: var(--attention-light-warning);
@@ -79,5 +81,11 @@ const { text = "Warning text" } = Astro.props;
     /* Layout */
     white-space: nowrap;
     margin: 0;
+  }
+
+  @media (min-width: 769px) {
+    .label-warning {
+      width: fit-content;
+    }
   }
 </style>

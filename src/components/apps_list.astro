@@ -1,25 +1,31 @@
 ---
 import categories from "../categories.json" with { type: "json" }
+import CardApp from "./UI/CardApp.astro"
 
 const { apps } = Astro.props
+
+// Helper to get localized name with fallbacks
+const getLocalizedName = (nameObj: Record<string, string>, defaultLocale: string) => {
+	return nameObj["en-US"] ?? nameObj.en ?? nameObj[defaultLocale] ?? "Unknown App"
+}
+
+// Helper to map category slugs to display names
+const mapCategoriesToNames = (slugs: string[]) => {
+	return slugs.map(slug => categories.find(c => c.slug === slug)?.name ?? slug)
+}
 ---
 <ul id="apps_list">
 	{ apps.map((app) => (
 		<li>
-			<a href={ "/app/" + app.id + "/" }>
-				<img class="icon" src={ "/app/" + app.id + "/" + app.data.id + "-128.png" } alt="" width="64" height="64" loading="lazy">
-				<div class="primary">
-					<h3 class="name">{ app.data.name["en-US"] ?? app.data.name.en ?? app.data.name[app.data.default_locale] }</h3>
-					<span class="author">{ app.data.author }</span>
-				</div>
-				<div class="secondary">
-					<span class="rating">Rating: { app.data.ratings.average } ({ app.data.ratings.count })</span>
-					<span class="type">{ app.data.app_type }</span>
-					<ul class="categories">
-						{ app.data.categories.map(slug => <li>{ categories.find(c => c.slug == slug).name }</li>) }
-					</ul>
-				</div>
-			</a>
+			<CardApp
+				href={`/app/${app.id}/`}
+				appIconSrc={`/app/${app.id}/${app.data.id}-128.png`}
+				appTitle={getLocalizedName(app.data.name, app.data.default_locale)}
+				categories={mapCategoriesToNames(app.data.categories)}
+				appType={app.data.app_type}
+				starRating={app.data.ratings.average}
+				userCount={app.data.ratings.count}
+			/>
 		</li>
 	)) }
 </ul>

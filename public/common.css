@@ -111,48 +111,10 @@ main header img {
 	}
 } */
 
-/* #light_theme:checked ~ * {
-	background: white;
-	color: black;
-}
-#dark_theme:checked ~ * {
-	background: black;
-	color: white;
-}
-
-@media(prefers-color-scheme: light) {
-	html {
-		background: white;
-		color: black;
-} }
-@media(prefers-color-scheme: dark) {
-	html {
-		background: black;
-		color: white;
-} }
-
-@supports(color-scheme: light dark) {
-	html, html.light, html.dark {
-		background: canvas;
-		color: canvastext;
-	}
-	#light_theme:checked ~ * {
-		color-scheme: light;
-		background: canvas;
-		color: canvastext;
-	}
-	#dark_theme:checked ~ * {
-		color-scheme: dark;
-		background: canvas;
-		color: canvastext;
-} }
-
-html:has(#light_theme:checked) {
-	color-scheme: light;
-}
-html:has(#dark_theme:checked) {
-	color-scheme: dark;
-} */
+/* ========================================
+   LEGACY THEME RULES - REMOVED
+   Theme is now handled entirely by colors-semantic.css and inline head styles
+   ======================================== */
 
 
 /* ========================================

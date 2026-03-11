@@ -18,7 +18,7 @@ import SectionHeadline from '../components/UI/SectionHeadline.astro';
         <p class="subtext">Page not found</p>
     </div>
     <div class="button-container">
-      <a class="home-button" href="/"><Button label="Back Home" /></a>
+      <Button label="Back Home" href="/" />
     </div>
   </section>
 </Base>
@@ -60,12 +60,12 @@ import SectionHeadline from '../components/UI/SectionHeadline.astro';
     
   }
 
-  .home-button {
+  .button-container :global(.button) {
     width: 100%;
   }
 
   @media (min-width: 769px) {
-    .home-button {
+    .button-container :global(.button) {
         width: 288px;
     }
   }

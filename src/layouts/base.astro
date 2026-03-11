@@ -19,6 +19,18 @@ let { title, subtitle, searchable } = Astro.props
 <!doctype html>
 <html lang="en">
 	<head>
+			<script is:inline>
+				try {
+					var theme = localStorage.getItem('color-theme');
+					if (theme === 'light' || theme === 'dark' || theme === 'auto') {
+						document.documentElement.setAttribute('data-theme', theme);
+					} else {
+						document.documentElement.setAttribute('data-theme', 'auto');
+					}
+				} catch (e) {
+					document.documentElement.setAttribute('data-theme', 'auto');
+				}
+			</script>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="/dialog_polyfill.css">
 		<link rel="stylesheet" href="/common.css">
