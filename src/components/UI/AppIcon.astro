@@ -47,37 +47,56 @@ interface Props {
   src?: string;
   alt?: string;
   size?: 'sm' | 'md' | 'lg';
+  /** When true, emit pagefind meta/link for this image (only when `src` is present) */
+  pagefind?: boolean;
+  /** Optional override for pagefind image src (if different from `src`) */
+  pagefindSrc?: string;
+  /** Optional pagefind alt text override */
+  pagefindAlt?: string;
+  /** When true, render only the pagefind meta/link tags and skip visual markup (safe for head slot) */
+  pagefindMetaOnly?: boolean;
 }
 
 const { 
   src,
   alt = 'App icon',
-  size = 'sm'
+  size = 'sm',
+  pagefind = false, pagefindSrc, pagefindAlt,
+  pagefindMetaOnly = false,
 } = Astro.props;
 
 // SVG path for rounded square (4px radius)
 const roundedSquarePath = "M0 4C0 1.79086 1.79086 0 4 0H48C50.2091 0 52 1.79086 52 4V48C52 50.2091 50.2091 52 48 52H4C1.79086 52 0 50.2091 0 48V4Z";
 ---
 
-<div 
-  class={`app-icon app-icon-${size}`}
-  data-component="app-icon"
-  data-size={size}
->
-  {src ? (
-    <!-- Image Version -->
-    <div class="icon-image-wrapper">
-      <img 
-        src={src} 
-        alt={alt}
-        class="icon-image"
-      />
-    </div>
-  ) : (
-    <!-- Gradient Fallback Version -->
-    <div class="icon-gradient" aria-hidden="true"></div>
-  )}
-</div>
+{!pagefindMetaOnly && (
+  <div 
+    class={`app-icon app-icon-${size}`}
+    data-component="app-icon"
+    data-size={size}
+  >
+    {src ? (
+      <!-- Image Version -->
+      <div class="icon-image-wrapper">
+        <img 
+          src={src} 
+          alt={alt}
+          class="icon-image"
+        />
+      </div>
+    ) : (
+      <!-- Gradient Fallback Version -->
+      <div class="icon-gradient" aria-hidden="true"></div>
+    )}
+  </div>
+)}
+
+{pagefind && (pagefindSrc || src) && (
+  <Fragment>
+    <link rel="icon" href={pagefindSrc ?? src} data-pagefind-meta="image[href]" />
+    <meta name="page:image_alt" content={pagefindAlt ?? alt} data-pagefind-meta="image_alt[content]" />
+  </Fragment>
+)}
 
 <style>
   /* Main Container */

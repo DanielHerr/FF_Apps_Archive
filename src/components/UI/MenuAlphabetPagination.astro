@@ -50,7 +50,7 @@ const {
     
     <!-- Alphabet buttons wrapper -->
     <div class="buttons-wrapper">
-      <ButtonsAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
+      <ButtonsAlphabetPagination mobile selectedLetter={selectedLetter} basePath={basePath} />
     </div>
   </div>
 </div>
@@ -118,6 +118,9 @@ const {
 <style>
   .alphabet-menu {
     display: flex;
+    position: sticky;
+    top: -42px;
+    z-index: 99;
     flex-direction: column;
     width: 100%;
     padding-top: var(--spacing-36);
@@ -273,5 +276,12 @@ const {
   .alphabet-menu[data-expanded="true"] .buttons-wrapper :global(.alphabet-pagination > div) {
     padding-top: var(--spacing-16);
     padding-bottom: var(--spacing-8);
+  }
+
+  /* Responsive adjustments */
+  @media (min-width: 769px) {
+    .alphabet-menu {
+      display: none;
+    }
   }
 </style>

@@ -905,7 +905,7 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">Long Text (overflows maxHeight)</p>
                   <SectionAppDescription 
                     description="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum enim lectus, mollis sed mattis egestas, euismod a lacus. Integer nec diam pulvinar, commodo ex et, venenatis lacus. Phasellus nec tellus a turpis vulputate porttitor. Nunc laoreet scelerisque erat ac sollicitudin. Sed viverra ligula eget dui bibendum, eget fermentum arcu tempus. Donec ac nisi lobortis est suscipit vestibulum. Duis non erat varius, condimentum lorem nec, faucibus sapien.</p><p>&nbsp;</p><p>Quisque bibendum sit amet mauris vel cursus. Sed nec pulvinar metus. Mauris porttitor lorem ligula, in sagittis ante rhoncus eget. Fusce a justo mi. Ut faucibus velit id nisl pellentesque, in facilisis orci pretium. Aenean mattis nunc ut pulvinar euismod. Donec pulvinar, lacus vel consectetur egestas, arcu lectus feugiat dolor, faucibus vehicula nisi arcu eu lorem. Proin in lacinia augue, eget ornare velit. Curabitur non semper lacus. Quisque velit eros, auctor ut laoreet eget, rutrum sed eros. Fusce accumsan faucibus enim et venenatis.</p><p>&nbsp;</p><p>Vivamus quis erat lorem. In aliquam lorem massa, vel hendrerit turpis ultrices et. Sed eget magna mi. Pellentesque vitae libero ipsum. Integer a dolor efficitur, tristique magna non, euismod eros. Quisque vulputate leo purus, non congue tortor ultricies egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus eu elit massa. Aliquam erat volutpat. Phasellus pharetra massa dolor, vel bibendum dolor varius eu. Nam tincidunt egestas arcu, porttitor pellentesque urna. Sed et nulla mattis, dapibus enim sit amet, consectetur dui. Proin efficitur scelerisque nisi, quis vehicula mauris congue et. In hendrerit, velit commodo pulvinar blandit, mi lectus dictum nulla, aliquam porta sapien diam eget ex. Fusce rhoncus convallis sem, quis auctor diam consequat quis.</p>"
-                    maxHeight={242}
+                    mobileMaxHeight={242}
                   />
                 </div>
                 
@@ -913,7 +913,7 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">Short Text (no overflow, no button)</p>
                   <SectionAppDescription 
                     description="<p>This is a short description that doesn't overflow the maxHeight, so no read more button is shown.</p>"
-                    maxHeight={242}
+                    mobileMaxHeight={242}
                   />
                 </div>
                 
@@ -921,7 +921,7 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">Custom maxHeight (100px)</p>
                   <SectionAppDescription 
                     description="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum enim lectus, mollis sed mattis egestas, euismod a lacus. Integer nec diam pulvinar, commodo ex et, venenatis lacus. Phasellus nec tellus a turpis vulputate porttitor.</p>"
-                    maxHeight={100}
+                    mobileMaxHeight={100}
                   />
                 </div>
               </div>
@@ -1787,7 +1787,7 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
                 <div>
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">Dead Hosted Variant</p>
                   <div class="demo-box" style="height: auto; width: 100%; padding: var(--spacing-24);">
-                    <HeadlineAppType variant="dead-hosted" />
+                    <HeadlineAppType variant="dead" />
                   </div>
                 </div>
               </div>
@@ -4493,13 +4493,6 @@ import IconDownload from '../components/icons/app-types/IconDownload.astro';
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">Mobile without close button (default)</p>
                   <div class="demo-box" style="height: auto; width: 100%;">
                     <Header variant="mobile" />
-                  </div>
-                </div>
-                
-                <div>
-                  <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">Mobile with close button (showCloseButton={true})</p>
-                  <div class="demo-box" style="height: auto; width: 100%;">
-                    <Header variant="mobile" showCloseButton={true} />
                   </div>
                 </div>
                 

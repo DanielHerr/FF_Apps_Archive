@@ -29,9 +29,10 @@ import ButtonLetter from './ButtonLetter.astro';
 interface Props {
   selectedLetter?: string;
   basePath?: string;
+  mobile?: boolean;
 }
 
-const { selectedLetter = 'A', basePath } = Astro.props;
+const { selectedLetter = 'A', basePath, mobile = false } = Astro.props;
 
 // All available letters including "All" and "#"
 const letters = [
@@ -48,7 +49,7 @@ function getHref(letter: string): string | undefined {
 }
 ---
 
-<div class="alphabet-pagination">
+<div class="alphabet-pagination" data-mobile={mobile ? 'true' : 'false'}>
   <!-- Side borders overlay (left/right only) -->
   <div aria-hidden="true" class="side-borders"></div>
   
@@ -75,7 +76,7 @@ function getHref(letter: string): string | undefined {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    height: auto;
   }
 
   /* ========================================
@@ -108,6 +109,13 @@ function getHref(letter: string): string | undefined {
     .letters-grid {
       row-gap: 12px;
       padding: var(--spacing-12) 0;
+    }
+  }
+
+  /* If the component is not intended for mobile (mobile=false), hide it under 768px */
+  @media (max-width: 768px) {
+    .alphabet-pagination[data-mobile="false"] {
+      display: none;
     }
   }
 </style>

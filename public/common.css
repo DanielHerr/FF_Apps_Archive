@@ -54,6 +54,16 @@ body > header label, body > header button {
 	line-height: 1;
 }
 
+::selection {
+  background: var(--surface-light-secondary-low);
+  color: var(--on-surface-light-regular);
+}
+/* For older versions of Firefox */
+::-moz-selection {
+  background: var(--surface-light-secondary-low);
+  color: var(--on-surface-light-regular);
+}
+
 #scroller {
 	overflow: auto;
 	container-type: size;
@@ -63,7 +73,7 @@ body > header label, body > header button {
 }
 
 main {
-	overflow: auto;
+	/* overflow: auto; */
 	background: var(--surface-light-mid);
     min-width: 320px;
 	max-width: 1000px;

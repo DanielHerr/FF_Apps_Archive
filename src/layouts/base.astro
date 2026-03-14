@@ -8,12 +8,13 @@ import Footer from "../components/UI/Footer.astro"
 import Navigation from "../components/UI/MenuNavSidebar.astro"
 import SectionHeadline from "../components/UI/SectionHeadline.astro"
 import SearchGraphic from "../components/UI/SearchGraphic.astro"
+import HeaderLogo from "../components/icons/brand/IconHeaderLogoGradient.astro"
 import Metadata from "../components/common_metadata.astro"
 // import Theme from "../components/theme_buttons.astro"
 import "../styles/index.css";
 import Hidden_Inputs from "../components/hidden_inputs.astro"
 
-let { title, subtitle, searchable } = Astro.props
+let { title, subtitle, searchable, headerVariant } = Astro.props
 ---
 
 <!doctype html>
@@ -43,7 +44,8 @@ let { title, subtitle, searchable } = Astro.props
 		<slot name="imports"/>
 
 		<slot name="icon">
-			<link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]">
+      		<HeaderLogo size={92} asFavicon pagefind/>
+			<!-- <link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]"> -->
 		</slot>
 
 		<Metadata/>
@@ -54,7 +56,7 @@ let { title, subtitle, searchable } = Astro.props
 	</head>
 	<body id="body">
 		<Hidden_Inputs/>
-		<Header/>
+		<Header variant={headerVariant ?? 'responsive'} />
 		<input type="checkbox" id="nav_toggle_input" tabindex="-1">
 		
 		<!-- Search Active State: Shows blank background with SearchGraphic -->

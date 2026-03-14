@@ -6,37 +6,12 @@
  * Variants:
  * - 'mobile': Mobile header with brand, search button, menu button (toggles to close when nav open)
  * - 'mobile-search': Mobile search mode with back button and full-width search bar
+ * - 'mobile-search-results': Mobile variant for search results: icon-only brand + search bar
  * - 'desktop': Desktop header with brand and search bar (centered, max-width 968px)
  * - 'desktop-home': Desktop home header with brand and full-width search bar (max-width 1260px)
  * - 'responsive': Auto-switches between mobile (<769px) and desktop (>=769px)
  * - 'responsive-home': Auto-switches between mobile (<769px) and desktop-home (>=769px)
- * 
- * Props:
- * @param variant - Header layout variant (default: 'responsive')
- * @param homeUrl - URL for brand link (default: '/')
- * @param searchDisabled - Whether search bar is disabled (default: false)
- * @param searchButtonDisabled - Whether search button is disabled in mobile variant (default: false)
- * 
- * Features:
- * - Menu/Close button toggle: Menu button toggles to close button when nav popover is open
- * - Search toggle: Search button swaps to mobile-search variant with back button
- * - Progressive enhancement: Uses popover API with checkbox fallback for no-JS
- * 
- * Usage:
- * <Header variant="responsive" homeUrl="/" /> <!-- Auto mobile/desktop switching -->
- * <Header variant="mobile" homeUrl="/" searchDisabled={false} searchButtonDisabled={false} />
- * <Header variant="mobile-search" homeUrl="/" searchDisabled={false} />
- * <Header variant="desktop" homeUrl="/" searchDisabled={false} />
- * <Header variant="desktop-home" homeUrl="/" searchDisabled={false} />
- * <Header variant="responsive-home" homeUrl="/" /> <!-- Auto mobile/desktop-home switching for home page -->
- * 
- * Design System Notes:
- * - Background: --surface-light-mid (neutral white strong)
- * - Border: --on-surface-light-border-low bottom border
- * - Brand text: --on-surface-light-regular
- * - Spacing: 16px padding, 8px/12px gaps
- * - Typography: Public Sans for brand, Inter for search input
- * - Breakpoint: 769px (--breakpoint-tablet-md)
+ * - 'responsive-search-results': Auto-switches between mobile-search-results (<769px) and desktop (>=769px)
  */
 
 import ButtonSearch from './ButtonSearch.astro';
@@ -48,7 +23,7 @@ import Modal from './Modal.astro';
 import IconRocketColorGradient from '../icons/brand/IconRocketColorGradient.astro';
 
 export interface Props {
-  variant?: 'mobile' | 'mobile-search' | 'desktop' | 'desktop-home' | 'responsive' | 'responsive-home';
+  variant?: 'mobile' | 'mobile-search' | 'mobile-search-results' | 'desktop' | 'desktop-home' | 'responsive' | 'responsive-home' | 'responsive-search-results';
   homeUrl?: string;
   searchDisabled?: boolean;
   searchButtonDisabled?: boolean;
@@ -62,7 +37,7 @@ export interface Props {
   searchUnavailableCheckboxId?: string;
 }
 
-const { 
+const {
   variant = 'responsive',
   homeUrl = '/',
   searchDisabled = false,
@@ -73,10 +48,11 @@ const {
   searchUnavailableCheckboxId = 'search_unavailable_input',
 } = Astro.props;
 
-// For responsive variants, render both mobile and desktop
+// For responsive variants, render both mobile and desktop (or mobile-search-results + desktop)
 const showMobile = variant === 'mobile' || variant === 'responsive' || variant === 'responsive-home';
 const showMobileSearch = variant === 'mobile-search' || variant === 'responsive' || variant === 'responsive-home';
-const showDesktop = variant === 'desktop' || variant === 'responsive';
+const showMobileSearchResults = variant === 'mobile-search-results' || variant === 'responsive-search-results';
+const showDesktop = variant === 'desktop' || variant === 'responsive' || variant === 'responsive-search-results';
 const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-home';
 ---
 
@@ -101,6 +77,29 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
       <!-- Action Buttons -->
       <div class="action-buttons">
         <ButtonSearch disabled={searchButtonDisabled} toggleCheckboxId={searchToggleCheckboxId} />
+        <ButtonMenu popovertarget="nav" />
+        <ButtonClose popovertarget="nav" popovertargetaction="hide" fallbackCheckboxId="nav_toggle_input" ariaLabel="Close menu" />
+      </div>
+    </div>
+  )}
+  
+  {showMobileSearchResults && (
+    <!-- Mobile Search Results Variant: Icon-only brand + Search Bar + Action Buttons -->
+    <div class="header-content mobile-search-results-content">
+      <!-- Icon-only Brand -->
+      <a href={homeUrl} class="brand brand-link">
+        <div class="brand-icon">
+          <IconRocketColorGradient />
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-bar-wrapper">
+        <InputSearchBar asForm disabled={searchDisabled} />
+      </div>
+
+      <!-- Action Buttons (menu/close) -->
+      <div class="action-buttons">
         <ButtonMenu popovertarget="nav" />
         <ButtonClose popovertarget="nav" popovertargetaction="hide" fallbackCheckboxId="nav_toggle_input" ariaLabel="Close menu" />
       </div>
@@ -315,13 +314,65 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
   }
 
   /* ========================================
-     MOBILE SEARCH VARIANT
+     MOBILE SEARCH RESULTS VARIANT
+     Icon-only brand + search bar + actions
      ======================================== */
-  /* Main styles defined in MOBILE SEARCH STATE TOGGLE section below */
+  .mobile-search-results-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 968px;
+    margin: 0 auto;
+    gap: var(--spacing-12);
+  }
 
+  /* Search bar wrapper used in multiple variants */
   .search-bar-wrapper {
     flex: 1 0 0;
     min-width: 0;
+  }
+
+  /* ========================================
+     MOBILE SEARCH VARIANT
+     ======================================== */
+  .mobile-search-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    padding: var(--spacing-16);
+    background: var(--surface-light-low);
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    z-index: 10;
+  }
+  
+  /* No transition when reset by resize */
+  .mobile-search-content.no-transition {
+    transition: none !important;
+  }
+  
+  /* When search active (mobile only): show mobile-search sliding from right */
+  @media (max-width: 768px) {
+    :global(body:has(#search_toggle_input:checked)) .mobile-search-content {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  
+  /* Desktop: always hide mobile-search-content */
+  @media (min-width: 769px) {
+    .mobile-search-content {
+      display: none !important;
+    }
   }
 
   /* ========================================
@@ -438,47 +489,24 @@ const showDesktopHome = variant === 'desktop-home' || variant === 'responsive-ho
   }
 
   /* ========================================
-     MOBILE SEARCH STATE TOGGLE
-     Checkbox-based toggle between mobile and mobile-search variants
+     RESPONSIVE-SEARCH-RESULTS VARIANT
+     Switches between mobile-search-results and desktop
      ======================================== */
-  
-  /* Default: mobile-search-content positioned for slide-in animation */
-  .mobile-search-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
+  .header[data-variant="responsive-search-results"] .mobile-search-results-content {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-12);
-    padding: var(--spacing-16);
-    background: var(--surface-light-low);
-    transform: translateX(100%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-    z-index: 10;
   }
   
-  /* No transition when reset by resize */
-  .mobile-search-content.no-transition {
-    transition: none !important;
+  .header[data-variant="responsive-search-results"] .desktop-wrapper {
+    display: none;
   }
   
-  /* When search active (mobile only): show mobile-search sliding from right */
-  @media (max-width: 768px) {
-    :global(body:has(#search_toggle_input:checked)) .mobile-search-content {
-      transform: translateX(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-  
-  /* Desktop: always hide mobile-search-content */
   @media (min-width: 769px) {
-    .mobile-search-content {
-      display: none !important;
+    .header[data-variant="responsive-search-results"] .mobile-search-results-content {
+      display: none;
+    }
+    
+    .header[data-variant="responsive-search-results"] .desktop-wrapper {
+      display: flex;
     }
   }
 </style>
