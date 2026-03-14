@@ -139,8 +139,6 @@ const circleX = getCirclePosition(state);
     document.querySelectorAll('.button-color-theme').forEach((button) => {
       button.setAttribute('data-state', state);
       button.setAttribute('aria-label', `Color theme: ${labels[state]}`);
-      // Mark as synced so CSS can reveal it (hides server-rendered 'auto' flash)
-      button.setAttribute('data-synced', '');
       
       // Update label text (if with-text variant)
       const label = button.querySelector('.label');
@@ -171,17 +169,6 @@ const circleX = getCirclePosition(state);
   
   // Sync buttons to current state on page load
   syncButtonsToState(getCurrentThemeState());
-  
-  // Reveal page now that theme is fully synced (removes FOUC hiding)
-  // Use double-rAF to ensure styles are computed and painted before reveal
-  requestAnimationFrame(function() {
-    requestAnimationFrame(function() {
-      document.documentElement.classList.remove('no-fouc');
-      setTimeout(function() {
-        document.documentElement.classList.remove('no-transitions');
-      }, 50);
-    });
-  });
   
   // Listen for changes to the radio inputs (from theme_buttons labels or other sources)
   ['auto_theme', 'light_theme', 'dark_theme'].forEach((id) => {

@@ -20,14 +20,10 @@ let apps = packaged.concat(live).filter(app => app.data.is_offline)
 	<link slot="imports" rel="stylesheet" href="/lists.css">
 
 	<!-- Mobile: Collapsible alphabet menu -->
-	<div class="mobile-only">
-		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
-	</div>
+	<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
 	
 	<!-- Desktop: Simple alphabet buttons -->
-	<div class="desktop-only">
-		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
-	</div>
+	<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
 
 	<AppsList apps={ apps }/>
 </Base>

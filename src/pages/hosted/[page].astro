@@ -48,14 +48,10 @@ let apps = live.filter(app => {
 	<link slot="metadata" rel="canonical" href="/hosted/">
 
 	<!-- Mobile: Collapsible alphabet menu -->
-	<div class="mobile-only">
-		<MenuAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
-	</div>
+	<MenuAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
 	
 	<!-- Desktop: Simple alphabet buttons -->
-	<div class="desktop-only">
-		<ButtonsAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
-	</div>
+	<ButtonsAlphabetPagination selectedLetter={selectedLetter} basePath={basePath} />
 
 	<AppsList apps={ apps }/>
 
@@ -67,21 +63,3 @@ let apps = live.filter(app => {
 		disableNext={!nextPage}
 	/>
 </Base>
-
-<style>
-	.desktop-only {
-		display: none;
-	}
-	.mobile-only {
-		display: block;
-		padding: var(--spacing-16) 0;
-	}
-	@media (min-width: 768px) {
-		.desktop-only {
-			display: block;
-		}
-		.mobile-only {
-			display: none;
-		}
-	}
-</style>

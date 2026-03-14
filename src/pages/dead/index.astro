@@ -16,32 +16,10 @@ const basePath = "/dead/"
 	<link slot="imports" rel="stylesheet" href="/lists.css">
 
 	<!-- Mobile: Collapsible alphabet menu -->
-	<div class="mobile-only">
-		<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
-	</div>
+	<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
 	
 	<!-- Desktop: Simple alphabet buttons -->
-	<div class="desktop-only">
-		<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
-	</div>
+	<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
 
 	<AppsList apps={ dead }/>
 </Base>
-
-<style>
-	.desktop-only {
-		display: none;
-	}
-	.mobile-only {
-		display: block;
-		padding: var(--spacing-16) 0;
-	}
-	@media (min-width: 768px) {
-		.desktop-only {
-			display: block;
-		}
-		.mobile-only {
-			display: none;
-		}
-	}
-</style>

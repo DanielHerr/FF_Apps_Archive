@@ -1,0 +1,233 @@
+.pagefind-ui{
+  /* Theme overrides */
+  --pagefind-ui-primary: var(--on-surface-light-primary);
+  --pagefind-ui-text: var(--on-surface-light-regular);
+  --pagefind-ui-background: var(--surface-light-mid);
+  --pagefind-ui-scale: 0.95;
+  --pagefind-ui-border-radius: var(--radius-md);
+  --pagefind-ui-border: var(--on-surface-border-high);
+}
+
+.pagefind-ui 
+.pagefind-ui__form 
+.pagefind-ui__search-input {
+    display: none;
+}
+.pagefind-ui 
+.pagefind-ui__form 
+.pagefind-ui__search-clear {
+    display: none;
+}
+.pagefind-ui 
+.pagefind-ui__form::before {
+    display: none;
+}
+
+.pagefind-ui 
+.pagefind-ui__drawer {
+    flex-direction: column;
+    gap: 0;
+}
+
+.pagefind-ui 
+.pagefind-ui__drawer 
+.pagefind-ui__filter-panel {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: var(--spacing-16);
+    justify-content: flex-end;
+    margin-top: var(--spacing-36);
+    height: 40px;
+    max-height: 40px;
+    background: var(--surface-light-mid);
+    padding-top: var(--spacing-8);
+    top: -4px;
+}
+
+.pagefind-ui 
+.pagefind-ui__drawer 
+.pagefind-ui__filter-block {
+    width: stretch;
+    min-width: 140px;
+    border: var(--border-sm) solid var(--on-surface-light-border-high);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-8);
+    background: var(--surface-light-mid);
+    height: fit-content;
+    box-shadow: var(--shadow-app-icon);
+}
+
+
+.pagefind-ui .pagefind-ui__drawer 
+.pagefind-ui__filter-block
+.pagefind-ui__filter-name {
+    font-family: var(--font-inter);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+    font-weight: var(--font-weight-bold);
+    color: var(--on-surface-light-regular);
+}
+
+.pagefind-ui .pagefind-ui__filter-panel 
+.pagefind-ui__filter-block 
+.pagefind-ui__filter-group {
+    padding: var(--spacing-20) var(--spacing-12);
+    width: 100%;
+    gap: var(--spacing-24);
+
+    font-family: var(--font-inter);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    font-weight: var(--font-weight-regular);
+    color: var(--on-surface-light-regular);
+}
+
+.pagefind-ui .pagefind-ui__filter-panel .pagefind-ui__filter-block .pagefind-ui__filter-group
+.pagefind-ui__filter-value
+.pagefind-ui__filter-label {
+    font-family: var(--font-inter);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--body-xxs-sc-spacing);
+    text-transform: uppercase;
+    color: var(--on-surface-light-regular);
+}
+
+/* Filters: checkbox accent */
+.pagefind-ui .pagefind-ui__filter-panel .pagefind-ui__filter-block .pagefind-ui__filter-group
+.pagefind-ui__filter-value
+.pagefind-ui__filter-checkbox { 
+    background-color:var(--surface-light-high);
+    border: var(--border-md) solid var(--on-surface-light-border-high);
+}
+
+.pagefind-ui .pagefind-ui__filter-panel .pagefind-ui__filter-block .pagefind-ui__filter-group
+.pagefind-ui__filter-value
+.pagefind-ui__filter-checkbox:checked { 
+    background: linear-gradient(180deg, var(--surface-light-primary-gradient-start) 0%, var(--surface-light-primary-gradient-end) 100%);
+    border-color: var(--surface-light-primary-low);
+}
+
+.pagefind-ui 
+.pagefind-ui__message {
+    height: fit-content;
+    padding: var(--spacing-8) 0;
+    color: var(--on-surface-light-primary);
+    font-family: var(--font-metropolis);
+    font-size: var(--heading-xs-size);
+    line-height: var(--heading-xs-line);
+    font-weight: var(--font-weight-bold);
+}
+
+.pagefind-ui 
+.pagefind-ui__results 
+.pagefind-ui__result {
+    border-top: var(--border-md) solid var(--on-surface-light-border-high);
+    padding: var(--spacing-12) 0;
+}
+
+/* Result title/link */
+.pagefind-ui .pagefind-ui__results .pagefind-ui__result .pagefind-ui__result-inner
+.pagefind-ui__result-title 
+.pagefind-ui__result-link{
+  color: var(--on-surface-light-primary);
+
+  font-family: var(--font-metropolis);
+  font-size: var(--heading-xs-size);
+  line-height: var(--heading-xs-line);
+  font-weight: var(--font-weight-bold);
+  text-decoration: underline;
+}
+.pagefind-ui 
+.pagefind-ui__result-title 
+.pagefind-ui__result-link:hover{
+  text-decoration: underline;
+}
+
+/* Excerpt styling */
+.pagefind-ui 
+.pagefind-ui__result 
+.pagefind-ui__result-excerpt{
+  color: var(--on-surface-light-regular);
+  font-family: var(--font-inter);
+  font-size: var(--body-sm-size);
+  line-height: var(--body-sm-line);
+  font-weight: var(--font-weight-regular);
+}
+
+/* Thumbnail adjustments */
+.pagefind-ui .pagefind-ui__results 
+.pagefind-ui__result 
+.pagefind-ui__result-thumb { 
+    min-width: var(--app-icon-md);
+    min-height: var(--app-icon-md);
+    margin: 0;
+    aspect-ratio: 1 / 1;
+}
+
+.pagefind-ui .pagefind-ui__results .pagefind-ui__result 
+.pagefind-ui__result-thumb 
+.pagefind-ui__result-image { 
+    border-radius: var(--radius-md);
+    width: 100%;
+    height: auto;
+    max-width: none;
+    max-height: none;
+ }
+
+/* Tag style */
+.pagefind-ui .pagefind-ui__results 
+.pagefind-ui__result 
+.pagefind-ui__result-tag{ background: var(--surface-light-low); color:var(--on-surface-light-faded); }
+
+.pagefind-ui .pagefind-ui__form .pagefind-ui__drawer .pagefind-ui__results .pagefind-ui__result 
+.pagefind-ui__result-inner 
+.pagefind-ui__result-excerpt mark {
+  background: var(--surface-light-primary-low);
+  color: var(--on-surface-light-regular);
+}
+
+@media (min-width: 768px) {
+    .pagefind-ui 
+    .pagefind-ui__drawer 
+    .pagefind-ui__filter-panel {
+        margin: 0;
+        right: var(--spacing-4);
+        margin-bottom: -40px;
+        
+        background: transparent;
+        padding-top: 0;
+        top: 0;
+    }
+
+    .pagefind-ui 
+    .pagefind-ui__drawer 
+    .pagefind-ui__filter-block {
+        width: 160px;
+    }
+
+    .pagefind-ui .pagefind-ui__filter-panel 
+    .pagefind-ui__filter-block 
+    .pagefind-ui__filter-group {
+        padding: var(--spacing-12) 0;
+        gap: var(--spacing-12);
+    }
+
+    .pagefind-ui .pagefind-ui__filter-panel .pagefind-ui__filter-block .pagefind-ui__filter-group
+    .pagefind-ui__filter-value
+    .pagefind-ui__filter-label {
+        font-size: var(--body-xxs-sc-size);
+        line-height: var(--body-xxs-sc-line);
+    }
+
+    .pagefind-ui 
+    .pagefind-ui__message {
+        font-size: var(--heading-xxs-size);
+        line-height: var(--heading-xxs-line);
+        margin-right: 360px;
+    }
+}

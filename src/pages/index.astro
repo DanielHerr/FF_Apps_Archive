@@ -23,6 +23,7 @@ import ButtonCategory from '../components/UI/ButtonCategory.astro';
 import ButtonCta from '../components/UI/ButtonCta.astro';
 import Link from '../components/UI/Link.astro';
 import SearchGraphic from '../components/UI/SearchGraphic.astro';
+import HeaderLogo from '../components/icons/brand/IconHeaderLogoGradient.astro';
 import Metadata from '../components/common_metadata.astro';
 import Hidden_Inputs from '../components/hidden_inputs.astro';
 
@@ -86,7 +87,10 @@ const footerLinks = [
     </noscript>
     <script defer src="/common.js"></script>
     
-    <link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]">
+    <slot name="icon">
+      <HeaderLogo size={92} asFavicon pagefind pagefindAlt="FF Apps Archive" />
+      <!-- <link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]"> -->
+    </slot>
     
     <Metadata/>
     
@@ -220,6 +224,7 @@ const footerLinks = [
 		background: var(--surface-light-mid);
 		font-family: var(--font-inter);
 		color: var(--on-surface-light-regular);
+    height: fit-content;
 	}
   
   /* Header Wrapper */
