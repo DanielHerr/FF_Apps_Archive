@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/base.astro"
+
+import SectionHeadline from "../components/UI/SectionHeadline.astro"
+---
+
+<Base title="Search Results" headerVariant="responsive-search-results">
+	<SectionHeadline
+		slot="header"
+		variant="sub-only" 
+		subHeaderText="Search Results"
+    />
+
+	<Fragment slot="imports">
+		<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+		<script src="/pagefind/pagefind-ui.js" defer></script>
+		<link href="/search-results.css" rel="stylesheet">
+		<link href="/search.css" rel="stylesheet">
+		<script src="/search.js" defer></script>
+	</Fragment>
+
+	<style>
+		:global(.header .search-bar-container) {
+			width: stretch !important;
+    		margin-left: var(--spacing-60) !important;
+		}
+	</style>
+	<search></search>
+</Base>

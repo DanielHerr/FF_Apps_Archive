@@ -1,0 +1,83 @@
+---
+/**
+ * ========================================
+ * SEARCH GRAPHIC COMPONENT
+ * ========================================
+ * Empty state graphic showing Firefox logo with search magnifying glass
+ * Used for search empty states and placeholders
+ * 
+ * Features:
+ * - Firefox header logo with magnifying glass overlay
+ * - 20% opacity for subtle background appearance
+ * - Fully responsive sizing
+ * - Uses existing brand and navigation icon components
+ * 
+ * Usage:
+ * <SearchGraphic />
+ */
+
+import IconHeaderLogo from '../icons/brand/IconHeaderLogo.astro';
+import IconMagnifyingGlass from '../icons/navigation/IconMagnifyingGlass.astro';
+---
+
+<div class="search-graphic">
+  <div class="logo-container">
+    <IconHeaderLogo size="100%" />
+  </div>
+  <div class="magnifying-glass-container">
+    <IconMagnifyingGlass size="100%" />
+  </div>
+</div>
+
+<style>
+  .search-graphic {
+    position: relative;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-24);
+    opacity: 0.2;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin: auto;
+  }
+
+  .logo-container {
+    flex: 1 0 0;
+    min-width: 1px;
+    min-height: 1px;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-faded);
+    box-sizing: border-box;
+  }
+
+  .logo-container :global(svg) {
+    display: block;
+  }
+
+  .magnifying-glass-container {
+    position: absolute;
+    top: 16.67%;
+    bottom: 65.79%;
+    right: var(--spacing-24);
+    aspect-ratio: 1 / 1;
+    color: var(--on-surface-light-faded);
+    pointer-events: none;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .magnifying-glass-container :global(svg) {
+    display: block;
+  }
+</style>

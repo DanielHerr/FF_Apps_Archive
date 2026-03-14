@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/base.astro"
+import AppsList from "../../components/apps_list.astro"
+
+import { live } from "../../validate_hosted_apps.js"
+
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
+const basePath = "/hosted/"
+---
+
+<Base title="All Hosted Apps">
+	<HeadlineAppType slot="header" variant="hosted" />
+	<link slot="imports" rel="stylesheet" href="/lists.css">
+
+	<!-- Mobile: Collapsible alphabet menu -->
+	<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+
+	<AppsList apps={ live }/>
+</Base>

@@ -1,0 +1,175 @@
+---
+/**
+ * ButtonLetter Component
+ * Square button for letter selection (A-Z alphabet navigation)
+ * 
+ * States:
+ * - Default: Light purple background
+ * - Hover: Primary purple border
+ * - Focus: 2px faded border
+ * - Selected: Pink background with primary text
+ * - Disabled: 40% opacity
+ * 
+ * Props:
+ * @param letter - Single letter to display (A-Z, "All", "#")
+ * @param selected - Whether button is currently selected
+ * @param disabled - Whether button is disabled
+ * @param href - Optional URL to navigate to (renders as anchor when provided)
+ * 
+ * Usage:
+ * <ButtonLetter letter="A" />
+ * <ButtonLetter letter="B" selected={true} />
+ * <ButtonLetter letter="C" disabled={true} />
+ * <ButtonLetter letter="A" href="/all/A" />
+ */
+
+interface Props {
+  letter: string;
+  selected?: boolean;
+  disabled?: boolean;
+  href?: string;
+}
+
+const { 
+  letter,
+  selected = false,
+  disabled = false,
+  href
+} = Astro.props;
+
+// Render as anchor if href is provided and not selected/disabled
+const isLink = href && !selected && !disabled;
+---
+
+{isLink ? (
+  <a 
+    class="button-letter"
+    href={href}
+    data-selected={selected}
+    aria-current={selected ? "page" : undefined}
+  >
+    <span class="letter-text">{letter}</span>
+    <span aria-hidden="true" class="border-overlay"></span>
+  </a>
+) : (
+  <button 
+    class="button-letter"
+    data-selected={selected}
+    disabled={disabled}
+    aria-pressed={selected}
+    type="button"
+  >
+    <span class="letter-text">{letter}</span>
+    <span aria-hidden="true" class="border-overlay"></span>
+  </button>
+)}
+
+<style>
+  /* ========================================
+     BUTTON LETTER
+     ======================================== */
+  .button-letter {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: var(--spacing-4) var(--spacing-12);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-app-icon);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none; /* For anchor variant */
+    
+    /* Default state - light purple background */
+    background: var(--surface-light-primary-low);
+  }
+
+  /* ========================================
+     LETTER TEXT
+     ======================================== */
+  .letter-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    text-align: center;
+    
+    /* Typography - Explicit tokens per guidelines */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: normal;
+    
+    /* Default text color */
+    color: var(--on-surface-light-faded);
+    transition: color 0.2s ease;
+  }
+
+  /* ========================================
+     BORDER OVERLAY
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    border: var(--border-sm) solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State - Primary purple border (NOT on selected buttons) */
+  .button-letter:hover:not(:focus-visible):not([disabled]):not([data-selected="true"]) .border-overlay {
+    border: var(--border-sm) solid var(--on-surface-light-primary);
+  }
+
+  /* Active State - Scale feedback (NOT on selected buttons since clicking does nothing) */
+  .button-letter:active:not([disabled]):not([data-selected="true"]) {
+    transform: scale(0.98);
+  }
+
+  /* Focus State - 2px faded border (works on all buttons including selected) */
+  .button-letter:focus-visible .border-overlay {
+    border: var(--border-lg) solid var(--on-surface-light-faded);
+  }
+
+  .button-letter:focus-visible {
+    outline: none;
+  }
+
+  /* Selected State - Pink background, primary text */
+  .button-letter[data-selected="true"] {
+    background: var(--surface-light-secondary-low);
+    cursor: default; /* Indicate it's not clickable */
+  }
+
+  .button-letter[data-selected="true"] .letter-text {
+    color: var(--on-surface-light-primary);
+  }
+
+  /* Disabled State - 40% opacity */
+  .button-letter:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .button-letter:disabled:active {
+    transform: none;
+  }
+
+  @media (min-width: 769px) {
+    .button-letter {
+      height: var(--spacing-28);
+    }
+  }
+</style>

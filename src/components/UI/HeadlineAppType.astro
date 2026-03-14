@@ -1,0 +1,75 @@
+---
+/**
+ * HeadlineAppType Component
+ * App type headline with predefined content for different app categories
+ * 
+ * Variants:
+ * - 'all': All Apps section
+ * - 'packaged': Packaged Apps section
+ * - 'privileged': Privileged Apps section
+ * - 'hosted': Hosted Apps section
+ * - 'dead': Dead Hosted Apps section
+ * 
+ * Props:
+ * @param variant - App type variant (default: 'all')
+ * 
+ * Usage:
+ * <HeadlineAppType variant="all" />
+ * <HeadlineAppType variant="packaged" />
+ * <HeadlineAppType variant="privileged" />
+ * 
+ * Design System Notes:
+ * - Uses SectionHeadline component internally
+ * - Each variant has predefined header and sub-header text
+ * - Follows default SectionHeadline layout
+ */
+
+import SectionHeadline from './SectionHeadline.astro';
+
+export interface Props {
+  variant?: 'all' | 'packaged' | 'privileged' | 'hosted' | 'dead';
+}
+
+const { variant = 'all' } = Astro.props;
+
+// Define content for each variant
+const contentMap = {
+  'all': {
+    headerText: 'All Apps',
+    subHeaderText: 'All of the apps that the archive contains'
+  },
+  'packaged': {
+    headerText: 'Packaged Apps',
+    subHeaderText: 'Packaged apps can be installed from this archive'
+  },
+  'privileged': {
+    headerText: 'Privileged Apps',
+    subHeaderText: 'These apps cannot be installed directly and must be sideloaded using developer tools'
+  },
+  'hosted': {
+    headerText: 'Hosted Apps',
+    subHeaderText: 'Hosted apps are retrieved offsite and some of them can be installed from this archive.'
+  },
+  'dead': {
+    headerText: 'Dead Hosted Apps',
+    subHeaderText: 'Dead hosted apps cannot be installed from this archive.'
+  }
+};
+
+const content = contentMap[variant];
+---
+
+<div class="headline-app-type" data-variant={variant}>
+  <SectionHeadline 
+    variant="default"
+    headerText={content.headerText}
+    subHeaderText={content.subHeaderText}
+  />
+</div>
+
+<style>
+  .headline-app-type {
+    width: 100%;
+    height: auto;
+  }
+</style>

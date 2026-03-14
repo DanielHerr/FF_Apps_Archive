@@ -1,0 +1,110 @@
+---
+/**
+ * LabelPageNavButton Component
+ * Page navigation label with icon for Next/Previous navigation
+ * 
+ * Props:
+ * - variant: 'next' | 'previous' (default: 'next')
+ * 
+ * Variants:
+ * - next: Shows "NEXT" label + CaretRight icon on the right
+ * - previous: Shows CaretLeft icon on the left + "PREVIOUS" label
+ * 
+ * Features:
+ * - 12px caret icons from navigation icons
+ * - Small caps typography (10px, uppercase, 0.4px letter spacing)
+ * - 4px gap between label and icon
+ * - Uses Inter font family
+ * - Faded text color for subtle appearance
+ */
+
+import IconCaretLeft from '../icons/navigation/IconCaretLeft.astro';
+import IconCaretRight from '../icons/navigation/IconCaretRight.astro';
+
+interface Props {
+  variant?: 'next' | 'previous';
+}
+
+const { 
+  variant = 'next'
+} = Astro.props;
+---
+
+<div class={`label-page-nav-button variant-${variant}`}>
+  {variant === 'previous' && (
+    <>
+      <!-- Icon Left -->
+      <div class="icon-container">
+        <IconCaretLeft />
+      </div>
+      
+      <!-- Label -->
+      <span class="label-text">PREVIOUS</span>
+    </>
+  )}
+  
+  {variant === 'next' && (
+    <>
+      <!-- Label -->
+      <span class="label-text">NEXT</span>
+      
+      <!-- Icon Right -->
+      <div class="icon-container">
+        <IconCaretRight />
+      </div>
+    </>
+  )}
+</div>
+
+<style>
+  /* Base Container */
+  .label-page-nav-button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    width: fit-content;
+  }
+
+  /* Label Text - Using body-xxs-sc tokens */
+  .label-text {
+    font-family: var(--font-inter);
+    font-size: var(--body-xxs-sc-size);
+    line-height: var(--body-xxs-sc-line);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--body-xxs-sc-spacing);
+    text-transform: uppercase;
+    color: var(--on-surface-light-faded);
+    white-space: nowrap;
+  }
+
+  /* Icon Container */
+  .icon-container {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--on-surface-light-faded);
+  }
+
+  .icon-container :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ========================================
+     VARIANT: PREVIOUS
+     ======================================== */
+  .variant-previous {
+    /* Icon on left, label on right (default flex direction) */
+  }
+
+  /* ========================================
+     VARIANT: NEXT
+     ======================================== */
+  .variant-next {
+    /* Label on left, icon on right (default flex direction) */
+  }
+</style>

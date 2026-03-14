@@ -11,7 +11,6 @@ export default defineConfig({
   site: "https://ffapps.danielherr.software",
 	compressHTML: false,
 	build: {
-		inlineStylesheets: "never",
-		concurrency: 1
+		inlineStylesheets: "never"
 	}
 })

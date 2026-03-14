@@ -1,0 +1,150 @@
+---
+/**
+ * App Status Tag Component
+ * Display-only status tag showing app type with optional hosted status chip
+ * 
+ * Variants:
+ * - page: Default layout (left-aligned content)
+ * - card: Right-aligned content for card displays
+ * 
+ * Props:
+ * @param text - Label text (default: "App Type")
+ * @param variant - Layout variant: 'page' | 'card' (default: 'page')
+ * @param showHostedChip - Toggle hosted chip visibility (default: true)
+ * @param hostedChipVariant - Chip variant: 'live' | 'dead' (default: 'live')
+ * 
+ * Icon Slot:
+ * Accepts any icon component from /src/components/icons/app-types/
+ * If no icon provided, uses IconPackage as default
+ * 
+ * Usage Examples:
+ * 
+ * Basic usage with default icon:
+ * <TagAppStatus text="Web App" />
+ * 
+ * With custom icon:
+ * <TagAppStatus text="Extension">
+ *   <IconShapes slot="icon" />
+ * </TagAppStatus>
+ * 
+ * Card variant without hosted chip:
+ * <TagAppStatus 
+ *   text="Desktop App" 
+ *   variant="card" 
+ *   showHostedChip={false}
+ * >
+ *   <IconDownload slot="icon" />
+ * </TagAppStatus>
+ * 
+ * With dead status:
+ * <TagAppStatus 
+ *   text="Service" 
+ *   hostedChipVariant="dead"
+ * >
+ *   <IconCloud slot="icon" />
+ * </TagAppStatus>
+ */
+
+import ChipHostedStatus from './ChipHostedStatus.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+
+interface Props {
+  text?: string;
+  variant?: 'page' | 'card';
+  showHostedChip?: boolean;
+  hostedChipVariant?: 'live' | 'dead';
+}
+
+const { 
+  text = 'App Type',
+  variant = 'page',
+  showHostedChip = true,
+  hostedChipVariant = 'live'
+} = Astro.props;
+
+const hasIcon = Astro.slots.has('icon');
+---
+
+<div 
+  class="tag-app-status" 
+  data-variant={variant}
+>
+  <!-- Text Label -->
+  <span class="tag-text">{text}</span>
+  
+  <!-- Icon Slot -->
+  {hasIcon ? (
+    <div class="icon-wrapper">
+      <slot name="icon" />
+    </div>
+  ) : (
+    <div class="icon-wrapper">
+      <IconPackage />
+    </div>
+  )}
+  
+  <!-- Hosted Status Chip (optional) -->
+  {showHostedChip && (
+    <ChipHostedStatus variant={hostedChipVariant} />
+  )}
+</div>
+
+<style>
+  /* ========================================
+     TAG CONTAINER
+     ======================================== */
+  .tag-app-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    border-radius: var(--radius-md);
+  }
+
+  /* Page variant - default left-aligned */
+  .tag-app-status[data-variant="page"] {
+    justify-content: flex-start;
+  }
+
+  /* Card variant - right-aligned */
+  .tag-app-status[data-variant="card"] {
+    justify-content: flex-end;
+  }
+
+  /* ========================================
+     TEXT LABEL
+     ======================================== */
+  .tag-text {
+    /* Typography - Using body-xxs tokens (10px/16px) */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: 0;
+    
+    /* Color - Semantic token for subdued/faded text */
+    color: var(--on-surface-light-faded);
+    
+    white-space: nowrap;
+  }
+
+  /* ========================================
+     ICON WRAPPER
+     ======================================== */
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    
+    /* Icon color - Semantic token for subdued/faded icons */
+    color: var(--on-surface-light-faded);
+  }
+
+  .icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

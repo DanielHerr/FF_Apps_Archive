@@ -1,0 +1,242 @@
+---
+/**
+ * App Types Card Component
+ * Card for app type display and selection with predefined configurations
+ * 
+ * States:
+ * - Default: Gradient background, colored border (1px)
+ * - Hover: Gradient background, colored border (2px)
+ * - Focus: Gradient background, faded border (2px) (keyboard navigation)
+ * 
+ * Props:
+ * @param appType - The type of app card to display (default: 'All')
+ *                  Options: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead'
+ * @param onclick - Optional click handler
+ * @param href - When provided, renders as anchor instead of button
+ * 
+ * Each appType includes predefined:
+ * - Title text
+ * - Description text
+ * - Icon component
+ * - Color scheme (icon/text/border)
+ * - Gradient background
+ * 
+ * Usage:
+ * <CardAppTypes appType="Packaged" onclick="handleClick()" />
+ * <CardAppTypes appType="Privileged" href="/privileged/1" />
+ * <CardAppTypes /> <!-- defaults to "All" -->
+ */
+
+interface Props {
+  appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead';
+  onclick?: string;
+  /** When provided, renders as anchor instead of button */
+  href?: string;
+}
+
+const { 
+  appType = 'All',
+  onclick,
+  href
+} = Astro.props;
+
+// Determine element type
+const Element = href ? 'a' : 'button';
+
+// Import all app type icons
+import IconShapes from '../icons/app-types/IconShapes.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+import IconDownload from '../icons/app-types/IconDownload.astro';
+import IconCloud from '../icons/app-types/IconCloud.astro';
+import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
+
+// Type configurations
+const typeConfigs = {
+  All: {
+    title: 'All Apps',
+    description: 'All of the apps that the archive contains',
+    icon: IconShapes,
+    iconColor: '--on-surface-any-blue',
+    gradientStart: '--card-gradient-light-blue-start',
+    gradientEnd: '--card-gradient-light-blue-end'
+  },
+  Packaged: {
+    title: 'Packaged Apps',
+    description: 'Packaged apps can be installed from this archive',
+    icon: IconPackage,
+    iconColor: '--on-surface-any-yellow',
+    gradientStart: '--card-gradient-light-yellow-start',
+    gradientEnd: '--card-gradient-light-yellow-end'
+  },
+  Privileged: {
+    title: 'Privileged Apps',
+    description: 'Privileged apps cannot be installed directly and must be sideloaded using developer tools.',
+    icon: IconDownload,
+    iconColor: '--on-surface-any-purple',
+    gradientStart: '--card-gradient-light-purple-start',
+    gradientEnd: '--card-gradient-light-purple-end'
+  },
+  Live: {
+    title: 'Hosted Apps',
+    description: 'Hosted apps are retrieved offsite and some of them can be installed from this archive.',
+    icon: IconCloud,
+    iconColor: '--on-surface-any-orange',
+    gradientStart: '--card-gradient-light-orange-start',
+    gradientEnd: '--card-gradient-light-orange-end'
+  },
+  Dead: {
+    title: 'Dead Hosted Apps',
+    description: 'Dead hosted apps cannot be installed from this archive.',
+    icon: IconSmileyXEyes,
+    iconColor: '--on-surface-any-red',
+    gradientStart: '--card-gradient-light-red-start',
+    gradientEnd: '--card-gradient-light-red-end'
+  }
+};
+
+const config = typeConfigs[appType];
+const IconComponent = config.icon;
+---
+
+<Element 
+  href={href}
+  onclick={onclick}
+  class="app-types-card"
+  data-app-types-card
+  style={`
+    background: linear-gradient(180deg, var(${config.gradientStart}) 0%, var(${config.gradientEnd}) 100%);
+    --card-icon-color: var(${config.iconColor});
+  `}
+>
+  <!-- Content -->
+  <div class="card-content">
+    <!-- Header -->
+    <div class="card-header">
+      <h3 class="card-title">
+        {config.title}
+      </h3>
+      
+      <!-- Icon -->
+      <div class="icon-wrapper icon-md">
+        <IconComponent />
+      </div>
+    </div>
+    
+    <!-- Description -->
+    <p class="body-sm card-description">
+      {config.description}
+    </p>
+  </div>
+  
+  <!-- Border overlay - changes on hover/focus -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</Element>
+
+<style>
+  /* Base Card */
+  .app-types-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 284px;
+    height: 130px;
+    padding: var(--spacing-16) var(--spacing-12);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
+    outline: none;
+  }
+
+  /* Content wrapper */
+  .card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    width: 100%;
+  }
+
+  /* Header */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Title */
+  .card-title {
+    font-family: var(--font-metropolis);
+    font-size: var(--heading-xxxs-size);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--heading-xxxs-line);
+    color: var(--card-icon-color);
+  }
+
+  /* Icon wrapper */
+  .icon-wrapper {
+    flex-shrink: 0;
+    color: var(--card-icon-color);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Slotted icon styling */
+  .card-header :global(svg) {
+    color: var(--card-icon-color);
+  }
+
+  .icon-md {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+
+  /* Description */
+  .card-description {
+    font-family: var(--font-inter);
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
+    color: var(--card-icon-color);
+    width: 100%;
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border: var(--border-sm) solid var(--card-icon-color);
+    border-radius: calc(var(--radius-md) + 0.5px);
+    pointer-events: none;
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* Hover State */
+  .app-types-card:hover .border-overlay {
+    inset: -1px;
+    border-width: var(--border-lg);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Focus State (keyboard only) */
+  .app-types-card:focus-visible .border-overlay {
+    inset: -2px;
+    border-width: var(--border-lg);
+    border-color: var(--on-surface-light-regular);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Active state - when button is pressed */
+  .app-types-card:active {
+    transform: scale(0.98);
+  }
+</style>

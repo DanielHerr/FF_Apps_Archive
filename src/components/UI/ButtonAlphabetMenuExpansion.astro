@@ -1,0 +1,146 @@
+---
+/**
+ * ButtonAlphabetMenuExpansion Component
+ * Toggle button to expand/collapse the alphabet pagination menu
+ * 
+ * Variants:
+ * - Collapsed: Shows chevron down icon
+ * - Expanded: Shows X (close) icon
+ * 
+ * States:
+ * - Default: Thin border on top, left, right
+ * - Hover: Thick purple border on top, left, right
+ * - Focus: Thick faded border on top, left, right
+ * 
+ * Props:
+ * @param expanded - Whether menu is expanded (default: false)
+ * 
+ * Usage:
+ * <ButtonAlphabetMenuExpansion expanded={false} />
+ * <ButtonAlphabetMenuExpansion expanded={true} />
+ */
+
+import IconCaretDown from '../icons/navigation/IconCaretDown.astro';
+import IconX from '../icons/navigation/IconX.astro';
+
+interface Props {
+  expanded?: boolean;
+}
+
+const { expanded = false } = Astro.props;
+---
+
+<button 
+  class="alphabet-menu-expansion"
+  aria-expanded={expanded}
+  aria-label={expanded ? 'Collapse alphabet menu' : 'Expand alphabet menu'}
+>
+  <!-- Icon - Chevron Down or Close X -->
+  {expanded ? (
+    <div class="icon-wrapper icon-sm">
+      <IconX size={16} />
+    </div>
+  ) : (
+    <div class="icon-wrapper icon-sm">
+      <IconCaretDown size={16} />
+    </div>
+  )}
+  
+  <!-- Border overlay for top, left, right borders only -->
+  <span aria-hidden="true" class="border-overlay"></span>
+</button>
+
+<style>
+  /* ========================================
+     ALPHABET MENU EXPANSION BUTTON
+     ======================================== */
+  .alphabet-menu-expansion {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     ICON
+     ======================================== */
+  .icon-wrapper {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+  }
+
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-sm {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  /* Default icon colors based on variant */
+  .alphabet-menu-expansion:not([aria-expanded="true"]) .icon-wrapper {
+    color: var(--on-surface-light-primary); /* Chevron - primary purple */
+  }
+
+  .alphabet-menu-expansion[aria-expanded="true"] .icon-wrapper {
+    color: var(--on-surface-light-faded); /* X - faded */
+  }
+
+  /* ========================================
+     BORDER OVERLAY (top, left, right only)
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    pointer-events: none;
+    border-top: var(--border-sm) solid var(--on-surface-light-primary);
+    border-left: var(--border-sm) solid var(--on-surface-light-primary);
+    border-right: var(--border-sm) solid var(--on-surface-light-primary);
+    border-bottom: none;
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State - Thick primary border */
+  .alphabet-menu-expansion:hover:not(:focus-visible) .border-overlay {
+    border-top: var(--border-lg) solid var(--on-surface-light-primary);
+    border-left: var(--border-lg) solid var(--on-surface-light-primary);
+    border-right: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: 6px 6px 0 0; /* Slightly larger radius when border expands */
+    inset: -2px -2px 0 -2px; /* Negative inset to accommodate 2px border */
+  }
+
+  /* Active State - Scale feedback */
+  .alphabet-menu-expansion:active {
+    transform: scale(0.98);
+  }
+
+  /* Focus State - Thick faded border */
+  .alphabet-menu-expansion:focus-visible .border-overlay {
+    border-top: var(--border-lg) solid var(--on-surface-light-faded);
+    border-left: var(--border-lg) solid var(--on-surface-light-faded);
+    border-right: var(--border-lg) solid var(--on-surface-light-faded);
+    border-radius: 6px 6px 0 0; /* Slightly larger radius when border expands */
+    inset: -2px -2px 0 -2px; /* Negative inset to accommodate 2px border */
+  }
+
+  .alphabet-menu-expansion:focus-visible {
+    outline: none;
+  }
+</style>

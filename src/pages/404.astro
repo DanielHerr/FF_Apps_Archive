@@ -1,0 +1,72 @@
+---
+/**
+ * 404 Page - FF Apps Archive
+ * Displayed when a page is not found
+ */
+
+import Base from '../layouts/base.astro';
+import Button from '../components/UI/Button.astro';
+import SectionHeadline from '../components/UI/SectionHeadline.astro';
+---
+
+<Base title="404" subtitle="Page Not Found">
+  <SectionHeadline headerText="Sorry," subHeaderText="" slot="header" />
+  
+  <section>
+    <div class="text-content">
+        <p class="billboard">404</p>
+        <p class="subtext">Page not found</p>
+    </div>
+    <div class="button-container">
+      <Button label="Back Home" href="/" />
+    </div>
+  </section>
+</Base>
+
+<style>
+
+
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-48) 0;
+  }
+
+  .text-content p {
+    text-align: center;
+    width: fit-content;
+  }
+
+  .billboard {
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-billboard-size);
+    line-height: var(--heading-billboard-line);
+    color: var(--on-surface-light-regular);
+  }
+
+  .subtext {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-lg-size);
+    line-height: var(--body-lg-line);
+    color: var(--on-surface-light-regular);
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  .button-container :global(.button) {
+    width: 100%;
+  }
+
+  @media (min-width: 769px) {
+    .button-container :global(.button) {
+        width: 288px;
+    }
+  }
+</style>

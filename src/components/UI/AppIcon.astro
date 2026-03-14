@@ -1,0 +1,156 @@
+---
+/**
+ * ========================================
+ * APP ICON COMPONENT
+ * ========================================
+ * A square icon with rounded corners for displaying app logos
+ * 
+ * Features:
+ * - Supports image source via src prop
+ * - Falls back to brand gradient when no image provided
+ * - Three standard sizes: SM (52px), MD (92px), LG (138px)
+ * - 4px border radius
+ * - Gradient fallback: Violet to Red (special gradient)
+ * 
+ * Props:
+ * @param src - Optional image source URL (if not provided, shows gradient)
+ * @param alt - Alt text for the image (default: "App icon")
+ * @param size - Size variant: 'sm' | 'md' | 'lg' (default: 'sm')
+ * 
+ * Design Tokens Used:
+ * - --app-icon-sm: 52px
+ * - --app-icon-md: 92px
+ * - --app-icon-lg: 138px
+ * - --radius-md: 4px
+ * - --on-surface-any-gradient-start: Violet-50
+ * - --on-surface-any-gradient-end: Red-50
+ * 
+ * Usage:
+ * <!-- Small (default) -->
+ * <AppIcon src="/path/to/icon.png" alt="Chess App" />
+ * 
+ * <!-- Medium -->
+ * <AppIcon src="/path/to/icon.png" alt="Chess App" size="md" />
+ * 
+ * <!-- Large -->
+ * <AppIcon src="/path/to/icon.png" alt="Chess App" size="lg" />
+ * 
+ * <!-- Gradient fallback -->
+ * <AppIcon alt="Placeholder" size="lg" />
+ * 
+ * Deviations from Astro Conversion Guide:
+ * - Uses dynamic `src` prop for loading external images (component doesn't know source yet)
+ * - Image positioning uses percentage values to match Figma export
+ */
+
+interface Props {
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg';
+  /** When true, emit pagefind meta/link for this image (only when `src` is present) */
+  pagefind?: boolean;
+  /** Optional override for pagefind image src (if different from `src`) */
+  pagefindSrc?: string;
+  /** Optional pagefind alt text override */
+  pagefindAlt?: string;
+  /** When true, render only the pagefind meta/link tags and skip visual markup (safe for head slot) */
+  pagefindMetaOnly?: boolean;
+}
+
+const { 
+  src,
+  alt = 'App icon',
+  size = 'sm',
+  pagefind = false, pagefindSrc, pagefindAlt,
+  pagefindMetaOnly = false,
+} = Astro.props;
+
+// SVG path for rounded square (4px radius)
+const roundedSquarePath = "M0 4C0 1.79086 1.79086 0 4 0H48C50.2091 0 52 1.79086 52 4V48C52 50.2091 50.2091 52 48 52H4C1.79086 52 0 50.2091 0 48V4Z";
+---
+
+{!pagefindMetaOnly && (
+  <div 
+    class={`app-icon app-icon-${size}`}
+    data-component="app-icon"
+    data-size={size}
+  >
+    {src ? (
+      <!-- Image Version -->
+      <div class="icon-image-wrapper">
+        <img 
+          src={src} 
+          alt={alt}
+          class="icon-image"
+        />
+      </div>
+    ) : (
+      <!-- Gradient Fallback Version -->
+      <div class="icon-gradient" aria-hidden="true"></div>
+    )}
+  </div>
+)}
+
+{pagefind && (pagefindSrc || src) && (
+  <Fragment>
+    <link rel="icon" href={pagefindSrc ?? src} data-pagefind-meta="image[href]" />
+    <meta name="page:image_alt" content={pagefindAlt ?? alt} data-pagefind-meta="image_alt[content]" />
+  </Fragment>
+)}
+
+<style>
+  /* Main Container */
+  .app-icon {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Size Variants - Using Design Tokens */
+  .app-icon-sm {
+    width: var(--app-icon-sm);
+    height: var(--app-icon-sm);
+  }
+
+  .app-icon-md {
+    width: var(--app-icon-md);
+    height: var(--app-icon-md);
+  }
+
+  .app-icon-lg {
+    width: var(--app-icon-lg);
+    height: var(--app-icon-lg);
+  }
+
+  /* Image Wrapper */
+  .icon-image-wrapper {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Image */
+  .icon-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Gradient Fallback - Using Brand Gradient Tokens */
+  .icon-gradient {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      180deg,
+      var(--on-surface-any-gradient-start) 0%,
+      var(--on-surface-any-gradient-end) 100%
+    );
+  }
+</style>

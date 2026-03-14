@@ -1,0 +1,404 @@
+---
+/**
+ * SectionHeadline Component
+ * Section headline with H1 header, optional sub header, optional category icon, and color theme button
+ * 
+ * Variants:
+ * - 'default': H1 header on top row, sub header below, color theme button on right
+ * - 'inline': H1 header on left, sub header inline on right, color theme button on far right
+ * - 'icon': H1 header with category icon next to it, color theme button on far right
+ * - 'sub-only': Only sub header text with color theme button on right (no H1)
+ * 
+ * Props:
+ * @param variant - Layout variant (default: 'default')
+ * @param headerText - H1 header text (default: 'Header H1')
+ * @param subHeaderText - Sub header text (default: 'Sub Header')
+ * @param category - Optional category name (automatically maps to filled icon for 'icon' variant)
+ * @param pagefindMeta - Optional Pagefind metadata key (e.g., 'title') for search indexing
+ * 
+ * Usage:
+ * <SectionHeadline variant="default" headerText="My Title" subHeaderText="My subtitle" />
+ * <SectionHeadline variant="icon" headerText="Games" category="Games" />
+ * <SectionHeadline variant="sub-only" subHeaderText="Just a subtitle" />
+ * 
+ * Design System Notes:
+ * - H1 text: 20px/24px Metropolis Bold, --on-surface-light-faded color
+ * - Sub header: varies by variant (14px or 16px Inter Regular)
+ * - Spacing: 16px top padding, 12px gaps
+ * - Category icon: 16px square, automatically selected from filled variants
+ */
+
+import ButtonColorTheme from './ButtonColorTheme.astro';
+import H1 from './H1.astro';
+
+// Import ALL filled category icons for icon variant
+import IconAirplaneTiltFilled from '../icons/categories/IconAirplaneTiltFilled.astro';
+import IconAtomFilled from '../icons/categories/IconAtomFilled.astro';
+import IconBookOpenTextFilled from '../icons/categories/IconBookOpenTextFilled.astro';
+import IconBooksFilled from '../icons/categories/IconBooksFilled.astro';
+import IconBuildingsFilled from '../icons/categories/IconBuildingsFilled.astro';
+import IconCameraFilled from '../icons/categories/IconCameraFilled.astro';
+import IconChartPieSliceFilled from '../icons/categories/IconChartPieSliceFilled.astro';
+import IconCloudSunFilled from '../icons/categories/IconCloudSunFilled.astro';
+import IconCompassFilled from '../icons/categories/IconCompassFilled.astro';
+import IconFilmStripFilled from '../icons/categories/IconFilmStripFilled.astro';
+import IconGameControllerFilled from '../icons/categories/IconGameControllerFilled.astro';
+import IconGearFineFilled from '../icons/categories/IconGearFineFilled.astro';
+import IconGlobeFilled from '../icons/categories/IconGlobeFilled.astro';
+import IconGraduationCapFilled from '../icons/categories/IconGraduationCapFilled.astro';
+import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
+import IconHeartbeatFilled from '../icons/categories/IconHeartbeatFilled.astro';
+import IconIslandFilled from '../icons/categories/IconIslandFilled.astro';
+import IconMaskHappyFilled from '../icons/categories/IconMaskHappyFilled.astro';
+import IconMusicNotesFilled from '../icons/categories/IconMusicNotesFilled.astro';
+import IconNewspaperFilled from '../icons/categories/IconNewspaperFilled.astro';
+import IconPinwheelFilled from '../icons/categories/IconPinwheelFilled.astro';
+import IconQuestionFilled from '../icons/categories/IconQuestionFilled.astro';
+import IconRadioFilled from '../icons/categories/IconRadioFilled.astro';
+import IconShoppingCartFilled from '../icons/categories/IconShoppingCartFilled.astro';
+import IconTennisBallFilled from '../icons/categories/IconTennisBallFilled.astro';
+import IconUserCircleFilled from '../icons/categories/IconUserCircleFilled.astro';
+import IconWineFilled from '../icons/categories/IconWineFilled.astro';
+
+// Category to Filled Icon mapping
+const categoryIconMap: Record<string, any> = {
+  'Books': IconBooksFilled,
+  'Books & Comics': IconBookOpenTextFilled,
+  'Business': IconBuildingsFilled,
+  'Education': IconGraduationCapFilled,
+  'Entertainment': IconFilmStripFilled,
+  'Food & Drink': IconWineFilled,
+  'Games': IconGameControllerFilled,
+  'Health & Fitness': IconHeartbeatFilled,
+  'Humor': IconMaskHappyFilled,
+  'Internet': IconGlobeFilled,
+  'Kids': IconPinwheelFilled,
+  'Lifestyle': IconIslandFilled,
+  'Maps & Navigation': IconCompassFilled,
+  'Music': IconMusicNotesFilled,
+  'News': IconNewspaperFilled,
+  'News & Weather': IconCloudSunFilled,
+  'Personalization': IconGearFineFilled,
+  'Photo & Video': IconCameraFilled,
+  'Productivity': IconChartPieSliceFilled,
+  'Reference': IconQuestionFilled,
+  'Science & Tech': IconAtomFilled,
+  'Shopping': IconShoppingCartFilled,
+  'Social': IconUserCircleFilled,
+  'Sports': IconTennisBallFilled,
+  'Travel': IconAirplaneTiltFilled,
+  'Utilities': IconHammerFilled,
+  'Weather': IconCloudSunFilled,
+  'Radio': IconRadioFilled,
+};
+
+export interface Props {
+  variant?: 'default' | 'inline' | 'icon' | 'sub-only';
+  headerText?: string;
+  subHeaderText?: string;
+  category?: string;
+  pagefindMeta?: string;
+}
+
+const { 
+  variant = 'default',
+  headerText = 'Header H1',
+  subHeaderText = 'Sub Header',
+  category,
+  pagefindMeta
+} = Astro.props;
+
+// Get the icon component for the category (only used in 'icon' variant)
+const CategoryIcon = category ? categoryIconMap[category] : null;
+---
+
+<div class="section-headline" data-variant={variant}>
+  {variant === 'default' && (
+    <!-- Default: H1 on top, sub header below -->
+    <div class="top-row">
+      <div class="h1-container">
+        <H1 data-pagefind-meta={pagefindMeta} text={headerText} />
+      </div>
+      <div class="buttons-container">
+        <ButtonColorTheme variant="responsive" />
+      </div>
+    </div>
+    <div class="sub-header-row">
+      <p class="sub-header sub-header-text">{subHeaderText}</p>
+    </div>
+  )}
+
+  {variant === 'inline' && (
+    <!-- Inline: H1 left, sub header inline right, button far right -->
+    <div class="inline-row">
+      <div class="h1-container">
+        <H1 data-pagefind-meta={pagefindMeta} text={headerText} />
+      </div>
+      <div class="sub-header-inline">
+        <p class="sub-header sub-header-text-inline">{subHeaderText}</p>
+      </div>
+      <div class="buttons-container">
+        <ButtonColorTheme variant="responsive" />
+      </div>
+    </div>
+  )}
+
+  {variant === 'icon' && (
+    <!-- Icon: H1 with icon, button far right -->
+    <div class="icon-row">
+      <div class="h1-with-icon">
+        <H1 data-pagefind-meta={pagefindMeta} text={headerText} />
+        {CategoryIcon && (
+          <div class="category-icon">
+            <CategoryIcon />
+          </div>
+        )}
+      </div>
+      <div class="buttons-spacer"></div>
+      <div class="buttons-container">
+        <ButtonColorTheme variant="responsive" />
+      </div>
+    </div>
+  )}
+
+  {variant === 'sub-only' && (
+    <!-- Sub Only: Only sub header with button -->
+    <div class="sub-only-row">
+      <div class="sub-only-text-container">
+        <p class="sub-header sub-only-text">{subHeaderText}</p>
+      </div>
+      <div class="buttons-container-sub">
+        <ButtonColorTheme variant="responsive" />
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  /* ========================================
+     BASE CONTAINER
+     ======================================== */
+  .section-headline {
+    width: 100%;
+    height: auto;
+    padding-top: var(--spacing-16);
+  }
+
+  /* Default variant */
+  .section-headline[data-variant="default"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Inline variant */
+  .section-headline[data-variant="inline"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Icon variant */
+  .section-headline[data-variant="icon"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Sub Only variant */
+  .section-headline[data-variant="sub-only"] {
+    display: flex;
+    gap: var(--spacing-12);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sub-header {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-md-size);
+    line-height: var(--body-md-line);
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+    transition: all 0.2s ease;
+  }
+
+  .h1-container :global(.heading) {
+    
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     DEFAULT VARIANT
+     ======================================== */
+  .top-row {
+    display: flex;
+    gap: var(--spacing-12);
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .h1-container {
+    display: flex;
+    flex: 1 0 0;
+    align-items: center;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  /* .h1-text {
+    flex: 1 0 0;
+    min-width: 0;
+    min-height: 1px;
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+  } */
+
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: var(--spacing-24);
+  }
+
+  .sub-header-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sub-header-text {
+    
+  }
+
+  /* ========================================
+     INLINE VARIANT
+     ======================================== */
+  .inline-row {
+    display: flex;
+    flex: 1 0 0;
+    gap: var(--spacing-12);
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  /* .h1-text-inline {
+    flex: initial;
+    white-space: nowrap;
+  } */
+
+  .sub-header-inline {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 24px;
+    width: auto;
+    text-align: right;
+  }
+
+  .sub-header-text-inline {
+  }
+
+  /* ========================================
+     ICON VARIANT
+     ======================================== */
+  .icon-row {
+    display: flex;
+    flex: 1 0 0;
+    gap: var(--spacing-12);
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .h1-with-icon {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+  }
+
+  .category-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    flex-shrink: 0;
+    color: var(--on-surface-light-faded);
+  }
+
+  .category-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .buttons-spacer {
+    flex: 1 0 0;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  /* ========================================
+     SUB ONLY VARIANT
+     ======================================== */
+  .sub-only-row {
+    display: flex;
+    flex: 1 0 0;
+    gap: var(--spacing-12);
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .sub-only-text-container {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .sub-only-text {
+  }
+
+  .buttons-container-sub {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-end;
+    padding-left: var(--spacing-24);
+  }
+
+  /* ========================================
+     RESPONSIVE: DESKTOP (769px and above)
+     Single breakpoint: --tablet-md at 769px
+     ======================================== */
+
+  @media (min-width: 769px) {
+    .section-headline {
+      padding-top: var(--spacing-20);
+      padding-bottom: var(--spacing-24);
+    }
+
+    .h1-container :global(.heading), .h1-with-icon :global(.heading) {
+      font-size: var(--heading-xs-size);
+      line-height: var(--heading-xs-line);
+    }
+
+    .sub-header {
+      font-size: var(--body-lg-size);
+      line-height: var(--body-lg-line);
+    }
+  }
+</style>

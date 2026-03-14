@@ -1,0 +1,73 @@
+---
+/**
+ * Publisher Link Component
+ * Link with icon prefix for displaying URLs with publisher attribution
+ * 
+ * States:
+ * - Default: Primary purple link with faded icon
+ * - Hover: Light violet background (from nested Link)
+ * - Focus: 2px faded border (from nested Link)
+ * - Visited: Regular text color (from nested Link)
+ * 
+ * Props:
+ * @param href - URL destination
+ * @param label - Link text content (defaults to href if not provided)
+ * 
+ * Usage:
+ * <LinkPublisher href="https://www.website.com" />
+ * <LinkPublisher href="https://example.com" label="Visit Example" />
+ */
+
+import IconLink from '../icons/labels/IconLink.astro';
+import Link from './Link.astro';
+
+interface Props {
+  href: string;
+  label?: string;
+}
+
+const { 
+  href,
+  label
+} = Astro.props;
+---
+
+<div class="link-publisher">
+  <span class="icon-wrapper">
+    <IconLink />
+  </span>
+  <Link href={href} label={label} />
+</div>
+
+<style>
+  /* ========================================
+     LINK PUBLISHER CONTAINER
+     ======================================== */
+  .link-publisher {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-8);
+  }
+
+  /* Override nested Link typography with body-xs */
+  .link-publisher :global(.link) {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: var(--body-xs-spacing);
+  }
+
+  /* ========================================
+     ICON WRAPPER
+     ======================================== */
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+    color: var(--on-surface-light-faded);
+  }
+</style>

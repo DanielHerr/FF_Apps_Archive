@@ -1,0 +1,121 @@
+---
+/**
+ * ButtonsAlphabetPagination Component
+ * Container for alphabet letter navigation buttons (A-Z, All, #)
+ * 
+ * Features:
+ * - Renders all alphabet letters plus "All" and "#" options
+ * - Wrapping grid layout with center alignment
+ * - Side borders (left/right only)
+ * - Controlled selection via selectedLetter prop
+ * - Navigation links when basePath is provided
+ * 
+ * Props:
+ * @param selectedLetter - Currently selected letter (default: "A")
+ * @param basePath - Base path for navigation links (e.g., "/all/"). When provided, buttons become links.
+ * 
+ * URL Mapping:
+ * - "All" → basePath (e.g., "/all/")
+ * - "#" → basePath + "1" (e.g., "/all/1")
+ * - Letters A-Z → basePath + letter (e.g., "/all/A")
+ * 
+ * Usage:
+ * <ButtonsAlphabetPagination selectedLetter="A" />
+ * <ButtonsAlphabetPagination selectedLetter="A" basePath="/all/" />
+ */
+
+import ButtonLetter from './ButtonLetter.astro';
+
+interface Props {
+  selectedLetter?: string;
+  basePath?: string;
+  mobile?: boolean;
+}
+
+const { selectedLetter = 'A', basePath, mobile = false } = Astro.props;
+
+// All available letters including "All" and "#"
+const letters = [
+  'All', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'
+];
+
+// Generate href for a letter
+function getHref(letter: string): string | undefined {
+  if (!basePath) return undefined;
+  if (letter === 'All') return basePath;
+  if (letter === '#') return basePath + '1';
+  return basePath + letter;
+}
+---
+
+<div class="alphabet-pagination" data-mobile={mobile ? 'true' : 'false'}>
+  <!-- Side borders overlay (left/right only) -->
+  <div aria-hidden="true" class="side-borders"></div>
+  
+  <!-- Letters grid -->
+  <div class="letters-grid">
+    {letters.map(letter => (
+      <ButtonLetter 
+        letter={letter}
+        selected={letter === selectedLetter}
+        href={getHref(letter)}
+      />
+    ))}
+  </div>
+</div>
+
+<style>
+  /* ========================================
+     ALPHABET PAGINATION CONTAINER
+     ======================================== */
+  .alphabet-pagination {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ========================================
+     SIDE BORDERS (left/right only)
+     ======================================== */
+  .side-borders {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-left: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-right: var(--border-sm) solid var(--on-surface-light-border-low);
+  }
+
+  /* ========================================
+     LETTERS GRID
+     ======================================== */
+  .letters-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: flex-start;
+    row-gap: 28px;
+    column-gap: var(--spacing-12);
+    width: 100%;
+    border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 769px) {
+    .letters-grid {
+      row-gap: 12px;
+      padding: var(--spacing-12) 0;
+    }
+  }
+
+  /* If the component is not intended for mobile (mobile=false), hide it under 768px */
+  @media (max-width: 768px) {
+    .alphabet-pagination[data-mobile="false"] {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+/**
+ * H2 Component
+ * Secondary heading element with Metropolis Bold typography
+ * 
+ * Props:
+ * @param text - The heading text content (default: "Header H2")
+ * 
+ * Usage:
+ * <H2 />
+ * <H2 text="My Custom Heading" />
+ */
+
+interface Props {
+  text?: string;
+}
+
+const { text = "Header H2" } = Astro.props;
+---
+
+<h2 class="heading">
+  {text}
+</h2>
+
+<style>
+  .heading {
+    /* Typography - Metropolis Bold, 16px/20px */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxxs-size);
+    line-height: var(--heading-xxxs-line);
+    font-style: normal;
+    
+    /* Color - Primary text on surface */
+    color: var(--on-surface-light-regular);
+    
+    /* Layout */
+    white-space: nowrap;
+    margin: 0;
+
+    transition: all 0.2s ease;
+
+  }
+</style>

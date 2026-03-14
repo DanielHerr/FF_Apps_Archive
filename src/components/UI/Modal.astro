@@ -1,0 +1,231 @@
+---
+/**
+ * Modal Component
+ * Dialog/overlay component with header (badge, title, close button) and body text
+ * 
+ * Props:
+ * - id: Optional ID for the modal element (required when asDialog=true)
+ * - title: Heading text (default: "Title")
+ * - body: Body content text (default: lorem ipsum)
+ * - showBadge: Whether to show notification badge (default: true)
+ * - asDialog: Render as dialog element with popover support (default: false)
+ * 
+ * Structure:
+ * - Header with notification badge, H2 title, and close button
+ * - Body text area with scrollable content
+ * 
+ * Design System Notes:
+ * - Background: --surface-light-mid (white)
+ * - Border: --on-surface-light-border-low with shadow
+ * - Border radius: --radius-md (4px)
+ * - Padding: 32px
+ * - Gap: 12px between header and body
+ * - Header gap: 8px between badge, title, close button
+ * 
+ * Interactive States:
+ * - Close button has hover/focus/active states
+ * - Focus visible border on modal container
+ * 
+ * Usage:
+ * <Modal title="Warning" body="Some message" />
+ * <Modal id="search_unavailable" asDialog title="Search Unavailable" body="..." />
+ */
+
+import H2 from './H2.astro';
+import BadgeNotification from './BadgeNotification.astro';
+import ButtonClose from './ButtonClose.astro';
+
+export interface Props {
+  id?: string;
+  title?: string;
+  body?: string;
+  showBadge?: boolean;
+  /** Render as dialog element with popover support */
+  asDialog?: boolean;
+}
+
+const { 
+  id,
+  title = "Title",
+  body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum enim lectus, mollis sed mattis egestas, euismod a lacus. Integer nec diam pulvinar, commodo ex et, venenatis lacus. Phasellus nec tellus a turpis vulputate porttitor. Nunc laoreet scelerisque erat ac sollicitudin. Sed viverra ligula eget dui bibendum, eget fermentum arcu tempus. Donec ac nisi lobortis est suscipit vestibulum. Duis non erat varius, condimentum lorem nec, faucibus sapien",
+  showBadge = true,
+  asDialog = false
+} = Astro.props;
+
+const Element = asDialog ? 'dialog' : 'div';
+---
+
+<Element 
+  class="modal"
+  id={id}
+  popover={asDialog ? true : undefined}
+>
+  <!-- Border overlay with shadow -->
+  <div class="border-overlay" aria-hidden="true"></div>
+  
+  <!-- Header: Badge + H2 + Close Button -->
+  <div class="modal-header">
+    {showBadge && (
+      <div class="badge-wrapper">
+        <BadgeNotification variant="warning" />
+      </div>
+    )}
+    
+    <div class="title-wrapper">
+      <H2 text={title} />
+    </div>
+    
+    <div class="close-wrapper">
+      <ButtonClose 
+        size="xs" 
+        ariaLabel="Close modal"
+        popovertarget={asDialog ? id : undefined}
+        popovertargetaction={asDialog ? "hide" : undefined}
+      />
+    </div>
+  </div>
+  
+  <!-- Body Text -->
+  <p class="modal-body">{body}</p>
+</Element>
+
+<style>
+  /* ========================================
+     MODAL CONTAINER
+     ======================================== */
+  .modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    width: fit-content;
+    max-width: 400px;
+    height: fit-content;
+    padding: var(--spacing-32);
+    background: var(--surface-light-low);
+    border-radius: var(--radius-md);
+  }
+
+  /* Border overlay with shadow */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-radius: var(--radius-md);
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+  }
+
+  /* ========================================
+     MODAL HEADER
+     ======================================== */
+  .modal-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-8);
+    width: 100%;
+    flex-shrink: 0;
+    max-width: 640px;
+  }
+
+  /* Badge wrapper - override size to 12px */
+  .badge-wrapper {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Scale up the badge to 12px (from default 8px) */
+  .badge-wrapper :global(.badge-notification) {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Ensure SVG scales properly */
+  .badge-wrapper :global(.badge-svg) {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Title wrapper - flex grow to take available space */
+  .title-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Override H2 display to inline-block for proper alignment */
+  .title-wrapper :global(.heading) {
+    display: inline-block;
+  }
+
+  /* Close button wrapper */
+  .close-wrapper {
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+     MODAL BODY
+     ======================================== */
+  .modal-body {
+    /* Typography - Inter Regular, 14px/22px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: normal;
+    font-style: normal;
+    
+    /* Color */
+    color: var(--on-surface-light-regular);
+    
+    /* Layout */
+    width: 100%;
+    max-width: 640px;
+    white-space: pre-wrap;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+     DIALOG/POPOVER STYLES
+     ======================================== */
+  dialog.modal {
+    /* Reset dialog defaults */
+    border: none;
+    max-width: 400px;
+    
+    /* Positioning for popover */
+    margin: 0;
+    position: fixed;
+    
+    /* Fade animation */
+    opacity: 0;
+    transition: opacity 0.2s ease-out, display 0.2s ease-out allow-discrete;
+    
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  dialog.modal:popover-open {
+    opacity: 1;
+  }
+
+  /* Starting style for fade-in */
+  @starting-style {
+    dialog.modal:popover-open {
+      opacity: 0;
+    }
+  }
+
+  dialog.modal::backdrop {
+    background: transparent;
+  }
+
+  /* Hide when not open */
+  dialog.modal:not(:popover-open) {
+    display: none;
+  }
+</style>

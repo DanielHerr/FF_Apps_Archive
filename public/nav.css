@@ -1,0 +1,96 @@
+/*
+supported scenarios:
+
+no flexbox or media queries - menu nav? nav below main?
+
+media queries, no flexbox - absolute positioning when left nav? menu nav?
+
+media queries and flexbox:
+popover and anchor, checkbox/radio hack fallback
+*/
+
+/* 
+ * ========================================
+ * LEGACY NAV STYLES - COMMENTED OUT
+ * Now handled by MenuNavSidebar.astro scoped styles
+ * ========================================
+ */
+
+/* radio button fallback */
+/* #nav, #nav_toggle_button, #nav_toggle_input:checked ~ #scroller main, #nav_toggle_input:checked ~ #scroller footer {
+	display: none;
+}
+#nav_toggle_input:checked ~ #scroller #nav {
+	display: block;
+} */
+
+/* large screen, left nav */
+@media(min-width: 769px) {
+	#flexer {
+		display: -moz-box; display: -webkit-box;
+		display: -webkit-flex; display: flex;
+		-webkit-align-items: stretch; align-items: stretch;
+		-webkit-justify-content: center; justify-content: center;
+		-webkit-flex-direction: row-reverse; flex-direction: row-reverse;
+		-moz-box-direction: reverse; -webkit-box-direction: reverse;
+		min-height: 100%;
+	}
+	/* #nav {
+		display: block;
+		position: -webkit-sticky; position: sticky;
+		top: 0;
+		-webkit-flex-shrink: 0; flex-shrink: 0;
+		border: none;
+		scrollbar-width: thin;
+		overflow-y: auto;
+		max-height: 100cqh;
+	} */
+	/* main {
+		margin-left: 10px;
+		-webkit-flex-grow: 1; flex-grow: 1;
+		-moz-box-flex: 1; -webkit-box-flex: 1;
+		min-width: 10px;
+	} */
+	#nav_toggle_label {
+		display: none;
+	}
+}
+
+/* @supports selector(:popover-open) {
+	#nav {
+		width: auto;
+		height: auto;
+		border: none;
+		margin: 0;
+	}
+} */
+
+/* popover and anchor, small screen, menu nav */
+/* @supports selector(:popover-open) and (anchor-name: --name) {
+	@media(width < 800px) {
+		#nav {
+			position: absolute;
+			top: anchor(--header bottom);
+			margin: 0;
+		}
+		#nav:popover-open {
+			display: block;
+		}
+		body:has(#nav:popover-open) :is(main, footer) {
+			display: none;
+		}
+		#nav_toggle_button {
+			display: inline-block;
+		}
+		#nav_toggle_label {
+			display: none;
+		}
+	}
+} */
+
+/* popover without anchor, fallback to checkbox trick */
+/* @supports selector(:popover-open) and (not(anchor-name: --name)) {
+	#nav {
+		position: initial;
+	}
+} */

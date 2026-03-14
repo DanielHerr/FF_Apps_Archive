@@ -1,0 +1,136 @@
+---
+/**
+ * Gallery Navigation Button Component
+ * Circular button for navigating image galleries (previous/next)
+ * 
+ * Variants:
+ * - previous: Shows left caret icon
+ * - next: Shows right caret icon
+ * 
+ * States:
+ * - Default: Light violet background
+ * - Hover: Pink background
+ * - Focus: 2px faded border with shadow
+ * - Disabled: 20% opacity
+ * 
+ * Props:
+ * @param variant - Navigation direction: 'previous' | 'next'
+ * @param disabled - Disabled state
+ * @param onclick - Optional click handler
+ * 
+ * Usage:
+ * <ButtonGalleryNav variant="previous" />
+ * <ButtonGalleryNav variant="next" disabled={true} />
+ */
+
+interface Props {
+  variant?: 'previous' | 'next';
+  disabled?: boolean;
+  onclick?: string;
+}
+
+const { 
+  variant = 'previous',
+  disabled = false,
+  onclick
+} = Astro.props;
+
+// Import icon components
+import IconCaretLeft from '../icons/navigation/IconCaretLeft.astro';
+import IconCaretRight from '../icons/navigation/IconCaretRight.astro';
+---
+
+<button 
+  onclick={onclick}
+  disabled={disabled}
+  class="gallery-nav-button"
+  data-variant={variant}
+  aria-label={variant === 'previous' ? 'Previous' : 'Next'}
+>
+  <div class="icon-wrapper">
+    {variant === 'previous' ? (
+      <IconCaretLeft />
+    ) : (
+      <IconCaretRight />
+    )}
+  </div>
+  
+  <!-- Focus border overlay -->
+  <div aria-hidden="true" class="focus-border"></div>
+</button>
+
+<style>
+  /* ========================================
+     GALLERY NAV BUTTON
+     ======================================== */
+  .gallery-nav-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 24px;
+    background: var(--surface-light-primary-low);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  /* Icon Wrapper */
+  .icon-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--on-surface-light-faded);
+  }
+
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Focus Border Overlay */
+  .focus-border {
+    position: absolute;
+    inset: -2px;
+    border: none;
+    border-radius: 26px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State - Pink background */
+  .gallery-nav-button:hover:not(:disabled):not(:focus-visible) {
+    background: var(--surface-light-secondary-low);
+  }
+
+  /* Active State - Click feedback */
+  .gallery-nav-button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  /* Focus State - Border with shadow */
+  .gallery-nav-button:focus-visible .focus-border {
+    opacity: 1;
+    border: var(--border-lg) solid var(--on-surface-light-faded);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  /* Disabled State - 20% opacity */
+  .gallery-nav-button:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+</style>

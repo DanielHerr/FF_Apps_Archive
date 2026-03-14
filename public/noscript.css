@@ -1,0 +1,19 @@
+#search_form {
+	display: none;
+}
+#search_toggle_button {
+	display: none;
+}
+#search_toggle_label {
+	display: none;
+}
+#search_unavailable_label {
+	display: initial;
+}
+@supports selector(:popover-open) {
+	#search_unavailable_button {
+		display: initial;
+	}
+	#search_unavailable_label {
+		display: none;
+} }

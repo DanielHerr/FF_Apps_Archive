@@ -1,0 +1,44 @@
+#apps_list {
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--spacing-12);
+	padding: var(--spacing-16) var(--spacing-2);
+}
+#apps_list > li {
+	/* margin-top: 20px; */
+	width: fit-content;
+}
+/* #apps_list a {
+	display: block;
+	overflow: auto;
+	text-decoration: none;
+} */
+.icon {
+	float: left;
+	margin-right: 1em;
+}
+.name {
+	display: inline;
+	margin: 0;
+}
+.author {
+	float: right;
+}
+.secondary {
+	clear: right;
+}
+.rating {}
+.type {}
+.categories {
+	display: inline;
+	list-style: none;
+	padding: 0;
+}
+.categories li {
+	display: inline;
+}
+.categories li:not(:last-child)::after {
+	content: ", "
+}

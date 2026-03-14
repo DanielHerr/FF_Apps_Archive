@@ -1,0 +1,181 @@
+---
+/**
+ * Footer Component
+ * Site footer with navigation links and attribution text
+ * 
+ * Content:
+ * - Two footer links (CONTACT US, PRIVACY)
+ * - Attribution text with inline link to Daniel Herr Software
+ * - Legal disclaimer about Firefox trademark and Mozilla affiliation
+ * 
+ * Usage:
+ * <Footer />
+ * 
+ * Design System Notes:
+ * - Background: --surface-light-mid (neutral white strong)
+ * - Border: --on-surface-light-border-low top border
+ * - Padding: 16px
+ * - Gap: 8px between sections
+ * - Typography: Inter font family
+ * - Uses existing Link component with custom typography overrides
+ */
+
+import Link from './Link.astro';
+---
+
+<footer class="footer">
+  <!-- Border Overlay -->
+  <div class="border-overlay" aria-hidden="true"></div>
+  
+  <!-- Footer Links -->
+  <div class="links-container">
+    <div class="link-footer-wrapper">
+      <Link href="/contact/" label="CONTACT US" />
+    </div>
+    <div class="link-footer-wrapper">
+      <Link href="/privacy/" label="PRIVACY" />
+    </div>
+  </div>
+  
+  <!-- Attribution -->
+  <div class="attribution">
+    <span class="attribution-text">FFAA developed by </span><span class="attribution-link-wrapper"><Link href="https://danielherr.software/" label="Daniel Herr Software" /></span>
+  </div>
+  
+  <!-- Legal Disclaimer -->
+  <div class="disclaimer">
+    <p class="disclaimer-text">Firefox is a trademark of Mozilla Foundation.</p>
+    <p class="disclaimer-text disclaimer-last">FFAA is not affiliated with Mozilla.</p>
+  </div>
+</footer>
+
+<style>
+  /* ========================================
+     FOOTER BASE
+     ======================================== */
+  .footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--spacing-8);
+    width: 100%;
+    min-width: 320px;
+    height: auto;
+    padding: var(--spacing-16);
+    background: var(--surface-light-mid);
+  }
+
+  /* Border overlay (top border) */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-top: var(--border-sm) solid var(--on-surface-light-border-low);
+    pointer-events: none;
+  }
+
+  /* ========================================
+     LINKS CONTAINER
+     ======================================== */
+  .links-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-16);
+    width: 100%;
+    padding: var(--spacing-4) 0;
+    flex-shrink: 0;
+  }
+
+  /* Typography override for footer links */
+  .link-footer-wrapper :global(.link) {
+    /* Override typography for footer links */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-sc-size);
+    line-height: var(--body-xxs-sc-line);
+    letter-spacing: var(--body-xxs-sc-spacing);
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* ========================================
+     ATTRIBUTION
+     ======================================== */
+  .attribution {
+    /* Typography with explicit tokens */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: normal;
+    
+    /* Layout - flex to tightly hug content */
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .attribution-text {
+    color: var(--on-surface-light-faded);
+  }
+
+  /* Typography override for attribution link */
+  .attribution-link-wrapper :global(.link) {
+    /* Override typography for attribution link */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Adjust hover background for attribution link */
+  .attribution-link-wrapper :global(.link:hover:not(:focus-visible)) {
+    background: transparent;
+    opacity: 0.8;
+  }
+
+  /* ========================================
+     DISCLAIMER
+     ======================================== */
+  .disclaimer {
+    /* Typography with explicit tokens */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: normal;
+    
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    text-align: center;
+    white-space: pre-wrap;
+    flex-shrink: 0;
+  }
+
+  .disclaimer-text {
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+  }
+
+  .disclaimer-last {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,379 @@
+---
+/**
+ * ========================================
+ * MENU NAV SIDEBAR COMPONENT
+ * ========================================
+ * Vertical navigation menu with app types and categories sections
+ * 
+ * Features:
+ * - App Types section with 5 options (All, Packaged, Privileged, Hosted, Dead Hosted)
+ * - Categories section loaded from categories.json
+ * - Works Offline special category
+ * - Hidden PWA link (shows when navigator.install is available)
+ * - Uses H2 headings for section titles
+ * - Different button variants for desktop vs mobile (responsive)
+ * - Width: 260px for label variant, 320px for inline variant (desktop only)
+ * - Supports popover attribute for toggle behavior
+ * 
+ * Props:
+ * @param desktopHidden - Hide the nav on desktop (for home page layout)
+ * @param desktopButtonVariant - Button style for desktop: 'label' (default) or 'inline'
+ * @param mobileButtonVariant - Button style for mobile popover: 'label' or 'inline' (default)
+ * 
+ * Design Tokens:
+ * - Spacing: var(--spacing-24) between sections, var(--spacing-12) between header and buttons
+ * - Layout: Flexbox column with no gaps between buttons for seamless list
+ * 
+ * Usage:
+ * <MenuNavSidebar />                              <!-- Desktop: label, Mobile: inline (defaults) -->
+ * <MenuNavSidebar desktopHidden />                <!-- Mobile popover only with inline buttons -->
+ * <MenuNavSidebar desktopButtonVariant="inline" /> <!-- Both use inline -->
+ * <MenuNavSidebar mobileButtonVariant="label" />   <!-- Both use label -->
+ */
+
+import H2 from './H2.astro';
+import ButtonAppTypes from './ButtonAppTypes.astro';
+import ButtonCategory from './ButtonCategory.astro';
+import categories from '../../categories.json';
+
+export interface Props {
+  /** Hide the nav on desktop (for home page layout) */
+  desktopHidden?: boolean;
+  /** Button style variant for desktop sidebar: 'label' (compact) or 'inline' (full width) */
+  desktopButtonVariant?: 'label' | 'inline';
+  /** Button style variant for mobile popover: 'label' (compact) or 'inline' (full width) */
+  mobileButtonVariant?: 'label' | 'inline';
+}
+
+const { 
+  desktopHidden = false,
+  desktopButtonVariant = 'label',
+  mobileButtonVariant = 'inline'
+} = Astro.props;
+
+// Get current path to determine active nav item
+const currentPath = Astro.url.pathname;
+const pathSegments = currentPath.split('/').filter(Boolean);
+const currentSection = pathSegments[0] || '';
+
+// App type path mappings (URL segment → appType prop value)
+const appTypePathMap: Record<string, 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead' | 'PWA'> = {
+  'all': 'All',
+  'packaged': 'Packaged',
+  'privileged': 'Privileged',
+  'hosted': 'Live',
+  'dead': 'Dead',
+  'pwa': 'PWA'
+};
+
+// Check if current section is an app type
+const activeAppType = appTypePathMap[currentSection] || null;
+
+// Check if current section is a category (matches category slug or works-offline)
+const activeCategory = categories.find(cat => cat.slug === currentSection)?.name 
+  || (currentSection === 'works-offline' ? 'Works Offline' : null);
+---
+
+<nav id="nav" class="menu-nav-sidebar" aria-label="Site Navigation" popover data-desktop-hidden={desktopHidden ? "true" : undefined} data-desktop-variant={desktopButtonVariant} data-mobile-variant={mobileButtonVariant}>
+  <!-- App Types Section -->
+  <div class="menu-section">
+    <div class="section-header">
+      <H2 text="App Types" />
+    </div>
+    
+    <!-- Desktop buttons (label variant by default) -->
+    <div class="button-list desktop-buttons">
+      <ButtonAppTypes appType="All" variant={desktopButtonVariant} href="/all/A" active={activeAppType === 'All'} />
+      <ButtonAppTypes appType="Packaged" variant={desktopButtonVariant} href="/packaged/A" active={activeAppType === 'Packaged'} />
+      <ButtonAppTypes appType="Privileged" variant={desktopButtonVariant} href="/privileged/A" active={activeAppType === 'Privileged'} />
+      <ButtonAppTypes appType="Live" variant={desktopButtonVariant} href="/hosted/A" active={activeAppType === 'Live'} />
+      <ButtonAppTypes appType="Dead" variant={desktopButtonVariant} href="/dead/A" active={activeAppType === 'Dead'} />
+      <div id="pwas_link_desktop" class="pwa-link" hidden>
+        <ButtonAppTypes appType="PWA" variant={desktopButtonVariant} href="/pwa" active={activeAppType === 'PWA'} />
+      </div>
+    </div>
+    
+    <!-- Mobile buttons (inline variant by default) -->
+    <div class="button-list mobile-buttons">
+      <ButtonAppTypes appType="All" variant={mobileButtonVariant} href="/all/A" active={activeAppType === 'All'} />
+      <ButtonAppTypes appType="Packaged" variant={mobileButtonVariant} href="/packaged/A" active={activeAppType === 'Packaged'} />
+      <ButtonAppTypes appType="Privileged" variant={mobileButtonVariant} href="/privileged/A" active={activeAppType === 'Privileged'} />
+      <ButtonAppTypes appType="Live" variant={mobileButtonVariant} href="/hosted/A" active={activeAppType === 'Live'} />
+      <ButtonAppTypes appType="Dead" variant={mobileButtonVariant} href="/dead/A" active={activeAppType === 'Dead'} />
+      <div id="pwas_link_mobile" class="pwa-link" hidden>
+        <ButtonAppTypes appType="PWA" variant={mobileButtonVariant} href="/pwa" active={activeAppType === 'PWA'} />
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <div class="menu-section">
+    <div class="section-header">
+      <H2 text="Categories" />
+    </div>
+    
+    <!-- Desktop buttons -->
+    <div class="button-list desktop-buttons">
+      {categories.map((cat) => (
+        <ButtonCategory 
+          variant={desktopButtonVariant} 
+          category={cat.name} 
+          href={`/${cat.slug}/A`}
+          active={activeCategory === cat.name}
+        />
+      ))}
+      <ButtonCategory variant={desktopButtonVariant} category="Works Offline" href="/works-offline/A" active={activeCategory === 'Works Offline'} />
+    </div>
+    
+    <!-- Mobile buttons -->
+    <div class="button-list mobile-buttons">
+      {categories.map((cat) => (
+        <ButtonCategory 
+          variant={mobileButtonVariant} 
+          category={cat.name} 
+          href={`/${cat.slug}/A`}
+          active={activeCategory === cat.name}
+        />
+      ))}
+      <ButtonCategory variant={mobileButtonVariant} category="Works Offline" href="/works-offline/A" active={activeCategory === 'Works Offline'} />
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* ========================================
+     MAIN CONTAINER
+     ======================================== */
+  .menu-nav-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+    width: 260px;
+    padding: var(--spacing-16) 0 var(--spacing-24) 0;
+    margin: 0;
+    background: var(--surface-light-low);
+    border: none;
+    border-right: var(--border-md) solid var(--on-surface-light-border-low);
+    
+    /* Sticky sidebar that fills viewport height */
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    align-self: flex-start;
+    scrollbar-width: thin;
+    overflow-y: auto;
+    height: 100cqh;
+  }
+  
+  /* Inline button variant: wider container (desktop only) */
+  .menu-nav-sidebar[data-desktop-variant="inline"] {
+    width: 320px;
+  }
+
+  /* ========================================
+     RESPONSIVE BEHAVIOR
+     Breakpoint: 769px (--breakpoint-tablet-md)
+     ======================================== */
+  
+  /* Small screens: Hidden by default (no-JS fallback) */
+  @media (max-width: 768px) {
+    .menu-nav-sidebar {
+      /* Checkbox fallback for no-JS - hidden by default */
+      display: none;
+      position: fixed;
+      top: 64px; /* Below header */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      z-index: 100;
+      overflow-y: auto;
+    }
+    
+    /* Checkbox fallback for no-JS - show when checked */
+    :global(#nav_toggle_input:checked ~ #scroller #flexer) .menu-nav-sidebar {
+      display: flex;
+    }
+    
+    /* Hide main/footer when nav is open via checkbox (no-JS only) */
+    :global(#nav_toggle_input:checked ~ #scroller main),
+    :global(#nav_toggle_input:checked ~ #scroller footer) {
+      display: none;
+    }
+  }
+  
+  /* Popover support - let browser handle show/hide */
+  @supports selector(:popover-open) {
+    /* Mobile: explicitly show when popover-open (browser hides by default) */
+    @media (max-width: 768px) {
+      /* Base state for nav - off-screen left */
+      :global(#nav[popover]) {
+        transform: translateX(-100%);
+        opacity: 0;
+        transition: transform 0.2s ease-out, opacity 0.2s ease-out, display 0.2s ease-out allow-discrete;
+      }
+      
+      /* No transition when reset by resize */
+      :global(#nav[popover].no-transition) {
+        transition: none !important;
+      }
+      
+      /* Use :global to prevent Astro scoping from breaking :popover-open */
+      :global(#nav:popover-open) {
+        display: flex !important;
+        flex-direction: column;
+        gap: var(--spacing-24);
+        position: fixed;
+        /* Explicitly set all inset values to override UA inset: 0 */
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 100%;
+        max-height: calc(100vh - 64px);
+        max-height: calc(100dvh - 64px);
+        margin: 0;
+        /* z-index doesn't help on top-layer, but keep for consistency */
+        z-index: 99;
+        padding: var(--spacing-16) 0 var(--spacing-24) 0;
+        background: var(--surface-light-low);
+        border: none;
+        overflow-y: auto;
+        
+        /* Slide in from left - end state */
+        transform: translateX(0);
+        opacity: 1;
+      }
+      
+      /* Starting style for entry animation */
+      @starting-style {
+        :global(#nav:popover-open) {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+      
+      /* Inline variant: full width on mobile popover */
+      :global(#nav[data-mobile-variant="inline"]:popover-open) {
+        width: 100%;
+        left: 0;
+        right: 0;
+      }
+      
+      /* Ensure backdrop (if any) doesn't cover the header */
+      :global(#nav::backdrop) {
+        top: 64px;
+      }
+      
+      /* No need to hide main/footer - popover is on top layer */
+    }
+    
+    /* Desktop: override UA [popover]:not(:popover-open) { display:none } */
+    @media (min-width: 769px) {
+      /* Must use !important to override UA popover styles */
+      :global(#nav[popover]),
+      :global(#nav[popover]:not(:popover-open)) {
+        display: flex !important;
+        position: sticky;
+        top: 0;
+        width: 260px;
+        height: 100cqh;
+        border-right: var(--border-md) solid var(--on-surface-light-border-low);
+      }
+      
+      /* Inline variant: wider on desktop */
+      :global(#nav[data-desktop-variant="inline"][popover]),
+      :global(#nav[data-desktop-variant="inline"][popover]:not(:popover-open)) {
+        width: 320px;
+      }
+      
+      /* Hide nav on desktop when desktopHidden is set */
+      :global(#nav[data-desktop-hidden="true"][popover]),
+      :global(#nav[data-desktop-hidden="true"][popover]:not(:popover-open)) {
+        display: none !important;
+      }
+    }
+  }
+  
+  /* Anchor positioning for popover (when supported) */
+  @supports selector(:popover-open) and (anchor-name: --name) {
+    @media (max-width: 768px) {
+      :global(#nav:popover-open) {
+        inset: unset;
+        top: anchor(--header bottom);
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+
+  /* ========================================
+     SECTION CONTAINER
+     ======================================== */
+  .menu-section {
+    display: flex;
+    gap: var(--spacing-4);
+    flex-direction: column;
+    width: 100%;
+    padding: var(--spacing-4) var(--spacing-36) var(--spacing-4) var(--spacing-36);
+  }
+  
+  /* Inline variant: different padding for wider buttons (desktop) */
+  :global(#nav[data-desktop-variant="inline"]) .menu-section {
+    padding: 0 var(--spacing-16) 0 var(--spacing-16);
+  }
+  
+  /* Mobile popover: always use adjusted padding for inline buttons */
+  @media (max-width: 768px) {
+    .menu-section {
+      padding: 0 var(--spacing-16) 0 var(--spacing-16);
+    }
+  }
+
+  /* ========================================
+     SECTION HEADER
+     ======================================== */
+  .section-header {
+    padding: 0 var(--spacing-8);
+  }
+
+  /* ========================================
+     BUTTON LIST
+     ======================================== */
+  .button-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  
+  /* Desktop/Mobile button list visibility */
+  .desktop-buttons {
+    display: flex;
+    gap: var(--spacing-4);
+  }
+  
+  .mobile-buttons {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .desktop-buttons {
+      display: none;
+    }
+    
+    .mobile-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-8);
+      width: 100%;
+    }
+  }
+  
+  /* PWA link wrapper - inherits hidden from JS */
+  .pwa-link {
+    display: contents;
+  }
+</style>

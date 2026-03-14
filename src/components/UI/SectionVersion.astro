@@ -1,0 +1,185 @@
+---
+/**
+ * SectionVersion Component
+ * 
+ * Displays version information with heading and details (size, updated, created dates).
+ * 
+ * Props:
+ * @param version - Version number string (e.g., "1.0.0")
+ * @param appSize - Application size string (e.g., "0 mb")
+ * @param updateDate - Last update date string (e.g., "January 1, 2025")
+ * @param createdDate - Creation date string (e.g., "January 1, 2025")
+ * 
+ * Usage:
+ * <SectionVersion 
+ *   version="1.0.0"
+ *   appSize="0 mb"
+ *   updateDate="January 1, 2025"
+ *   createdDate="January 1, 2025"
+ * />
+ */
+
+import H2 from './H2.astro';
+
+interface Props {
+  version: string;
+  appSize: string;
+  updateDate: string;
+  createdDate: string;
+}
+
+const { 
+  version,
+  appSize,
+  updateDate,
+  createdDate
+} = Astro.props;
+---
+
+<section class="section-version">
+  <div class="version-heading">
+    <H2 text="Version" />
+    <H2 text={version} />
+  </div>
+  
+  <div class="version-details">
+    <div class="version-fields">
+      <div class="field-label">Size</div>
+      <div class="field-label">Updated</div>
+      <div class="field-label">Created</div>
+    </div>
+    
+    <div class="version-values">
+      <div class="field-value">{appSize}</div>
+      <div class="field-value">{updateDate}</div>
+      <div class="field-value">{createdDate}</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ========================================
+     SECTION WRAPPER
+     ======================================== */
+  .section-version {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 16px 0;
+  }
+
+  /* ========================================
+     VERSION HEADING
+     ======================================== */
+  .version-heading {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .version-label,
+  .version-number {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    
+    /* Typography - Heading XXXS (16px/20px) with Metropolis Bold */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxxs-size);
+    line-height: var(--heading-xxxs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     VERSION DETAILS
+     ======================================== */
+  .version-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+     VERSION FIELDS (LEFT COLUMN - LABELS)
+     ======================================== */
+  .version-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .field-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    
+    /* Typography - Body XS (12px/18px) with Inter Regular */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     VERSION VALUES (RIGHT COLUMN - DATA)
+     ======================================== */
+  .version-values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+
+  .field-value {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 18px;
+    width: 100%;
+    flex-shrink: 0;
+    white-space: pre-wrap;
+    transition: all 0.3s ease;
+    
+    /* Typography - Body XS (12px/18px) with Public Sans SemiBold */
+    font-family: var(--font-public-sans);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-regular);
+  }
+
+  @media (min-width: 769px) {
+    .section-version {
+      width: fit-content;
+    }
+
+    .field-label, .field-value {
+      font-size: var(--body-sm-size);
+      line-height: var(--body-sm-line);
+    }
+  }
+</style>

@@ -1,0 +1,612 @@
+---
+/**
+ * ========================================
+ * APP CARD COMPONENT
+ * ========================================
+ * Card component for displaying app information with icon, title, categories, ratings, and status
+ * 
+ * Features:
+ * - Three interactive states: Default, Hover, Focus
+ * - Gradient background with border overlay pattern
+ * - Seven nested components (AppIcon, 2 Category Icons, H2, Star, Users, TagAppStatus)
+ * - Automatic category icon and text handling (1-2 categories)
+ * - Automatic app type status handling (Packaged, Privileged, Live, Dead)
+ * - Uses REGULAR weight category icons only
+ * 
+ * Props:
+ * @param appIconSrc - Optional image source for app icon (if not provided, shows gradient)
+ * @param appTitle - App name text for H2 heading (default: "App Name")
+ * @param categories - Array of 1-2 category names (e.g., ['Games', 'Music'])
+ * @param appType - App type: 'Packaged' | 'Privileged' | 'Live' | 'Dead' (default: 'Live')
+ * @param starRating - Star rating value (default: "5.0")
+ * @param userCount - Number of users/ratings (default: "100")
+ * 
+ * App Type Mapping:
+ * - Packaged: statusText='Packaged', no chip, IconPackage
+ * - Privileged: statusText='Privileged', no chip, IconDownload
+ * - Live: statusText='Hosted', live chip, IconCloud
+ * - Dead: statusText='Hosted', dead chip, IconSmileyXEyes
+ * 
+ * Design Tokens Used:
+ * - --spacing-4, --spacing-8, --spacing-12: Gap and padding
+ * - --radius-md: Border radius (4px)
+ * - --card-gradient-light-blue-start, --card-gradient-light-blue-end: Card gradient background (subtle 3% opacity)
+ * - --on-surface-light-regular: Primary text color
+ * - --on-surface-light-faded: Secondary text color
+ * - --on-surface-light-border-low: Default border color
+ * - --on-surface-light-primary: Hover and focus border color
+ * 
+ * Typography Tokens:
+ * - H2: Metropolis Bold, 16px/20px (--heading-xxxs-size/line)
+ * - Category text: Inter Regular, 10px/16px (--body-xxs-size/line)
+ * - Rating text: Inter Regular, 12px/18px (--body-xs-size/line)
+ * 
+ * Usage Examples:
+ * 
+ * Basic usage:
+ * <CardApp 
+ *   appTitle="Chess Master"
+ *   categories={['Games']}
+ *   appType="Live"
+ * />
+ * 
+ * With custom values:
+ * <CardApp 
+ *   appIconSrc="/path/to/icon.png"
+ *   appTitle="Music Player"
+ *   categories={['Music', 'Entertainment']}
+ *   appType="Packaged"
+ *   starRating="4.8"
+ *   userCount="1.2k"
+ * />
+ * 
+ * Interactive States:
+ * - Default: Subtle gradient background with light border (--on-surface-light-border-low)
+ * - Hover: Purple border (--on-surface-light-primary)
+ * - Focus: Darker purple border with 2px width (--on-surface-light-primary)
+ */
+
+import AppIcon from './AppIcon.astro';
+import H2 from './H2.astro';
+import TagAppStatus from './TagAppStatus.astro';
+import IconStar from '../icons/ratings/IconStar.astro';
+import IconUsers from '../icons/ratings/IconUsers.astro';
+
+// Import app type status icons
+import IconCloud from '../icons/app-types/IconCloud.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+import IconDownload from '../icons/app-types/IconDownload.astro';
+import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
+
+// Import ALL category icons - REGULAR variants only (CardApp uses regular icons)
+import IconAirplaneTiltRegular from '../icons/categories/IconAirplaneTiltRegular.astro';
+import IconAtomRegular from '../icons/categories/IconAtomRegular.astro';
+import IconBookOpenTextRegular from '../icons/categories/IconBookOpenTextRegular.astro';
+import IconBooksRegular from '../icons/categories/IconBooksRegular.astro';
+import IconBuildingsRegular from '../icons/categories/IconBuildingsRegular.astro';
+import IconCameraRegular from '../icons/categories/IconCameraRegular.astro';
+import IconChartPieSliceRegular from '../icons/categories/IconChartPieSliceRegular.astro';
+import IconCloudSunRegular from '../icons/categories/IconCloudSunRegular.astro';
+import IconCompassRegular from '../icons/categories/IconCompassRegular.astro';
+import IconFilmStripRegular from '../icons/categories/IconFilmStripRegular.astro';
+import IconGameControllerRegular from '../icons/categories/IconGameControllerRegular.astro';
+import IconGearFineRegular from '../icons/categories/IconGearFineRegular.astro';
+import IconGlobeRegular from '../icons/categories/IconGlobeRegular.astro';
+import IconGraduationCapRegular from '../icons/categories/IconGraduationCapRegular.astro';
+import IconHammerRegular from '../icons/categories/IconHammerRegular.astro';
+import IconHeartbeatRegular from '../icons/categories/IconHeartbeatRegular.astro';
+import IconIslandRegular from '../icons/categories/IconIslandRegular.astro';
+import IconMaskHappyRegular from '../icons/categories/IconMaskHappyRegular.astro';
+import IconMusicNotesRegular from '../icons/categories/IconMusicNotesRegular.astro';
+import IconNewspaperRegular from '../icons/categories/IconNewspaperRegular.astro';
+import IconPinwheelRegular from '../icons/categories/IconPinwheelRegular.astro';
+import IconQuestionRegular from '../icons/categories/IconQuestionRegular.astro';
+import IconRadioRegular from '../icons/categories/IconRadioRegular.astro';
+import IconShoppingCartRegular from '../icons/categories/IconShoppingCartRegular.astro';
+import IconTennisBallRegular from '../icons/categories/IconTennisBallRegular.astro';
+import IconUserCircleRegular from '../icons/categories/IconUserCircleRegular.astro';
+import IconWineRegular from '../icons/categories/IconWineRegular.astro';
+
+// Category to Icon mapping - REGULAR variants
+const categoryIconMap: Record<string, any> = {
+  'Books': IconBooksRegular,
+  'Books & Comics': IconBookOpenTextRegular,
+  'Business': IconBuildingsRegular,
+  'Education': IconGraduationCapRegular,
+  'Entertainment': IconFilmStripRegular,
+  'Food & Drink': IconWineRegular,
+  'Games': IconGameControllerRegular,
+  'Health & Fitness': IconHeartbeatRegular,
+  'Humor': IconMaskHappyRegular,
+  'Internet': IconGlobeRegular,
+  'Kids': IconPinwheelRegular,
+  'Lifestyle': IconIslandRegular,
+  'Maps & Navigation': IconCompassRegular,
+  'Music': IconMusicNotesRegular,
+  'News': IconNewspaperRegular,
+  'News & Weather': IconCloudSunRegular,
+  'Personalization': IconGearFineRegular,
+  'Photo & Video': IconCameraRegular,
+  'Productivity': IconChartPieSliceRegular,
+  'Reference': IconQuestionRegular,
+  'Science & Tech': IconAtomRegular,
+  'Shopping': IconShoppingCartRegular,
+  'Social': IconUserCircleRegular,
+  'Sports': IconTennisBallRegular,
+  'Travel': IconAirplaneTiltRegular,
+  'Utilities': IconHammerRegular,
+  'Weather': IconCloudSunRegular,
+  'Radio': IconRadioRegular,
+};
+
+// App type to status icon mapping
+const appTypeIconMap: Record<string, any> = {
+  'Packaged': IconPackage,
+  'Privileged': IconDownload,
+  'Live': IconCloud,
+  'Dead': IconSmileyXEyes,
+};
+
+// Normalize backend appType values to CardApp values
+const normalizeAppType = (type: string): 'Packaged' | 'Privileged' | 'Live' | 'Dead' => {
+  const normalized = type.toLowerCase();
+  if (normalized === 'packaged') return 'Packaged';
+  if (normalized === 'privileged') return 'Privileged';
+  if (normalized === 'hosted') return 'Live'; // hosted apps default to Live
+  if (normalized === 'dead') return 'Dead';
+  return 'Live';
+};
+
+interface Props {
+  href?: string;
+  appIconSrc?: string;
+  appTitle?: string;
+  categories?: string[];
+  appType?: 'Packaged' | 'Privileged' | 'Live' | 'Dead' | 'packaged' | 'privileged' | 'hosted';
+  starRating?: string | number;
+  userCount?: string | number;
+}
+
+const { 
+  href,
+  appIconSrc,
+  appTitle = 'App Name',
+  categories = ['Games', 'Music'],
+  appType: rawAppType = 'Live',
+  starRating: rawStarRating = '5.0',
+  userCount: rawUserCount = '100'
+} = Astro.props;
+
+// Normalize props
+const appType = normalizeAppType(String(rawAppType));
+const starRating = String(rawStarRating);
+const userCount = String(rawUserCount);
+
+// Get category icons based on category names
+const category1 = categories[0] || 'Games';
+const category2 = categories[1];
+const CategoryIcon1 = categoryIconMap[category1] || IconGameControllerRegular;
+const CategoryIcon2 = category2 ? categoryIconMap[category2] : null;
+
+// Generate category text
+const categoryText = categories.length > 1 ? categories.join(', ') : categories[0] || 'Category';
+
+// Map appType to status properties
+const statusConfig = {
+  'Packaged': {
+    text: 'Packaged',
+    showHostedChip: false,
+    hostedChipVariant: 'live' as const
+  },
+  'Privileged': {
+    text: 'Privileged',
+    showHostedChip: false,
+    hostedChipVariant: 'live' as const
+  },
+  'Live': {
+    text: 'Hosted',
+    showHostedChip: true,
+    hostedChipVariant: 'live' as const
+  },
+  'Dead': {
+    text: 'Hosted',
+    showHostedChip: true,
+    hostedChipVariant: 'dead' as const
+  }
+};
+
+const statusProps = statusConfig[appType] || statusConfig['Live'];
+const StatusIcon = appTypeIconMap[appType] || IconCloud;
+---
+
+{href ? (
+  <a href={href} class="card-app">
+    <!-- Border Overlay (for interactive states) -->
+    <div class="border-overlay" aria-hidden="true"></div>
+    
+    <!-- Left Column: Icons -->
+    <div class="icons-column">
+      <!-- App Icon -->
+      <AppIcon src={appIconSrc} alt={appTitle} size="sm" />
+      
+      <!-- Category Icons -->
+      <div class="category-icons">
+        <div class="category-icon-wrapper">
+          <CategoryIcon1 />
+        </div>
+        {CategoryIcon2 && (
+          <div class="category-icon-wrapper">
+            <CategoryIcon2 />
+          </div>
+        )}
+      </div>
+    </div>
+    
+    <!-- Right Column: Content -->
+    <div class="content-column">
+      <!-- App Title -->
+      <div class="title-wrapper">
+        <H2 text={appTitle} />
+      </div>
+      
+      <!-- Details Section -->
+      <div class="details-section">
+        <!-- Category Text -->
+        <div class="category-text-wrapper">
+          <span class="category-text">{categoryText}</span>
+        </div>
+        
+        <!-- Stars and Ratings -->
+        <div class="stars-ratings-wrapper">
+          <!-- Stars -->
+          <div class="stars-group">
+            <div class="star-icon-wrapper">
+              <IconStar />
+            </div>
+            <span class="rating-text">{starRating}</span>
+          </div>
+          
+          <!-- Users/Ratings -->
+          <div class="users-group">
+            <div class="users-icon-wrapper">
+              <IconUsers />
+            </div>
+            <span class="rating-text">{userCount}</span>
+          </div>
+        </div>
+        
+        <!-- App Status Tag -->
+        <div class="status-wrapper">
+          <TagAppStatus 
+            text={statusProps.text}
+            variant="card"
+            showHostedChip={statusProps.showHostedChip}
+            hostedChipVariant={statusProps.hostedChipVariant}
+          >
+            <StatusIcon slot="icon" />
+          </TagAppStatus>
+        </div>
+      </div>
+    </div>
+  </a>
+) : (
+  <div class="card-app" tabindex="0">
+    <!-- Border Overlay (for interactive states) -->
+    <div class="border-overlay" aria-hidden="true"></div>
+    
+    <!-- Left Column: Icons -->
+    <div class="icons-column">
+    <!-- App Icon -->
+    <AppIcon src={appIconSrc} alt={appTitle} size="sm" />
+    
+    <!-- Category Icons -->
+    <div class="category-icons">
+      <div class="category-icon-wrapper">
+        <CategoryIcon1 />
+      </div>
+      {CategoryIcon2 && (
+        <div class="category-icon-wrapper">
+          <CategoryIcon2 />
+        </div>
+      )}
+    </div>
+  </div>
+  
+  <!-- Right Column: Content -->
+  <div class="content-column">
+    <!-- App Title -->
+    <div class="title-wrapper">
+      <H2 text={appTitle} />
+    </div>
+    
+    <!-- Details Section -->
+    <div class="details-section">
+      <!-- Category Text -->
+      <div class="category-text-wrapper">
+        <span class="category-text">{categoryText}</span>
+      </div>
+      
+      <!-- Stars and Ratings -->
+      <div class="stars-ratings-wrapper">
+        <!-- Stars -->
+        <div class="stars-group">
+          <div class="star-icon-wrapper">
+            <IconStar />
+          </div>
+          <span class="rating-text">{starRating}</span>
+        </div>
+        
+        <!-- Users/Ratings -->
+        <div class="users-group">
+          <div class="users-icon-wrapper">
+            <IconUsers />
+          </div>
+          <span class="rating-text">{userCount}</span>
+        </div>
+      </div>
+      
+      <!-- App Status Tag -->
+      <div class="status-wrapper">
+        <TagAppStatus 
+          text={statusProps.text}
+          variant="card"
+          showHostedChip={statusProps.showHostedChip}
+          hostedChipVariant={statusProps.hostedChipVariant}
+        >
+          <StatusIcon slot="icon" />
+        </TagAppStatus>
+      </div>
+    </div>
+  </div>
+</div>
+)}
+
+<style>
+  /* ========================================
+     CARD CONTAINER
+     ======================================== */
+  .card-app {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-8);
+    align-items: flex-start;
+    padding: var(--spacing-12);
+    border-radius: var(--radius-md);
+    width: 284px;
+    
+    /* Gradient Background */
+    background: linear-gradient(
+      180deg,
+      var(--card-gradient-light-blue-start) 0%,
+      var(--card-gradient-light-blue-end) 100%
+    );
+    
+    /* Make focusable */
+    outline: none;
+    cursor: pointer;
+    
+    /* Transition for smooth state changes */
+    transition: transform 0.15s ease;
+    
+    /* Reset anchor styles when used as link */
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* ========================================
+     BORDER OVERLAY PATTERN
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border-radius: calc(var(--radius-md) + 0.5px);
+    pointer-events: none;
+    transition: border-color 0.2s ease, border-width 0.2s ease;
+  }
+  
+  /* Hover State - Override on focus */
+  .card-app:hover:not(:focus-visible) .border-overlay {
+    border: 1px solid var(--on-surface-light-primary);
+  }
+  
+  /* Focus State */
+  .card-app:focus-visible .border-overlay {
+    inset: -1px;
+    border: 1px solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+    border-width: 2px;
+  }
+  
+  /* Active/Click State - Tactile feedback */
+  .card-app:active {
+    transform: scale(0.98);
+  }
+  
+  /* ========================================
+     LEFT COLUMN: ICONS
+     ======================================== */
+  .icons-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: flex-start;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  /* Category Icons Container */
+  .category-icons {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    width: 100%;
+  }
+  
+  .category-icon-wrapper {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-faded);
+  }
+  
+  .category-icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* ========================================
+     RIGHT COLUMN: CONTENT
+     ======================================== */
+  .content-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    justify-content: center;
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+  }
+  
+  /* ========================================
+     TITLE SECTION
+     ======================================== */
+  .title-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* Override H2 to allow wrapping in card context */
+  .title-wrapper :global(h2) {
+    white-space: normal;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  /* ========================================
+     DETAILS SECTION
+     ======================================== */
+  .details-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-4);
+    width: 100%;
+  }
+  
+  /* ========================================
+     CATEGORY TEXT
+     ======================================== */
+  .category-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+  }
+  
+  .category-text {
+    /* Typography - Inter Regular, 10px/16px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: 0;
+    
+    /* Color - Faded text */
+    color: var(--on-surface-light-faded);
+    
+    white-space: nowrap;
+  }
+  
+  /* ========================================
+     STARS AND RATINGS
+     ======================================== */
+  .stars-ratings-wrapper {
+    display: flex;
+    gap: var(--spacing-8);
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Stars Group */
+  .stars-group {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  .star-icon-wrapper {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .star-icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Users Group */
+  .users-group {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  .users-icon-wrapper {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .users-icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Rating Text (for both stars and users) */
+  .rating-text {
+    /* Typography - Inter Regular, 12px/18px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: 0;
+    
+    /* Color - Regular text */
+    color: var(--on-surface-light-regular);
+    
+    white-space: nowrap;
+  }
+  
+  /* ========================================
+     STATUS SECTION
+     ======================================== */
+  .status-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
+    border-radius: var(--radius-md);
+  }
+</style>

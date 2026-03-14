@@ -1,0 +1,148 @@
+---
+/**
+ * ButtonPageNav Component
+ * Interactive page navigation button with label
+ * 
+ * Props:
+ * - variant: 'next' | 'previous' (default: 'next') - Controls nested label variant
+ * - disabled: boolean (default: false)
+ * - onclick: string (optional)
+ * - href: string (optional) - When provided, renders as anchor tag
+ * 
+ * States:
+ * - Default: Faded border, shadow
+ * - Hover: Primary color border
+ * - Focus: 2px regular color border
+ * - Disabled: 40% opacity, faded border, no shadow
+ * 
+ * Features:
+ * - Contains nested LabelPageNavButton component
+ * - 8px padding, 4px border radius
+ * - Box shadow on interactive states
+ * - Fully keyboard accessible
+ */
+
+import LabelPageNavButton from './LabelPageNavButton.astro';
+
+interface Props {
+  variant?: 'next' | 'previous';
+  disabled?: boolean;
+  onclick?: string;
+  href?: string;
+}
+
+const { 
+  variant = 'next',
+  disabled = false,
+  onclick,
+  href
+} = Astro.props;
+
+// Render as anchor if href is provided and not disabled
+const isLink = href && !disabled;
+---
+
+{isLink ? (
+  <a 
+    class="button-page-nav"
+    href={href}
+    aria-label={variant === 'next' ? 'Next page' : 'Previous page'}
+  >
+    <div class="button-inner">
+      <LabelPageNavButton variant={variant} />
+    </div>
+    <div class="button-border" aria-hidden="true"></div>
+  </a>
+) : (
+  <button 
+    class="button-page-nav"
+    disabled={disabled}
+    onclick={onclick}
+    aria-label={variant === 'next' ? 'Next page' : 'Previous page'}
+    type="button"
+  >
+    <div class="button-inner">
+      <LabelPageNavButton variant={variant} />
+    </div>
+    <div class="button-border" aria-hidden="true"></div>
+  </button>
+)}
+
+<style>
+  /* Base Button */
+  .button-page-nav {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+    text-decoration: none; /* For anchor variant */
+  }
+
+  /* Button Inner Container */
+  .button-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-8);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  /* Button Border Layer (Pseudo-element approach for overlay border) */
+  .button-border {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     STATE: DEFAULT
+     ======================================== */
+  .button-page-nav .button-border {
+    border: var(--border-md) solid var(--on-surface-light-border-high);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  /* ========================================
+     STATE: HOVER
+     ======================================== */
+  .button-page-nav:hover:not(:disabled):not(:focus-visible) .button-border {
+    border-color: var(--on-surface-light-primary);
+  }
+
+  /* ========================================
+     STATE: FOCUS (Keyboard Navigation)
+     ======================================== */
+  .button-page-nav:focus-visible .button-border {
+    border: var(--border-lg) solid var(--on-surface-light-regular);
+  }
+
+  /* ========================================
+     STATE: DISABLED
+     ======================================== */
+  .button-page-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .button-page-nav:disabled .button-border {
+    border: var(--border-md) solid var(--on-surface-light-border-high);
+    box-shadow: none;
+  }
+
+  /* Active press state */
+  .button-page-nav:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+</style>

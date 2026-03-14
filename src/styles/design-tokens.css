@@ -1,0 +1,224 @@
+/**
+ * ========================================
+ * DESIGN TOKENS
+ * ========================================
+ * Typography, Spacing, Sizing, and Layout Tokens
+ * Extracted from Figma Design Library
+ * Firefox Apps Archive Style Guide
+ * 
+ * Note: Color tokens are defined in colors-primitives.css
+ */
+
+:root {
+  /* ========================================
+     TYPOGRAPHY - FONT FAMILIES
+     ======================================== */
+  
+  --font-metropolis: 'Metropolis', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-public-sans: 'Public Sans', sans-serif;
+  
+
+  /* ========================================
+     TYPOGRAPHY - HEADING SIZES (Metropolis Bold)
+     ======================================== */
+  
+  /* Heading XXL */
+  --heading-xxl-size: 4rem;
+  --heading-xxl-line: 4.5rem;
+  
+  /* Heading XL */
+  --heading-xl-size: 3.5rem;
+  --heading-xl-line: 4rem;
+  
+  /* Heading LG */
+  --heading-lg-size: 3rem;
+  --heading-lg-line: 3.5rem;
+  
+  /* Heading MD */
+  --heading-md-size: 2.5rem;
+  --heading-md-line: 2.75rem;
+  
+  /* Heading SM */
+  --heading-sm-size: 2rem;
+  --heading-sm-line: 2.25rem;
+  
+  /* Heading XS */
+  --heading-xs-size: 1.5rem;
+  --heading-xs-line: 1.75rem;
+  
+  /* Heading XXS */
+  --heading-xxs-size: 1.25rem;
+  --heading-xxs-line: 1.5rem;
+  
+  /* Heading XXXS */
+  --heading-xxxs-size: 1rem;
+  --heading-xxxs-line: 1.25rem;
+  
+  /* Billboard */
+  --heading-billboard-size: 8rem;
+  --heading-billboard-line: auto;
+  
+
+  /* ========================================
+     TYPOGRAPHY - BODY SIZES (Inter Regular)
+     ======================================== */
+  
+  /* Body LG */
+  --body-lg-size: 1.125rem;
+  --body-lg-line: 2.25rem;
+  
+  /* Body MD */
+  --body-md-size: 1rem;
+  --body-md-line: 1.5rem;
+  
+  /* Body SM */
+  --body-sm-size: 0.875rem;
+  --body-sm-line: 1.375rem;
+  
+  /* Body XS */
+  --body-xs-size: 0.75rem;
+  --body-xs-line: 1.125rem;
+  
+  /* Body XXS */
+  --body-xxs-size: 0.625rem;
+  --body-xxs-line: 1rem;
+  
+  /* Body XXS Small Caps */
+  --body-xxs-sc-size: 0.625rem;
+  --body-xxs-sc-line: normal;
+  --body-xxs-sc-spacing: 0.025rem;
+  
+
+  /* ========================================
+     TYPOGRAPHY - BRAND SIZES (Public Sans)
+     ======================================== */
+  
+  /* Brand Bold MD */
+  --brand-bold-md-size: 1.5rem;
+  --brand-bold-md-line: 1.25rem;
+  
+  /* Brand Regular MD */
+  --brand-regular-md-size: 1.25rem;
+  --brand-regular-md-line: 1.25rem;
+  
+  /* Brand Bold SM */
+  --brand-bold-sm-size: 1.125rem;
+  --brand-bold-sm-line: 1.25rem;
+  
+  /* Brand Regular SM */
+  --brand-regular-sm-size: 1rem;
+  --brand-regular-sm-line: 1.25rem;
+  
+
+  /* ========================================
+     TYPOGRAPHY - FONT WEIGHTS
+     ======================================== */
+  
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+  
+
+  /* ========================================
+     SPACING - 8 POINT SYSTEM
+     ======================================== */
+  
+  --spacing-2: 2px;
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-40: 40px;
+  --spacing-44: 44px;
+  --spacing-48: 48px;
+  --spacing-52: 52px;
+  --spacing-56: 56px;
+  --spacing-60: 60px;
+  --spacing-64: 64px;
+  
+
+  /* ========================================
+     ICON SIZES
+     ======================================== */
+  
+  --icon-xxxxs: 8px;
+  --icon-xxxs: 10px;
+  --icon-xxs: 12px;
+  --icon-xs: 14px;
+  --icon-sm: 16px;
+  --icon-md: 24px;
+  --icon-lg: 32px;
+  
+
+  /* ========================================
+     APP ICON SIZES
+     ======================================== */
+  
+  --app-icon-sm: 52px;
+  --app-icon-md: 92px;
+  --app-icon-lg: 124px;
+  
+
+  /* ========================================
+     BREAKPOINTS
+     ======================================== */
+  
+  --breakpoint-mobile-lg: 481px;
+  --breakpoint-tablet-md: 769px;
+  --breakpoint-desktop-sm: 1200px;
+  
+
+  /* ========================================
+     LAYOUT SIZES
+     ======================================== */
+  
+  --layout-min-width: 320px;
+  --layout-max-width: 1000px;
+  --content-width: 400px;
+  --full-width: 1268px;
+  
+
+  /* ========================================
+     BORDERS & RADIUS
+     ======================================== */
+  
+  /* Border Radius */
+  --radius-md: 4px;
+  --radius-lg: 12px;
+  
+  /* Border Thickness */
+  --border-sm: 0.5px;
+  --border-md: 1px;
+  --border-lg: 2px;
+  --border-xl: 4px;
+  
+  /* Legacy radius variable for backward compatibility */
+  --radius: 4px;
+
+  /* ========================================
+    EFFECTS - BLUR
+    ======================================== */
+  
+  --blur-app-header: 25px;
+
+
+  /* ========================================
+     EFFECTS - SHADOWS
+     ======================================== */
+  
+  /* App Icon Shadow: X:0 Y:1 Blur:1 Spread:0 */
+  --shadow-app-icon: 0px 1px 1px 0px rgb(from var(--neutral-black-strong) r g b / 0.1);
+
+
+  /* ========================================
+     EFFECTS - OPACITY
+     ======================================== */
+  
+  --opacity-app-image: 0.15;
+  --opacity-contrast: 1;
+}

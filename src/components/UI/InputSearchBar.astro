@@ -1,0 +1,456 @@
+---
+/**
+ * Search Bar Input Component
+ * Search input field with integrated search button, close button, and notification badge
+ * 
+ * States:
+ * - Default: Bottom border with shadow, placeholder text
+ * - Hover: Full primary border, no shadow
+ * - Focus: 2px faded border for keyboard navigation
+ * - Filled: User has typed text, maintains focus styling
+ * - Disabled: 40% opacity with notification badge visible (nested ButtonSearch remains in default state)
+ * 
+ * Features:
+ * - Integrated ButtonSearch component (left) - always enabled
+ * - Integrated ButtonClose component (right) - 16px size, 60% opacity, clears input text when clicked
+ * - Notification badge appears when disabled
+ * - Placeholder: "Search for apps"
+ * 
+ * Progressive Enhancement (when asForm=true):
+ * - Form wraps input, submits to formAction via GET
+ * - Popover support for show/hide behavior
+ * - Toggle buttons: modern popovertarget + no-JS checkbox fallback
+ * - Search unavailable dialog when JS/WASM not available
+ * - showToggle: renders toggle buttons for the search form
+ * - showUnavailable: renders unavailable toggle + dialog
+ */
+
+import ButtonSearch from './ButtonSearch.astro';
+import ButtonClose from './ButtonClose.astro';
+import BadgeNotification from './BadgeNotification.astro';
+
+interface Props {
+  placeholder?: string;
+  value?: string;
+  disabled?: boolean;
+  name?: string;
+  id?: string;
+  /** Wrap in a form element for search submission */
+  asForm?: boolean;
+  /** Form action URL (default: /search) */
+  formAction?: string;
+  /** Add popover attribute for toggle behavior */
+  popover?: boolean;
+  /** Render toggle buttons (popovertarget + checkbox label) */
+  showToggle?: boolean;
+  /** ID of checkbox input for no-JS toggle fallback */
+  toggleCheckboxId?: string;
+  /** Render search unavailable button/label/dialog */
+  showUnavailable?: boolean;
+  /** ID of checkbox input for no-JS unavailable dialog fallback */
+  unavailableCheckboxId?: string;
+}
+
+const { 
+  placeholder = 'Search for apps', 
+  value = '',
+  disabled = false,
+  name = 'q',
+  id,
+  asForm = false,
+  formAction = '/search',
+  popover = false,
+  showToggle = false,
+  toggleCheckboxId = 'search_toggle_input',
+  showUnavailable = false,
+  unavailableCheckboxId = 'search_unavailable_input',
+} = Astro.props;
+
+// Generate unique ID for this instance to coordinate clear functionality
+const uniqueId = id || `search-bar-${Math.random().toString(36).substr(2, 9)}`;
+const formId = `${uniqueId}-form`;
+const unavailableDialogId = `${uniqueId}-unavailable`;
+---
+
+{/* Toggle Buttons - Modern popovertarget + no-JS checkbox fallback */}
+{showToggle && (
+  <>
+    <button 
+      id={`${formId}-toggle-button`}
+      popovertarget={formId}
+      aria-label="Toggle Search"
+    >
+      <span aria-hidden="true">🔎</span>
+    </button>
+    
+    <label 
+      id={`${formId}-toggle-label`}
+      for={toggleCheckboxId}
+      tabindex="0"
+      role="button"
+      aria-controls={formId}
+      aria-label="Toggle Search"
+    >
+      <span aria-hidden="true">🔎</span>
+    </label>
+  </>
+)}
+
+{/* Search Unavailable Triggers */}
+{showUnavailable && (
+  <>
+    <button 
+      id={`${unavailableDialogId}-button`}
+      popovertarget={unavailableDialogId}
+      commandfor={unavailableDialogId}
+      command="show-modal"
+      aria-label="Search Unavailable"
+    >
+      <span aria-hidden="true">🔎*</span>
+    </button>
+    
+    <label 
+      id={`${unavailableDialogId}-label`}
+      for={unavailableCheckboxId}
+      tabindex="0"
+      role="button"
+      aria-controls={unavailableDialogId}
+      aria-label="Search Unavailable"
+    >
+      <span aria-hidden="true">🔎*</span>
+    </label>
+  </>
+)}
+
+{/* Main Search Bar - Form wrapper */}
+{asForm && (
+  <form 
+    id={formId}
+    method="get"
+    action={formAction}
+    popover={popover ? true : undefined}
+    role="search"
+    class="search-bar-wrapper"
+  >
+    {disabled && (
+      <div class="badge-notification-container">
+        <BadgeNotification variant="warning" />
+      </div>
+    )}
+    
+    <div class="search-bar-inner" data-disabled={disabled}>
+      <div class="search-button-container">
+        <ButtonSearch disabled={disabled} type="submit" />
+      </div>
+      
+      <input
+        type="search"
+        class="search-input"
+        placeholder={placeholder}
+        value={value}
+        disabled={disabled}
+        name={name}
+        id={uniqueId}
+        autocomplete="off"
+        required
+      />
+      
+      <div 
+        class="close-button-container"
+        onclick={`document.getElementById('${uniqueId}').value = ''; document.getElementById('${uniqueId}').focus();`}
+        role="button"
+        tabindex="-1"
+        aria-label="Clear search"
+        onkeydown={`if(event.key === 'Enter' || event.key === ' '){event.preventDefault(); document.getElementById('${uniqueId}').value = ''; document.getElementById('${uniqueId}').focus();}`}
+      >
+        <ButtonClose size="xs" opacity={0.6} disabled={disabled} />
+      </div>
+      
+      <div aria-hidden="true" class="border-overlay"></div>
+    </div>
+  </form>
+)}
+
+{/* Main Search Bar - Div wrapper */}
+{!asForm && (
+  <div class="search-bar-wrapper">
+    {disabled && (
+      <div class="badge-notification-container">
+        <BadgeNotification variant="warning" />
+      </div>
+    )}
+    
+    <div class="search-bar-inner" data-disabled={disabled}>
+      <div class="search-button-container">
+        <ButtonSearch disabled={disabled} />
+      </div>
+      
+      <input
+        type="search"
+        class="search-input"
+        placeholder={placeholder}
+        value={value}
+        disabled={disabled}
+        name={name}
+        id={uniqueId}
+        autocomplete="off"
+        required
+      />
+      
+      <div 
+        class="close-button-container"
+        onclick={`document.getElementById('${uniqueId}').value = ''; document.getElementById('${uniqueId}').focus();`}
+        role="button"
+        tabindex="-1"
+        aria-label="Clear search"
+        onkeydown={`if(event.key === 'Enter' || event.key === ' '){event.preventDefault(); document.getElementById('${uniqueId}').value = ''; document.getElementById('${uniqueId}').focus();}`}
+      >
+        <ButtonClose size="xs" opacity={0.6} disabled={disabled} />
+      </div>
+      
+      <div aria-hidden="true" class="border-overlay"></div>
+    </div>
+  </div>
+)}
+
+{/* Search Unavailable Dialog */}
+{showUnavailable && (
+  <dialog 
+    id={unavailableDialogId}
+    popover
+    closedby="any"
+    class="fixed"
+  >
+    <p>Search requires JavaScript and WebAssembly. Try using a modern web browser or enable JS and WASM in settings.</p>
+    
+    <button 
+      id={`${unavailableDialogId}-close-button`}
+      popovertarget={unavailableDialogId}
+      popovertargetaction="hide"
+      commandfor={unavailableDialogId}
+      command="close"
+    >
+      Close
+    </button>
+    
+    <label 
+      id={`${unavailableDialogId}-close-label`}
+      for={unavailableCheckboxId}
+      tabindex="0"
+      role="button"
+      aria-controls={unavailableDialogId}
+    >
+      Close
+    </label>
+  </dialog>
+)}
+
+<style>
+  /* ========================================
+     WRAPPER & LAYOUT
+     ======================================== */
+  .search-bar-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Reset form styles when used as wrapper */
+  form.search-bar-wrapper {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  /* Popover - use :global to avoid scoping issues with :popover-open */
+  :global(form.search-bar-wrapper[popover]:not(:popover-open)) {
+    display: none;
+  }
+
+  /* Popover positioning - when form is used as a popover and open */
+  :global(form.search-bar-wrapper[popover]:popover-open) {
+    display: inline-flex !important;
+    position: fixed;
+    inset: unset;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-16);
+    background: var(--surface-light-low);
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    z-index: 100;
+  }
+
+  /* Hide mobile search popover on desktop (covered by desktop search bar) */
+  @media (min-width: 769px) {
+    :global(form.search-bar-wrapper[popover]) {
+      display: none !important;
+    }
+  }
+
+  /* Support anchor positioning where available */
+  @supports (anchor-name: --header) {
+    :global(form.search-bar-wrapper[popover]:popover-open) {
+      top: anchor(--header bottom);
+    }
+  }
+
+  .search-bar-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    width: 100%;
+    padding: var(--spacing-8);
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      to bottom,
+      var(--surface-light-background-start),
+      var(--surface-light-background-end)
+    );
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     NESTED COMPONENT CONTAINERS
+     ======================================== */
+  .search-button-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .close-button-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  /* Keep close button at 60% opacity even on hover (design requirement) */
+  .close-button-container :global(.button-close .icon-wrapper) {
+    opacity: 0.6 !important;
+  }
+
+  /* Hide notification badge in nested ButtonSearch when search bar is disabled */
+  .search-bar-inner[data-disabled="true"] :global(.button-search .badge-container) {
+    display: none;
+  }
+
+  /* Prevent scale transform on active state for nested button */
+  .close-button-container :global(.button-close:active) {
+    transform: none;
+  }
+
+  /* Badge positioned at top-right corner */
+  .badge-notification-container {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* ========================================
+     INPUT FIELD STYLING
+     ======================================== */
+  .search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--on-surface-light-regular);
+    
+    /* Typography - body-sm */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+    letter-spacing: var(--body-sm-spacing);
+    
+    outline: none;
+    padding: 0;
+  }
+
+  .search-input::placeholder {
+    color: var(--on-surface-light-faded);
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none; /* Remove default styling */
+  }
+
+  /* ========================================
+     STATE: HOVER
+     ======================================== */
+  .search-bar-inner:hover:not(:has(input:focus)):not([data-disabled="true"]) {
+    box-shadow: none;
+  }
+
+  /* ========================================
+     STATE: FOCUS
+     ======================================== */
+  .search-input:focus-visible {
+    outline: none;
+  }
+
+  .search-bar-inner:has(input:focus-visible) {
+    box-shadow: none;
+  }
+
+  /* ========================================
+     STATE: DISABLED
+     ======================================== */
+  .search-bar-inner[data-disabled="true"] {
+    opacity: 0.4;
+  }
+
+  .search-input:disabled {
+  }
+
+  .search-bar-inner[data-disabled="true"] .close-button-container {
+    
+    pointer-events: none;
+  }
+
+  /* Prevent nested buttons from being focusable when search bar is disabled */
+  .search-bar-inner[data-disabled="true"] :global(.button-search),
+  .search-bar-inner[data-disabled="true"] :global(.button-close) {
+    pointer-events: none;
+    outline: none;
+  }
+
+  /* Remove focus outline from nested buttons when disabled */
+  .search-bar-inner[data-disabled="true"] :global(.button-search:focus-visible),
+  .search-bar-inner[data-disabled="true"] :global(.button-close:focus-visible) {
+    outline: none;
+  }
+
+  /* ========================================
+     BORDER OVERLAY
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    transition: all 0.2s ease;
+  }
+
+  /* Hover state - full border, primary color */
+  .search-bar-inner:hover:not(:has(input:focus)):not([data-disabled="true"]) .border-overlay {
+    border: var(--border-sm) solid var(--on-surface-light-primary);
+  }
+
+  /* Focus state - 2px border, faded color */
+  .search-bar-inner:has(input:focus-visible) .border-overlay {
+    border: var(--border-lg) solid var(--on-surface-light-faded);
+  }
+</style>

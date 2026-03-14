@@ -1,0 +1,125 @@
+---
+/**
+ * Read More Button Component
+ * Compact text button for expanding/collapsing content
+ * 
+ * Variants:
+ * - collapsed: Shows "READ MORE" text
+ * - expanded: Shows "SEE LESS" text
+ * 
+ * States:
+ * - Default: Plain purple text
+ * - Hover: Underlined text
+ * - Focus: 2px border with shadow
+ * - Active: Scale down for tactile feedback
+ * 
+ * Props:
+ * @param variant - Button state: 'collapsed' | 'expanded'
+ * @param onclick - Optional click handler
+ * 
+ * Usage:
+ * <ButtonReadMore variant="collapsed" />
+ * <ButtonReadMore variant="expanded" />
+ */
+
+interface Props {
+  variant?: 'collapsed' | 'expanded';
+  onclick?: string;
+}
+
+const { 
+  variant = 'collapsed',
+  onclick
+} = Astro.props;
+
+const buttonText = variant === 'collapsed' ? 'READ MORE' : 'SEE LESS';
+---
+
+<button 
+  onclick={onclick}
+  class="read-more-button"
+  data-variant={variant}
+>
+  <span class="button-text">{buttonText}</span>
+  
+  <!-- Focus border overlay -->
+  <div aria-hidden="true" class="focus-border"></div>
+</button>
+
+<style>
+  /* ========================================
+     READ MORE BUTTON
+     ======================================== */
+  .read-more-button {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  /* Button Text */
+  .button-text {
+    position: relative;
+    z-index: 1;
+    color: var(--on-surface-light-primary);
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+  }
+
+  /* Focus Border Overlay */
+  .focus-border {
+    position: absolute;
+    inset: -2px;
+    border: none;
+    border-radius: calc(var(--radius-md) + 2px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State - Underline text */
+  .read-more-button:hover:not(:focus-visible) .button-text {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Active State - Click feedback */
+  .read-more-button:active {
+    transform: scale(0.98);
+  }
+
+  /* Focus State - Border with shadow */
+  .read-more-button:focus-visible .focus-border {
+    opacity: 1;
+    border: var(--border-lg) solid var(--on-surface-light-faded);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  /* Disabled State (if needed) */
+  .read-more-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .read-more-button:disabled .button-text {
+    text-decoration: none;
+  }
+</style>

@@ -1,34 +1,530 @@
 ---
-import Footer from '../components/footer.astro'
-import Metadata from '../components/common_metadata.astro'
+/**
+ * Home Page - FF Apps Archive
+ * Custom layout (does NOT use base.astro)
+ * 
+ * Features:
+ * - Custom header with brand and search
+ * - Hero text section with theme toggle
+ * - App Types cards section
+ * - Categories grid section
+ * - Footer links and credits
+ * - Fully responsive (mobile & desktop variants at 769px)
+ */
+
+// Import UI components
+import Header from '../components/UI/Header.astro';
+import Footer from '../components/UI/Footer.astro';
+import Navigation from '../components/UI/MenuNavSidebar.astro';
+import SectionHeadline from '../components/UI/SectionHeadline.astro';
+import H1 from '../components/UI/H1.astro';
+import CardAppTypes from '../components/UI/CardAppTypes.astro';
+import ButtonCategory from '../components/UI/ButtonCategory.astro';
+import ButtonCta from '../components/UI/ButtonCta.astro';
+import Link from '../components/UI/Link.astro';
+import SearchGraphic from '../components/UI/SearchGraphic.astro';
+import HeaderLogo from '../components/icons/brand/IconHeaderLogoGradient.astro';
+import Metadata from '../components/common_metadata.astro';
+import Hidden_Inputs from '../components/hidden_inputs.astro';
+
+// Import categories data from JSON
+import categories from '../categories.json' with { type: 'json' };
+
+// Import styles
+import '../styles/index.css';
+
+// Page data
+const pageTitle = "FF Apps Archive";
+
+// App Types data
+const appTypes = [
+  { type: 'All' as const, href: '/all/A' },
+  { type: 'Packaged' as const, href: '/packaged/A' },
+  { type: 'Privileged' as const, href: '/privileged/A' },
+  { type: 'Live' as const, href: '/hosted/A' },
+  { type: 'Dead' as const, href: '/dead/A' }
+];
+
+// Categories data now imported from ../categories.json
+
+// Credits data
+const credits = [
+  { name: 'Daniel Herr', href: 'https://danielherr.software', role: 'Project Creator & Engineer' },
+  { name: 'Dimitrios Vlachos', href: 'https://t.me/ileios', role: 'Community Manager' },
+  { name: 'Rafael Puodzius', href: 'https://rflp.link', role: 'Front-End Developer & Designer' }
+];
+
+// Footer links data
+const footerLinks = [
+  { href: 'https://ftp.mozilla.org/pub/firefox/releases/45.9.0esr/', label: 'Firefox Desktop v45' },
+  { href: 'https://archive.mozilla.org/pub/mobile/releases/45.0.2/', label: 'Firefox Android v45' },
+  { href: 'https://freesoft.net/android/firefox_os_25_developer_preview', label: 'Firefox OS 2.5 Android launcher' }
+];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="common.css">
+  <head>
+    <script is:inline>
+      try {
+        var theme = localStorage.getItem('color-theme');
+        if (theme === 'light' || theme === 'dark' || theme === 'auto') {
+          document.documentElement.setAttribute('data-theme', theme);
+        } else {
+          document.documentElement.setAttribute('data-theme', 'auto');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'auto');
+      }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/dialog_polyfill.css">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/nav.css">
+    <noscript>
+      <link rel="stylesheet" href="/noscript.css">
+    </noscript>
+    <script defer src="/common.js"></script>
+    
+    <slot name="icon">
+      <HeaderLogo size={92} asFavicon pagefind pagefindAlt="FF Apps Archive" />
+      <!-- <link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]"> -->
+    </slot>
+    
+    <Metadata/>
+    
+    <title data-pagefind-meta="title">{pageTitle}</title>
+  </head>
 
-		<Metadata/>
-		<title>FF Apps Archive (alpha)</title>
-	</head>
-	<body>
-		<header>
-			<h1>FF Apps Archive (alpha)</h1>
-			<search hidden>
-				<input type="search" placeholder="Search" disabled>
-			</search>
-		</header>
-		<main>
-			<p>FF Apps Archive will contain thousands of apps from the defunct Firefox Marketplace.
-			</p>
-			<p><a href="all">All Apps</a></p>
-			<p><a href="packaged">Packaged Apps</a></p>
-			<p><a href="privileged">Privileged Apps</a></p>
-			<p><a href="hosted">All Hosted Apps</a></p>
-			<p><a href="live">Live Hosted Apps</a></p>
-			<p><a href="dead">Dead Hosted Apps</a></p>
-		</main>
-		<Footer/>
-	</body>
+  <body id="body" data-pagefind-body>
+    <Hidden_Inputs/>
+    <input type="checkbox" id="nav_toggle_input" tabindex="-1">
+    
+    <!-- Custom Home Header -->
+    <div class="home-header-wrapper">
+      <Header variant="responsive-home" />
+    </div>
+    
+    <!-- Navigation Sidebar (mobile popover only, hidden on desktop for home page) -->
+    <Navigation desktopHidden />
+    
+    <!-- Search Active State: Shows blank background with SearchGraphic -->
+    <div id="search_active_container" class="search-active-container">
+      <SearchGraphic />
+    </div>
+    
+    <!-- Main Content Container -->
+    <main id="home_main" class="home-container">
+      <!-- Hero Section with SectionHeadline component -->
+      <section class="page-heading">
+        <SectionHeadline 
+          variant="sub-only" 
+          subHeaderText="Thousands of apps from the defunct Firefox Marketplace" 
+        />
+      </section>
+      
+      <!-- App Types Section -->
+      <section class="section app-types-section">
+        <div class="section-heading">
+          <H1 text="App Types"/>
+        </div>
+        
+        <div class="app-types-grid">
+          {appTypes.map((item) => (
+            <CardAppTypes appType={item.type} href={item.href} />
+          ))}
+        </div>
+      </section>
+      
+      <!-- Categories Section -->
+      <section class="section categories-section">
+        <div class="section-heading">
+          <H1 text="Categories"/> 
+        </div>
+        
+        <div class="categories-grid">
+          {categories.map((category) => (
+            <ButtonCategory 
+              variant="block" 
+              category={category.name}
+              href={`/${category.slug}/A`}
+            />
+          ))}
+          <ButtonCategory 
+            variant="block" 
+            category="Works Offline"
+            href="/works-offline/A"
+          />
+        </div>
+        <p id="pwas_link" hidden><a href="pwa/A">Progressive Web Apps (PWAs) - can be installed in modern web browsers</a></p>
+      </section>
+      
+      <!-- Footer Links Section -->
+      <section class="footer-links-section">
+        <div class="footer-content">
+          <div class="links-text">
+            <p class="links-paragraph">
+              Firefox apps can be installed on any version of Firefox OS and on old versions of the Firefox web browser v16 - v45.
+            </p>
+            
+            <ul class="links-list">
+              {footerLinks.map((link) => (
+                <li class="link-item">
+                  <Link href={link.href} label={link.label} />
+                </li>
+              ))}
+            </ul>
+            
+            <div class="instructions">
+              <p class="links-paragraph">
+                For instructions on sideloading privileged apps on Firefox OS, see <Link href="/sideloading" label="Sideloading Instructions" />
+              </p>
+            </div>
+          </div>
+          
+          <!-- Contribute Button using ButtonCta component -->
+          <div class="contribute-section">
+            <p class="license-text">
+              FFAA is an open source project licenced under MPLv2. Contributions are welcome.
+            </p>
+            <ButtonCta 
+              label="Contribute" 
+              href="https://github.com/DanielHerr/FF_Apps_Archive" 
+            />
+          </div>
+          
+          <!-- Credits Section using Link components -->
+          <div class="credits-section">
+            {credits.map((credit) => (
+              <div class="credit-item">
+                <div class="credit-name-wrapper">
+                  <Link href={credit.href} label={credit.name} />
+                </div>
+                <p class="credit-role">{credit.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      <!-- Footer using Footer component -->
+      <Footer />
+    </main>
+  </body>
 </html>
+
+<style>
+  /* ========================================
+	HOME PAGE LAYOUT
+	======================================== */
+
+	body {
+		align-items: center;
+		background: var(--surface-light-mid);
+		font-family: var(--font-inter);
+		color: var(--on-surface-light-regular);
+    height: fit-content;
+	}
+  
+  /* Header Wrapper */
+  .home-header-wrapper {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  /* Main Container */
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+	  /* min-height: none; */
+  }
+  
+  /* Section Base */
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    padding: var(--spacing-16);
+  }
+  
+  /* Section Heading - Mobile (default) */
+  .section-heading {
+    font-family: var(--font-metropolis);
+    font-size: var(--heading-xxs-size);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--heading-xs-line);
+    color: var(--on-surface-light-faded);
+    margin-bottom: var(--spacing-12);
+    align-self: flex-start;
+  }
+  
+  /* ========================================
+     PAGE HEADING
+     ======================================== */
+  
+  .page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+  }
+  
+  /* ========================================
+     APP TYPES SECTION
+     ======================================== */
+  
+  .app-types-section {
+    padding: var(--spacing-24) 0 var(--spacing-24) 0;
+  }
+  
+  .app-types-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-16);
+    padding: var(--spacing-16) var(--spacing-4);
+  }
+  
+  /* ========================================
+     CATEGORIES SECTION
+     ======================================== */
+  
+  .categories-section {
+    padding: var(--spacing-24) 0 var(--spacing-24) 0;
+    border-bottom: solid var(--on-surface-light-border-high) var(--border-md);
+  }
+  
+  .categories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-8);
+    max-width: 872px;
+    padding: var(--spacing-4) 0;
+  }
+  
+  /* ========================================
+     FOOTER LINKS SECTION
+     ======================================== */
+  
+  .footer-links-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    padding: var(--spacing-24) 0 var(--spacing-24) 0;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-24);
+    width: 100%;
+  }
+  
+  .links-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+  
+  .links-paragraph {
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
+    transition: all 0.2s ease;
+  }
+
+  /* Override Link component typography for links paragraph */
+  .links-paragraph :global(.link) {
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
+  }
+
+  .instructions {
+    background: var(--surface-light-high);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-8);
+  }
+  
+  .links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+  }
+  
+  .link-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Override Link component typography for list links */
+  .link-item :global(.link) {
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
+  }
+  
+  .license-text {
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  
+  /* ========================================
+     CONTRIBUTE SECTION
+     ======================================== */
+  
+  .contribute-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-12);
+    padding: var(--spacing-24) var(--spacing-16);
+    border: solid var(--attention-click) var(--border-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-app-icon);
+    
+    /* Gradient Background */
+    background: linear-gradient(
+      180deg,
+      var(--card-gradient-light-blue-start) 0%,
+      var(--card-gradient-light-blue-end) 100%
+    );
+  }
+  
+  /* ========================================
+     CREDITS SECTION
+     ======================================== */
+  
+  .credits-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-24);
+    padding-top: var(--spacing-24);
+  }
+  
+  .credit-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+  
+  .credit-name-wrapper {
+    display: flex;
+  }
+  
+  /* Override Link component typography for credit names */
+  .credit-name-wrapper :global(.link) {
+    font-family: var(--font-public-sans);
+    font-size: var(--brand-bold-sm-size);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--brand-bold-sm-line);
+  }
+  
+  .credit-role {
+    font-family: var(--font-public-sans);
+    font-size: var(--brand-regular-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--brand-regular-sm-line);
+  }
+  
+  /* ========================================
+     RESPONSIVE: DESKTOP (769px and above)
+     Single breakpoint: --tablet-md at 769px
+     ======================================== */
+  
+  @media (min-width: 769px) {
+    /* Sections - increase padding */
+    .section {
+      padding: var(--spacing-24);
+    }
+    
+    /* App types section - more space */
+    .app-types-section {
+      padding: var(--spacing-24) 0 var(--spacing-24) 0;
+    }
+    
+    /* Categories section - more space */
+    .categories-section {
+      padding: var(--spacing-24) 0 var(--spacing-24) 0;
+    }
+    
+    /* Footer links section */
+    .footer-links-section {
+    padding: var(--spacing-24) 0 var(--spacing-24) 0;
+    }
+    
+    /* Credits - horizontal layout */
+    .credits-section {
+      justify-content: space-between;
+      gap: var(--spacing-36);
+      padding: var(--spacing-24) var(--spacing-64);
+    }
+    
+    .credit-item {
+      flex: 1;
+    }
+    
+    /* Section Heading - Desktop */
+    .section-heading {
+      margin-bottom: var(--spacing-12);
+    }
+
+    .section-heading :global(.heading) {
+      font-size: var(--heading-xs-size);
+      line-height: var(--heading-xs-line);
+    }
+    
+    /* Typography - Desktop overrides */
+    .links-paragraph {
+      font-size: var(--body-md-size);
+      line-height: var(--body-md-line);
+    }
+
+    /* Override Link component typography for paragraph links - Desktop */
+    .links-paragraph :global(.link) {
+      font-size: var(--body-md-size);
+      line-height: var(--body-md-line);
+    }
+    
+    /* Override Link component typography for list links - Desktop */
+    .link-item :global(.link) {
+      font-size: var(--body-md-size);
+      line-height: var(--body-md-line);
+    }
+    
+    .license-text {
+      font-size: var(--body-lg-size);
+      line-height: var(--body-lg-line);
+    }
+
+    .credit-item {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* Override Link component typography for credit names */
+    .credit-name-wrapper :global(.link) {
+        font-size: var(--brand-bold-md-size);
+        line-height: var(--brand-bold-md-line);
+    }
+    
+    .credit-role {
+        font-size: var(--brand-regular-md-size);
+        line-height: var(--brand-regular-md-line);
+    }
+  }
+</style>

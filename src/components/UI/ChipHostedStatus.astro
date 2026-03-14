@@ -1,0 +1,60 @@
+---
+/**
+ * Hosted Status Chip Component
+ * A small status indicator chip showing hosted app status
+ * 
+ * Props:
+ * - variant: 'live' | 'dead' (default: 'live')
+ * 
+ * Variants:
+ * - live: Green background with "LIVE" text
+ * - dead: Red/pink background with "DEAD" text
+ * 
+ * Note: No interaction states - this is a display-only indicator
+ */
+
+export interface Props {
+  variant?: 'live' | 'dead';
+}
+
+const { variant = 'live' } = Astro.props;
+
+const text = variant === 'live' ? 'LIVE' : 'DEAD';
+---
+
+<div class="chip-hosted-status" data-variant={variant}>
+  <span class="chip-label">{text}</span>
+</div>
+
+<style>
+  .chip-hosted-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-md);
+  }
+
+  /* Live variant - green background */
+  .chip-hosted-status[data-variant="live"] {
+    background: var(--green-40); /* #53febe - Live status green */
+  }
+
+  /* Dead variant - red/pink background */
+  .chip-hosted-status[data-variant="dead"] {
+    background: var(--red-20); /* #ff9aa2 - Dead status red */
+  }
+
+  .chip-label {
+    /* Typography - body-xxs-sc */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-sc-size);
+    line-height: var(--body-xxs-sc-line);
+    letter-spacing: var(--body-xxs-sc-spacing);
+    text-transform: uppercase;
+    
+    /* Color */
+    color: var(--ink-05); /* Dark purple text #393473 */
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+/**
+ * Link Component
+ * Inline hyperlink with hover, focus, and visited states
+ * 
+ * States:
+ * - Default: Primary purple underlined text
+ * - Hover: Light violet background
+ * - Focus: 2px faded border with rounded corners
+ * - Visited: Faded text color
+ * 
+ * Props:
+ * @param href - URL destination
+ * @param label - Link text content
+ * 
+ * Usage:
+ * <Link href="https://www.website.com" label="https://www.website.com" />
+ */
+
+interface Props {
+  href: string;
+  label?: string;
+}
+
+const { 
+  href,
+  label = href
+} = Astro.props;
+
+// Detect external links (http:// or https://)
+const isExternal = href.startsWith('http://') || href.startsWith('https://');
+---
+
+<span class="link-wrapper">
+  <a 
+    href={href}
+    class="link"
+    {...isExternal && { target: "_blank", rel: "noopener noreferrer" }}
+  >
+    {label}
+  </a>
+  
+  <!-- Focus border overlay -->
+  <span aria-hidden="true" class="focus-border"></span>
+</span>
+
+<style>
+  /* ========================================
+     LINK WRAPPER
+     ======================================== */
+  .link-wrapper {
+    position: relative;
+    display: inline;
+  }
+
+  /* ========================================
+     LINK ELEMENT
+     ======================================== */
+  .link {
+    position: relative;
+    z-index: 1;
+    display: inline;
+    padding: 0 2px;
+    
+    /* Typography - Explicit tokens per guidelines */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: normal;
+    
+    /* Colors - Default state */
+    color: var(--on-surface-light-primary);
+    text-decoration: underline;
+    text-decoration-style: solid;
+    
+    cursor: pointer;
+    overflow-wrap: break-word;
+    transition: all 0.2s ease;
+  }
+
+  /* Focus Border Overlay */
+  .focus-border {
+    position: absolute;
+    inset: -2px;
+    border: none;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State - Light violet background */
+  .link:hover:not(:focus-visible) {
+    background: var(--surface-light-primary-low);
+    border-radius: var(--radius-md);
+  }
+
+  /* Focus State - Border overlay */
+  .link:focus-visible ~ .focus-border {
+    opacity: 1;
+    border: var(--border-lg) solid var(--on-surface-light-faded);
+  }
+
+  /* Remove default focus outline */
+  .link:focus-visible {
+    outline: none;
+  }
+
+  /* Visited State - Faded text color */
+  .link:visited {
+    color: var(--on-surface-light-regular);
+  }
+</style>

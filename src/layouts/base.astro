@@ -1,0 +1,83 @@
+---
+// ↓ Deprecated component imports (replaced by UI versions)
+//import Header from "../components/header.astro"
+//import Footer from "../components/footer.astro"
+//import Navigation from "../components/navigation.astro"
+import Header from "../components/UI/Header.astro"
+import Footer from "../components/UI/Footer.astro"
+import Navigation from "../components/UI/MenuNavSidebar.astro"
+import SectionHeadline from "../components/UI/SectionHeadline.astro"
+import SearchGraphic from "../components/UI/SearchGraphic.astro"
+import HeaderLogo from "../components/icons/brand/IconHeaderLogoGradient.astro"
+import Metadata from "../components/common_metadata.astro"
+// import Theme from "../components/theme_buttons.astro"
+import "../styles/index.css";
+import Hidden_Inputs from "../components/hidden_inputs.astro"
+
+let { title, subtitle, searchable, headerVariant } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+			<script is:inline>
+				try {
+					var theme = localStorage.getItem('color-theme');
+					if (theme === 'light' || theme === 'dark' || theme === 'auto') {
+						document.documentElement.setAttribute('data-theme', theme);
+					} else {
+						document.documentElement.setAttribute('data-theme', 'auto');
+					}
+				} catch (e) {
+					document.documentElement.setAttribute('data-theme', 'auto');
+				}
+			</script>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/dialog_polyfill.css">
+		<link rel="stylesheet" href="/common.css">
+		<link rel="stylesheet" href="/nav.css">
+		<noscript>
+			<link rel="stylesheet" href="/noscript.css">
+		</noscript>
+		<script defer src="/common.js"></script>
+
+		<slot name="imports"/>
+
+		<slot name="icon">
+      		<HeaderLogo size={92} asFavicon pagefind/>
+			<!-- <link rel="icon" href="/icons/rocket_32.png" type="image/png" data-pagefind-meta="image[href]"> -->
+		</slot>
+
+		<Metadata/>
+
+		<slot name="metadata"/>
+
+		<title>{ title } - FF Apps Archive</title>
+	</head>
+	<body id="body">
+		<Hidden_Inputs/>
+		<Header variant={headerVariant ?? 'responsive'} />
+		<input type="checkbox" id="nav_toggle_input" tabindex="-1">
+		
+		<!-- Search Active State: Shows blank background with SearchGraphic -->
+		<div id="search_active_container" class="search-active-container">
+			<SearchGraphic />
+		</div>
+		
+		<div id="scroller">
+			<div id="flexer">
+				<main data-pagefind-body={ searchable ? "" : null }>
+					<header>
+						<slot name="header">
+							<SectionHeadline headerText={title} subHeaderText={subtitle} pagefindMeta="title" />
+						</slot>
+					</header>
+
+					<slot/>
+				</main>
+				<Navigation />
+			</div>
+			<Footer/>
+		</div>
+	</body>
+</html>
