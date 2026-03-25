@@ -12,13 +12,6 @@ import LinkPublisher from "../../components/UI/LinkPublisher.astro"
 
 import { live } from "../../validate_hosted_apps.js"
 
-// Helper to create URL-safe slug from author name
-function slugifyAuthor(name: string): string {
-	return name
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-}
 
 export async function getStaticPaths() {
 	// Get all apps (packaged + live hosted)
@@ -30,9 +23,8 @@ export async function getStaticPaths() {
 	allApps.forEach(app => {
 		const author = app.data.author
 		if (author) {
-			const slug = author
-				.toLowerCase()
-				.replace(/[^a-z0-9]+/g, '-')
+			const slug = author.toLowerCase()
+				.replace(/[<>:"\\/|?*]+/g, '-')
 				.replace(/^-+|-+$/g, '')
 			authorsMap.set(slug, author)
 		}
@@ -53,9 +45,8 @@ let packaged = await Content.getCollection("metadata", app => app.data.app_type 
 let allApps = packaged.concat(live)
 
 let apps = allApps.filter(app => {
-	const authorSlug = app.data.author
-		?.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
+	const authorSlug = app.data.author?.toLowerCase()
+		.replace(/[<>:"\\/|?*]+/g, '-')
 		.replace(/^-+|-+$/g, '')
 	return authorSlug === name
 })
