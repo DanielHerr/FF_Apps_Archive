@@ -1,0 +1,29 @@
+---
+import * as Content from "astro:content"
+
+import Base from "../../layouts/base.astro"
+import AppsList from "../../components/apps_list.astro"
+
+import { live } from "../../validate_hosted_apps.js"
+
+import HeadlineAppType from "../../components/UI/HeadlineAppType.astro"
+import MenuAlphabetPagination from "../../components/UI/MenuAlphabetPagination.astro"
+import ButtonsAlphabetPagination from "../../components/UI/ButtonsAlphabetPagination.astro"
+
+const basePath = "/works-offline/"
+
+let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+let apps = packaged.concat(live).filter(app => app.data.is_offline)
+---
+
+<Base title="Works Offline">
+	<link slot="imports" rel="stylesheet" href="/lists.css">
+
+	<!-- Mobile: Collapsible alphabet menu -->
+	<MenuAlphabetPagination selectedLetter="All" basePath={basePath} />
+	
+	<!-- Desktop: Simple alphabet buttons -->
+	<ButtonsAlphabetPagination selectedLetter="All" basePath={basePath} />
+
+	<AppsList apps={ apps }/>
+</Base>

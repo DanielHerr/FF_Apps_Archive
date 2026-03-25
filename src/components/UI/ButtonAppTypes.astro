@@ -1,0 +1,308 @@
+---
+/**
+ * App Types Button Component
+ * Button for app type selection with 2 variants and predefined configurations
+ * 
+ * Variants:
+ * - label: Horizontal layout (icon + text), minimal width 160px
+ * - inline: Full width horizontal (text + icon right), 284px
+ * 
+ * States:
+ * - Default: No background, transparent
+ * - Hover: White background, purple bottom border (label) or no special state (inline)
+ * - Focus: 4px faded border (keyboard navigation)
+ * - Active: Gray background
+ * 
+ * Props:
+ * @param appType - The type of app button to display (default: 'All')
+ *                  Options: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead'
+ * @param variant - Button variant: 'label' | 'inline'
+ * @param active - Active state (both variants)
+ * @param onclick - Optional click handler
+ * 
+ * Each appType includes predefined:
+ * - Label text
+ * - Icon component
+ * - Icon background color
+ * 
+ * Usage:
+ * <ButtonAppTypes appType="Packaged" variant="label" />
+ * <ButtonAppTypes appType="Live" variant="inline" active={true} />
+ * <ButtonAppTypes appType="All" /> <!-- defaults to variant="label" -->
+ * <ButtonAppTypes appType="All" href="/all/1" /> <!-- renders as anchor -->
+ */
+
+interface Props {
+  appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead' | 'PWA';
+  variant?: 'label' | 'inline';
+  active?: boolean;
+  onclick?: string;
+  /** When provided, renders as anchor instead of button */
+  href?: string;
+}
+
+const { 
+  appType = 'All',
+  variant = 'label',
+  active = false,
+  onclick,
+  href
+} = Astro.props;
+
+// Determine element type
+const Element = href ? 'a' : 'button';
+
+// Import all app type icons
+import IconShapes from '../icons/app-types/IconShapes.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+import IconDownload from '../icons/app-types/IconDownload.astro';
+import IconCloud from '../icons/app-types/IconCloud.astro';
+import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
+
+// Type configurations
+const typeConfigs = {
+  All: {
+    label: 'All',
+    icon: IconShapes,
+    iconBgColor: '--app-icon-bg-light-blue'
+  },
+  Packaged: {
+    label: 'Packaged',
+    icon: IconPackage,
+    iconBgColor: '--app-icon-bg-light-yellow'
+  },
+  Privileged: {
+    label: 'Privileged',
+    icon: IconDownload,
+    iconBgColor: '--app-icon-bg-light-purple'
+  },
+  Live: {
+    label: 'Hosted',
+    icon: IconCloud,
+    iconBgColor: '--app-icon-bg-light-orange'
+  },
+  Dead: {
+    label: 'Dead Hosted',
+    icon: IconSmileyXEyes,
+    iconBgColor: '--app-icon-bg-light-red'
+  },
+  PWA: {
+    label: 'PWA',
+    icon: IconDownload,
+    iconBgColor: '--app-icon-bg-light-blue'
+  }
+};
+
+const config = typeConfigs[appType];
+const IconComponent = config.icon;
+---
+
+<Element 
+  href={href}
+  onclick={onclick}
+  class={`app-types-button variant-${variant} ${active ? 'active' : ''}`}
+  data-app-types-button
+  data-variant={variant}
+  data-active={active}
+>
+  <!-- Content -->
+  <div class="button-content">
+    {variant === 'label' && (
+      <>
+        <!-- Icon (left) -->
+        <div class="icon-bg" style={`background-color: var(${config.iconBgColor});`}>
+          <div class="icon-wrapper icon-sm">
+            <IconComponent size={16} />
+          </div>
+        </div>
+        
+        <!-- Label -->
+        <span class="text-label">
+          {config.label}
+        </span>
+      </>
+    )}
+    
+    {variant === 'inline' && (
+      <>
+        <!-- Label -->
+        <span class="text-label">
+          {config.label}
+        </span>
+        
+        <!-- Icon (right) -->
+        <div class="icon-bg" style={`background-color: var(${config.iconBgColor});`}>
+          <div class="icon-wrapper icon-sm">
+            <IconComponent size={16} />
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+  
+  <!-- Border overlay - changes on hover/active -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</Element>
+
+<style>
+  /* Base Button (works for both button and anchor) */
+  .app-types-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    outline: none;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Content wrapper */
+  .button-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    color: var(--on-surface-light-regular);
+  }
+
+  /* Text labels */
+  .text-label {
+    font-family: var(--font-inter);
+    font-size: var(--body-sm-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--body-sm-line);
+  }
+
+  /* Icon background circle */
+  .icon-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .icon-bg :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Icon wrapper */
+  .icon-wrapper {
+    flex-shrink: 0;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-sm {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  /* Active state - when button is pressed */
+  .app-types-button:active {
+    transform: scale(0.98);
+  }
+
+  /* ========================================
+     VARIANT: LABEL
+     ======================================== */
+  .variant-label {
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 160px;
+  }
+
+  .variant-label .button-content {
+    gap: var(--spacing-8);
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-4) var(--spacing-8);
+  }
+
+  .variant-label .border-overlay {
+    display: block;
+  }
+
+  /* Label - Active State */
+  .variant-label.active {
+    background: var(--surface-light-high);
+    border-radius: var(--radius-md);
+  }
+
+  /* Label - Hover State */
+  .variant-label:hover:not(.active) {
+    background: var(--surface-light-mid);
+    border-radius: var(--radius-md);
+  }
+
+  .variant-label:hover:not(.active):not(:focus-visible) .border-overlay {
+    inset: 0 0 -1px 0;
+    border-bottom: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: var(--radius-md);
+  }
+
+  /* Label - Focus State (keyboard only) */
+  .variant-label:focus-visible .border-overlay {
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+
+  /* ========================================
+     VARIANT: INLINE
+     ======================================== */
+  .variant-inline {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .variant-inline .button-content {
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-12);
+    width: 100%;
+  }
+
+  .variant-inline .border-overlay {
+    display: block;
+    inset: 0 0 -0.5px 0;
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-high);
+  }
+
+  /* Inline - Active State */
+  .variant-inline.active {
+    background: var(--surface-light-high);
+    border-radius: var(--radius-md);
+  }
+
+  .variant-inline.active .border-overlay {
+    border: none;
+  }
+
+  /* Inline - Focus State (keyboard only) */
+  .variant-inline:focus-visible .border-overlay {
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 2px);
+  }
+</style>

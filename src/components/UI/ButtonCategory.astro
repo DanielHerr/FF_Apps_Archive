@@ -1,0 +1,508 @@
+---
+/**
+ * Category Button Component
+ * Multi-purpose button for category selection with 4 variants
+ * 
+ * Variants:
+ * - label: Horizontal layout (icon + text), minimal width 160px - USES FILLED ICONS
+ * - chip: Compact horizontal (text + icon), fixed 69px width - uses regular icons
+ * - block: Vertical layout (icon above text), 90x76px - uses regular icons
+ * - inline: Full width horizontal (text + icon right), 280px - uses regular icons
+ * 
+ * States:
+ * - Default: Gradient background, subtle border
+ * - Hover: 2px purple border
+ * - Focus: 4px purple border
+ * - Active: Gray background (label & inline variants)
+ * 
+ * Props:
+ * @param variant - Button variant: 'label' | 'chip' | 'block' | 'inline'
+ * @param category - Category name (e.g., 'Music', 'Games') - automatically selects correct icon and displays as label
+ * @param active - Active state (label & inline variants)
+ * @param onclick - Optional click handler
+ * 
+ * Usage:
+ * <ButtonCategory variant="label" category="Music" />
+ * <ButtonCategory variant="chip" category="Games" />
+ * <ButtonCategory variant="block" category="Travel" />
+ * <ButtonCategory variant="inline" category="Shopping" />
+ * <ButtonCategory variant="label" category="Music" href="/music/1" /> <!-- renders as anchor -->
+ */
+
+interface Props {
+  variant?: 'label' | 'chip' | 'block' | 'inline';
+  category?: string;
+  active?: boolean;
+  onclick?: string;
+  /** When provided, renders as anchor instead of button */
+  href?: string;
+}
+
+const { 
+  variant = 'label',
+  category = 'Books',
+  active = false,
+  onclick,
+  href
+} = Astro.props;
+
+// Determine element type
+const Element = href ? 'a' : 'button';
+
+// Import ALL category icons - Regular variants
+import IconAirplaneTiltRegular from '../icons/categories/IconAirplaneTiltRegular.astro';
+import IconAtomRegular from '../icons/categories/IconAtomRegular.astro';
+import IconBookOpenTextRegular from '../icons/categories/IconBookOpenTextRegular.astro';
+import IconBooksRegular from '../icons/categories/IconBooksRegular.astro';
+import IconBuildingsRegular from '../icons/categories/IconBuildingsRegular.astro';
+import IconCameraRegular from '../icons/categories/IconCameraRegular.astro';
+import IconChartPieSliceRegular from '../icons/categories/IconChartPieSliceRegular.astro';
+import IconCloudSunRegular from '../icons/categories/IconCloudSunRegular.astro';
+import IconCompassRegular from '../icons/categories/IconCompassRegular.astro';
+import IconFilmStripRegular from '../icons/categories/IconFilmStripRegular.astro';
+import IconGameControllerRegular from '../icons/categories/IconGameControllerRegular.astro';
+import IconGearFineRegular from '../icons/categories/IconGearFineRegular.astro';
+import IconGlobeRegular from '../icons/categories/IconGlobeRegular.astro';
+import IconGraduationCapRegular from '../icons/categories/IconGraduationCapRegular.astro';
+import IconHammerRegular from '../icons/categories/IconHammerRegular.astro';
+import IconHeartbeatRegular from '../icons/categories/IconHeartbeatRegular.astro';
+import IconIslandRegular from '../icons/categories/IconIslandRegular.astro';
+import IconMaskHappyRegular from '../icons/categories/IconMaskHappyRegular.astro';
+import IconMusicNotesRegular from '../icons/categories/IconMusicNotesRegular.astro';
+import IconNewspaperRegular from '../icons/categories/IconNewspaperRegular.astro';
+import IconPinwheelRegular from '../icons/categories/IconPinwheelRegular.astro';
+import IconQuestionRegular from '../icons/categories/IconQuestionRegular.astro';
+import IconRadioRegular from '../icons/categories/IconRadioRegular.astro';
+import IconShoppingCartRegular from '../icons/categories/IconShoppingCartRegular.astro';
+import IconTennisBallRegular from '../icons/categories/IconTennisBallRegular.astro';
+import IconUserCircleRegular from '../icons/categories/IconUserCircleRegular.astro';
+import IconWineRegular from '../icons/categories/IconWineRegular.astro';
+
+// Import ALL category icons - Filled variants
+import IconAirplaneTiltFilled from '../icons/categories/IconAirplaneTiltFilled.astro';
+import IconAtomFilled from '../icons/categories/IconAtomFilled.astro';
+import IconBookOpenTextFilled from '../icons/categories/IconBookOpenTextFilled.astro';
+import IconBooksFilled from '../icons/categories/IconBooksFilled.astro';
+import IconBuildingsFilled from '../icons/categories/IconBuildingsFilled.astro';
+import IconCameraFilled from '../icons/categories/IconCameraFilled.astro';
+import IconChartPieSliceFilled from '../icons/categories/IconChartPieSliceFilled.astro';
+import IconCloudSunFilled from '../icons/categories/IconCloudSunFilled.astro';
+import IconCompassFilled from '../icons/categories/IconCompassFilled.astro';
+import IconFilmStripFilled from '../icons/categories/IconFilmStripFilled.astro';
+import IconGameControllerFilled from '../icons/categories/IconGameControllerFilled.astro';
+import IconGearFineFilled from '../icons/categories/IconGearFineFilled.astro';
+import IconGlobeFilled from '../icons/categories/IconGlobeFilled.astro';
+import IconGraduationCapFilled from '../icons/categories/IconGraduationCapFilled.astro';
+import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
+import IconHeartbeatFilled from '../icons/categories/IconHeartbeatFilled.astro';
+import IconIslandFilled from '../icons/categories/IconIslandFilled.astro';
+import IconMaskHappyFilled from '../icons/categories/IconMaskHappyFilled.astro';
+import IconMusicNotesFilled from '../icons/categories/IconMusicNotesFilled.astro';
+import IconNewspaperFilled from '../icons/categories/IconNewspaperFilled.astro';
+import IconPinwheelFilled from '../icons/categories/IconPinwheelFilled.astro';
+import IconQuestionFilled from '../icons/categories/IconQuestionFilled.astro';
+import IconRadioFilled from '../icons/categories/IconRadioFilled.astro';
+import IconShoppingCartFilled from '../icons/categories/IconShoppingCartFilled.astro';
+import IconTennisBallFilled from '../icons/categories/IconTennisBallFilled.astro';
+import IconUserCircleFilled from '../icons/categories/IconUserCircleFilled.astro';
+import IconWineFilled from '../icons/categories/IconWineFilled.astro';
+
+// Category to Icon mapping - Regular variants
+const categoryIconMapRegular: Record<string, any> = {
+  'Books': IconBooksRegular,
+  'Books & Comics': IconBookOpenTextRegular,
+  'Business': IconBuildingsRegular,
+  'Education': IconGraduationCapRegular,
+  'Entertainment': IconFilmStripRegular,
+  'Food & Drink': IconWineRegular,
+  'Games': IconGameControllerRegular,
+  'Health & Fitness': IconHeartbeatRegular,
+  'Humor': IconMaskHappyRegular,
+  'Internet': IconGlobeRegular,
+  'Kids': IconPinwheelRegular,
+  'Lifestyle': IconIslandRegular,
+  'Maps & Navigation': IconCompassRegular,
+  'Music': IconMusicNotesRegular,
+  'News': IconNewspaperRegular,
+  'News & Weather': IconCloudSunRegular,
+  'Personalization': IconGearFineRegular,
+  'Photo & Video': IconCameraRegular,
+  'Productivity': IconChartPieSliceRegular,
+  'Reference': IconQuestionRegular,
+  'Science & Tech': IconAtomRegular,
+  'Shopping': IconShoppingCartRegular,
+  'Social': IconUserCircleRegular,
+  'Sports': IconTennisBallRegular,
+  'Travel': IconAirplaneTiltRegular,
+  'Utilities': IconHammerRegular,
+  'Weather': IconCloudSunRegular,
+  'Radio': IconRadioRegular,
+};
+
+// Category to Icon mapping - Filled variants
+const categoryIconMapFilled: Record<string, any> = {
+  'Books': IconBooksFilled,
+  'Books & Comics': IconBookOpenTextFilled,
+  'Business': IconBuildingsFilled,
+  'Education': IconGraduationCapFilled,
+  'Entertainment': IconFilmStripFilled,
+  'Food & Drink': IconWineFilled,
+  'Games': IconGameControllerFilled,
+  'Health & Fitness': IconHeartbeatFilled,
+  'Humor': IconMaskHappyFilled,
+  'Internet': IconGlobeFilled,
+  'Kids': IconPinwheelFilled,
+  'Lifestyle': IconIslandFilled,
+  'Maps & Navigation': IconCompassFilled,
+  'Music': IconMusicNotesFilled,
+  'News': IconNewspaperFilled,
+  'News & Weather': IconCloudSunFilled,
+  'Personalization': IconGearFineFilled,
+  'Photo & Video': IconCameraFilled,
+  'Productivity': IconChartPieSliceFilled,
+  'Reference': IconQuestionFilled,
+  'Science & Tech': IconAtomFilled,
+  'Shopping': IconShoppingCartFilled,
+  'Social': IconUserCircleFilled,
+  'Sports': IconTennisBallFilled,
+  'Travel': IconAirplaneTiltFilled,
+  'Utilities': IconHammerFilled,
+  'Weather': IconCloudSunFilled,
+  'Radio': IconRadioFilled,
+};
+
+// Select the correct icon based on variant and category
+const IconComponent = variant === 'label' 
+  ? (categoryIconMapFilled[category] || IconBooksFilled)
+  : (categoryIconMapRegular[category] || IconBooksRegular);
+---
+
+<Element 
+  href={href}
+  onclick={onclick}
+  class={`category-button variant-${variant} ${active ? 'active' : ''}`}
+  data-category-button
+  data-variant={variant}
+  data-active={active}
+>
+  <!-- Content -->
+  <div class="button-content">
+    {variant === 'label' && (
+      <>
+        <!-- Icon (left) -->
+        <div class="icon-wrapper icon-xs">
+          <IconComponent size={14} />
+        </div>
+        
+        <!-- Label -->
+        <span class="text-label">
+          {category}
+        </span>
+      </>
+    )}
+    
+    {variant === 'chip' && (
+      <>
+        <!-- Label -->
+        <span class="text-label">
+          {category}
+        </span>
+        
+        <!-- Icon (right) -->
+        <div class="icon-wrapper icon-xs">
+          <IconComponent size={14} />
+        </div>
+      </>
+    )}
+    
+    {variant === 'block' && (
+      <>
+        <!-- Icon (top) -->
+        <div class="icon-wrapper icon-md">
+          <IconComponent size={24} />
+        </div>
+        
+        <!-- Label -->
+        <span class="text-label">
+          {category}
+        </span>
+      </>
+    )}
+    
+    {variant === 'inline' && (
+      <>
+        <!-- Label -->
+        <span class="text-label">
+          {category}
+        </span>
+        
+        <!-- Icon (right) -->
+        <div class="icon-wrapper icon-sm">
+          <IconComponent size={16} />
+        </div>
+      </>
+    )}
+  </div>
+  
+  <!-- Border overlay - changes on hover/active -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</Element>
+
+<style>
+  /* Base Button (works for both button and anchor) */
+  .category-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-app-icon);
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, var(--card-gradient-light-blue-start) 0%, var(--card-gradient-light-blue-end) 100%);
+    outline: none;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Content wrapper */
+  .button-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    color: var(--on-surface-light-regular);
+  }
+
+  /* Text labels - default typography */
+  .text-label {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Variant-specific typography */
+  .variant-label .text-label {
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+  }
+
+  .variant-chip .text-label,
+  .variant-inline .text-label {
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    text-wrap: nowrap;
+  }
+
+  .variant-block .text-label {
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    white-space: nowrap;
+    margin-top: -1px;
+  }
+
+  /* Icon wrapper */
+  .icon-wrapper {
+    flex-shrink: 0;
+    color: var(--on-surface-light-faded);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-xs {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+  }
+
+  .icon-sm {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+  }
+
+  .icon-md {
+    width: var(--icon-md);
+    height: var(--icon-md);
+  }
+
+  .icon-lg {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+  }
+
+  /* Border Overlay */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border: var(--border-sm) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 0.5px);
+    pointer-events: none;
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* Active state - when button is pressed */
+  .category-button:active {
+    transform: scale(0.98);
+  }
+
+  /* ========================================
+     VARIANT: LABEL
+     ======================================== */
+  .variant-label {
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 160px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .variant-label .button-content {
+    gap: var(--spacing-8);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4) var(--spacing-8);
+  }
+
+  .variant-label .border-overlay {
+    border: none;
+    box-shadow: none;
+  }
+
+  /* Label - Selected State */
+  .variant-label.active {
+    background: var(--surface-light-high);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  /* Label - Hover State */
+  .variant-label:hover:not(.active) {
+    background: var(--surface-light-mid);
+    box-shadow: var(--shadow-app-icon);
+  }
+
+  .variant-label:hover:not(.active):not(:focus-visible) .border-overlay {
+    display: block;
+    inset: 0 0 -1px 0;
+    border: none;
+    border-bottom: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: var(--radius-md);
+  }
+
+  /* Label - Focus State (keyboard only) */
+  .variant-label:focus-visible .border-overlay {
+    display: block;
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 4px);
+  }
+
+  /* ========================================
+     VARIANT: CHIP
+     ======================================== */
+  .variant-chip {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .variant-chip .button-content {
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4) var(--spacing-8);
+    width: 100%;
+  }
+
+  /* Chip - Hover State */
+  .variant-chip:hover .border-overlay {
+    inset: -1px;
+    border: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Chip - Focus State (keyboard only) */
+  .variant-chip:focus-visible .border-overlay {
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 4px);
+  }
+
+  /* ========================================
+     VARIANT: BLOCK
+     ======================================== */
+  .variant-block {
+    width: 90px;
+    height: 76px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4);
+  }
+
+  .variant-block .button-content {
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-12) 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Block - Hover State */
+  .variant-block:hover .border-overlay {
+    inset: -1px;
+    border: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Block - Focus State (keyboard only) */
+  .variant-block:focus-visible .border-overlay {
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 4px);
+  }
+
+  /* ========================================
+     VARIANT: INLINE
+     ======================================== */
+  .variant-inline {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--spacing-8) var(--spacing-12);
+  }
+
+  .variant-inline .button-content {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .variant-inline .border-overlay {
+    display: block;
+  }
+
+  /* Inline - Active State */
+  .variant-inline.active {
+    background: var(--surface-light-high);
+  }
+
+  .variant-inline.active .border-overlay {
+    border: none;
+  }
+
+  /* Inline - Hover State */
+  .variant-inline:hover:not(.active):not(:focus-visible) .border-overlay {
+    inset: -1px;
+    border: var(--border-lg) solid var(--on-surface-light-primary);
+    border-radius: calc(var(--radius-md) + 1px);
+  }
+
+  /* Inline - Focus State (keyboard only) */
+  .variant-inline:focus-visible .border-overlay {
+    inset: -4px;
+    border: var(--border-xl) solid var(--on-surface-light-faded);
+    border-radius: calc(var(--radius-md) + 4px);
+  }
+</style>

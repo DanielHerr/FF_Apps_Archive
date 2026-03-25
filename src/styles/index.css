@@ -1,0 +1,27 @@
+/* Order matters */
+
+/* 1. Fonts */
+@import "./fonts.css";
+
+/* 2. Design tokens */
+@import './design-tokens.css';
+@import './colors-primitives.css';
+@import './colors-semantic.css';
+
+/* 3. Optional reset */
+@import "./reset.css";
+
+/* 4. Scrollbar styling */
+@import './scrollbar.css';
+
+/* 5. Global base styles */
+html {
+  font-family: var(--body-sm-size);
+  background-color: var(--surface-light-low);
+  color: var(--on-surface-light-regular);
+}
+
+a {
+  color: var(--on-surface-light-primary);
+  text-decoration: none;
+}

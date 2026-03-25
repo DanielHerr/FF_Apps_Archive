@@ -1,0 +1,372 @@
+---
+/**
+ * SectionAppDescription Component
+ * 
+ * Displays app description text with expandable/collapsible overflow functionality.
+ * 
+ * States:
+ * - Default: Text doesn't overflow maxHeight, no button shown
+ * - Collapsed: Text overflows maxHeight, overflow hidden with faded color, "READ MORE" button shown
+ * - Expanded: Text overflows maxHeight, all text visible with full color, "SEE LESS" button shown
+ * 
+ * Props:
+ * @param description - HTML string containing the app description
+ * @param mobileMaxHeight - Maximum height in pixels on mobile before showing read more (default: 242)
+ * @param desktopMaxHeight - Maximum height in pixels on desktop (769px+) before showing read more (default: 400)
+ * 
+ * Usage:
+ * <SectionAppDescription 
+ *   description="<p>Lorem ipsum...</p>"
+ *   mobileMaxHeight={242}
+ *   desktopMaxHeight={400}
+ * />
+ */
+
+interface Props {
+  description: string;
+  mobileMaxHeight?: number;
+  desktopMaxHeight?: number;
+}
+
+const { 
+  description,
+  mobileMaxHeight = 242,
+  desktopMaxHeight = 400
+} = Astro.props;
+
+// Generate unique ID for this instance
+const uniqueId = `desc-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<section class="section-app-description" data-mobile-max-height={mobileMaxHeight} data-desktop-max-height={desktopMaxHeight} data-instance-id={uniqueId}>
+  <div 
+    class="description-text"
+    data-collapsed="true"
+    data-has-overflow="false"
+    data-animating="false"
+    set:html={description}
+  />
+  
+  <div class="read-more-section" data-hidden="true">
+    <div class="button-container">
+      <button 
+        class="read-more-button"
+        type="button"
+        aria-label="Toggle description"
+      >
+        <span class="button-text">READ MORE</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initAppDescription() {
+    const sections = document.querySelectorAll('.section-app-description');
+    const DESKTOP_BREAKPOINT = 769;
+    
+    sections.forEach((section) => {
+      const descriptionText = section.querySelector('.description-text') as HTMLElement;
+      const readMoreSection = section.querySelector('.read-more-section') as HTMLElement;
+      const button = section.querySelector('.read-more-button') as HTMLButtonElement;
+      const buttonText = button?.querySelector('.button-text') as HTMLElement;
+      
+      if (!descriptionText || !readMoreSection || !button || !buttonText) return;
+      
+      const mobileMaxHeight = parseInt(section.getAttribute('data-mobile-max-height') || '242');
+      const desktopMaxHeight = parseInt(section.getAttribute('data-desktop-max-height') || '400');
+      let fullHeight = 0;
+      
+      // Get current max height based on viewport
+      function getCurrentMaxHeight(): number {
+        return window.innerWidth >= DESKTOP_BREAKPOINT ? desktopMaxHeight : mobileMaxHeight;
+      }
+      
+      // Check if content overflows
+      function checkOverflow() {
+        const maxHeight = getCurrentMaxHeight();
+        
+        // Temporarily remove max-height to get full height
+        const currentMaxHeight = descriptionText.style.maxHeight;
+        const currentTransition = descriptionText.style.transition;
+        descriptionText.style.transition = 'none';
+        descriptionText.style.maxHeight = 'none';
+        fullHeight = descriptionText.scrollHeight;
+        descriptionText.style.maxHeight = currentMaxHeight;
+        
+        // Force reflow before re-enabling transition
+        void descriptionText.offsetHeight;
+        descriptionText.style.transition = currentTransition;
+        
+        const hasOverflow = fullHeight > maxHeight;
+        descriptionText.dataset.hasOverflow = hasOverflow.toString();
+        
+        if (hasOverflow) {
+          // Show button and set collapsed state
+          readMoreSection.dataset.hidden = 'false';
+          descriptionText.dataset.collapsed = 'true';
+          descriptionText.style.maxHeight = `${maxHeight}px`;
+        } else {
+          // Hide button and remove collapsed state (default state)
+          readMoreSection.dataset.hidden = 'true';
+          descriptionText.dataset.collapsed = 'false';
+          descriptionText.style.maxHeight = 'none';
+        }
+      }
+      
+      // Initial check
+      checkOverflow();
+      
+      // Toggle button handler
+      button.addEventListener('click', () => {
+        const isCollapsed = descriptionText.dataset.collapsed === 'true';
+        const isAnimating = descriptionText.dataset.animating === 'true';
+        const maxHeight = getCurrentMaxHeight();
+        
+        // Prevent clicking during animation
+        if (isAnimating) return;
+        
+        descriptionText.dataset.animating = 'true';
+        
+        if (isCollapsed) {
+          // Expand - animate from maxHeight to full height
+          descriptionText.dataset.collapsed = 'false';
+          
+          // Set to actual scroll height for smooth animation
+          descriptionText.style.maxHeight = `${fullHeight}px`;
+          buttonText.textContent = 'SEE LESS';
+          
+          // After animation completes, remove max-height constraint
+          const transitionEndHandler = () => {
+            descriptionText.style.maxHeight = 'none';
+            descriptionText.dataset.animating = 'false';
+            descriptionText.removeEventListener('transitionend', transitionEndHandler);
+          };
+          descriptionText.addEventListener('transitionend', transitionEndHandler);
+          
+        } else {
+          // Collapse - animate from full height to maxHeight
+          
+          // First, set explicit height from 'none' to actual height
+          const currentHeight = descriptionText.scrollHeight;
+          descriptionText.style.maxHeight = `${currentHeight}px`;
+          
+          // Force reflow to ensure the browser registers the height change
+          void descriptionText.offsetHeight;
+          
+          // Now animate to collapsed height
+          descriptionText.dataset.collapsed = 'true';
+          descriptionText.style.maxHeight = `${maxHeight}px`;
+          buttonText.textContent = 'READ MORE';
+          
+          const transitionEndHandler = () => {
+            descriptionText.dataset.animating = 'false';
+            descriptionText.removeEventListener('transitionend', transitionEndHandler);
+          };
+          descriptionText.addEventListener('transitionend', transitionEndHandler);
+        }
+      });
+      
+      // Re-check on window resize
+      let resizeTimeout: number;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(() => {
+          // Temporarily disable transitions during resize recalculation
+          const currentTransition = descriptionText.style.transition;
+          descriptionText.style.transition = 'none';
+          checkOverflow();
+          void descriptionText.offsetHeight;
+          descriptionText.style.transition = currentTransition;
+        }, 150);
+      });
+    });
+  }
+  
+  // Initialize on page load
+  initAppDescription();
+  
+  // Re-initialize on navigation (for Astro view transitions)
+  document.addEventListener('astro:page-load', initAppDescription);
+</script>
+
+<style>
+  /* ========================================
+     SECTION WRAPPER
+     ======================================== */
+  .section-app-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ========================================
+     DESCRIPTION TEXT
+     ======================================== */
+  .description-text {
+    position: relative;
+    width: 100%;
+    padding: var(--spacing-8) 0;
+    flex-shrink: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    
+    /* Typography - Explicit tokens per guidelines */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+    letter-spacing: normal;
+    
+    /* Default state - full color, no overflow */
+    color: var(--on-surface-light-regular);
+    
+    /* Smooth height and color transitions */
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s ease,
+                font-size 0.3s ease,
+                line-height 0.3s ease;
+  }
+
+  /* Collapsed state - faded color with overflow hidden */
+  .description-text[data-collapsed="true"][data-has-overflow="true"] {
+    overflow: hidden;
+    color: var(--on-surface-light-faded);
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s ease;
+  }
+  
+  /* Add gradient fade at bottom when collapsed */
+  .description-text[data-collapsed="true"][data-has-overflow="true"]::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--surface-light-mid));
+    pointer-events: none;
+  }
+
+  /* Expanded state - full color, keep overflow hidden during animation */
+  .description-text[data-collapsed="false"][data-has-overflow="true"] {
+    color: var(--on-surface-light-regular);
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s ease;
+  }
+  
+  /* Remove overflow constraint after animation completes */
+  .description-text[data-collapsed="false"][data-has-overflow="true"][data-animating="false"] {
+    overflow: visible;
+  }
+
+  /* Default state (no overflow) - full color, no constraints */
+  .description-text[data-has-overflow="false"] {
+    color: var(--on-surface-light-regular);
+  }
+
+  /* Remove default paragraph margins */
+  .description-text :global(p) {
+    margin: 0;
+  }
+
+  /* ========================================
+     READ MORE SECTION
+     ======================================== */
+  .read-more-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 32px;
+    flex-shrink: 0;
+    overflow-x: auto;
+    overflow-y: clip;
+  }
+
+  /* Hide read more section when no overflow */
+  .read-more-section[data-hidden="true"] {
+    display: none;
+  }
+
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    padding: 4px 2px;
+  }
+
+  /* ========================================
+     READ MORE BUTTON
+     ======================================== */
+  .read-more-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0 6px;
+    flex-shrink: 0;
+    
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    cursor: pointer;
+    
+    transition: all 0.2s ease;
+  }
+
+  .button-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    white-space: nowrap;
+    
+    /* Typography - Small caps style per guidelines */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: 0;
+    letter-spacing: var(--body-xxs-sc-spacing);
+    text-transform: uppercase;
+    
+    /* Color */
+    color: var(--on-surface-light-primary);
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State */
+  .read-more-button:hover:not(:focus-visible) {
+    background: var(--surface-light-primary-low);
+  }
+
+  /* Active State - Click feedback */
+  .read-more-button:active {
+    transform: scale(0.98);
+  }
+
+  /* Focus State */
+  .read-more-button:focus-visible {
+    background: var(--surface-light-primary-low);
+    outline: var(--border-lg) solid var(--on-surface-light-faded);
+    outline-offset: 0;
+  }
+
+  @media (min-width: 769px) {
+    .description-text {
+      padding: var(--spacing-12) 0;
+      font-size: var(--body-md-size);
+      line-height: var(--body-md-line);
+    }
+  }
+</style>

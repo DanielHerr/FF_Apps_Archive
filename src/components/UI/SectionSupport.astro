@@ -1,0 +1,273 @@
+---
+/**
+ * SectionSupport Component
+ * 
+ * Displays support contact information with email and website links.
+ * Each link includes an icon, label, and clickable URL.
+ * Only shows rows that have actual values - empty fields are hidden.
+ * 
+ * Props:
+ * @param emailLink - Email support link (href and display text, e.g., "mailto:support@website.com")
+ * @param websiteLink - Website support link (href and display text, e.g., "https://www.website.com")
+ * 
+ * Usage:
+ * <SectionSupport 
+ *   emailLink="mailto:support@website.com"
+ *   websiteLink="https://www.website.com"
+ * />
+ */
+
+import H2 from './H2.astro';
+import IconEnvelope from '../icons/labels/IconEnvelope.astro';
+import IconLink from '../icons/labels/IconLink.astro';
+
+interface Props {
+  emailLink?: string;
+  websiteLink?: string;
+}
+
+const { 
+  emailLink = '',
+  websiteLink = ''
+} = Astro.props;
+
+// Extract display text from email link (remove mailto: prefix)
+const emailDisplay = emailLink.startsWith('mailto:') ? emailLink.slice(7) : emailLink;
+
+// Check if we have actual values
+const hasEmail = emailLink && emailLink !== 'mailto:';
+const hasWebsite = websiteLink && websiteLink.length > 0;
+---
+
+<section class="section-support">
+  <div class="support-heading">
+    <H2 text="Support" />
+  </div>
+  
+  {hasEmail ? (
+    <div class="support-row">
+      <div class="icon-wrapper">
+        <IconEnvelope />
+      </div>
+      <div class="label-text">Email</div>
+      <div class="link-wrapper">
+        <a href={emailLink} class="support-link">{emailDisplay}</a>
+      </div>
+    </div>
+  ) : (
+    <div class="support-row disabled">
+      <div class="icon-wrapper">
+        <IconEnvelope />
+      </div>
+      <div class="label-text">Email</div>
+      <div class="link-wrapper">
+        <span class="support-none">N/A</span>
+      </div>
+    </div>
+  )}
+  
+  {hasWebsite ? (
+    <div class="support-row">
+      <div class="icon-wrapper">
+        <IconLink />
+      </div>
+      <div class="label-text">Website</div>
+      <div class="link-wrapper">
+        <a href={websiteLink} class="support-link">{websiteLink}</a>
+      </div>
+    </div>
+  ) : (
+    <div class="support-row disabled">
+      <div class="icon-wrapper">
+        <IconLink />
+      </div>
+      <div class="label-text">Website</div>
+      <div class="link-wrapper">
+        <span class="support-none">N/A</span>
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  /* ========================================
+     SECTION WRAPPER
+     ======================================== */
+  .section-support {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    padding: 16px 0;
+  }
+
+  /* ========================================
+     HEADING
+     ======================================== */
+  .support-heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .heading-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    
+    /* Typography - Heading XXXS (16px/20px) with Metropolis Bold */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxxs-size);
+    line-height: var(--heading-xxxs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     SUPPORT ROW
+     ======================================== */
+  .support-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 8px;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+     ICON
+     ======================================== */
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    color: var(--on-surface-light-faded);
+  }
+
+  .icon-wrapper :global(svg) {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* ========================================
+     LABEL TEXT
+     ======================================== */
+  .label-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    
+    /* Typography - Body XS (12px/18px) with Inter Regular */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     LINK WRAPPER
+     ======================================== */
+  .link-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+     LINK
+     ======================================== */
+  .support-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    white-space: nowrap;
+    
+    /* Typography - Body XXS (10px/16px) with Inter Regular */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: normal;
+    
+    /* Link styling */
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    cursor: pointer;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-primary);
+    
+    /* Smooth transitions */
+    transition: color 0.2s ease, opacity 0.2s ease;
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State */
+  .support-link:hover:not(:focus-visible) {
+    opacity: 0.8;
+  }
+
+  /* Active State - Click feedback */
+  .support-link:active {
+    transform: scale(0.98);
+  }
+
+  /* Focus State */
+  .support-link:focus-visible {
+    outline: var(--border-lg) solid var(--on-surface-light-faded);
+    outline-offset: 2px;
+    opacity: 0.8;
+  }
+
+  /* ========================================
+     DISABLED ROW STATE
+     ======================================== */
+  .support-row.disabled {
+    opacity: 0.5;
+  }
+
+  /* ========================================
+     N/A PLACEHOLDER
+     ======================================== */
+  .support-none {
+    /* Typography - Label XS (10px/16px) with Inter Medium, Small Caps */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    
+    /* Semantic color - faded to indicate unavailable */
+    color: var(--on-surface-light-faded);
+  }
+
+  @media (min-width: 769px) {
+    .section-support {
+      width: fit-content;
+    }
+  }
+</style>

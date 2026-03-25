@@ -1,0 +1,148 @@
+---
+interface Props {
+  placeholder?: string;
+  value?: string;
+  disabled?: boolean;
+  name?: string;
+  id?: string;
+  required?: boolean;
+  type?: 'text' | 'email' | 'tel' | 'url' | 'password';
+  /** Render as textarea for multi-line input */
+  multiline?: boolean;
+  /** Number of visible text rows for textarea (default: 4) */
+  rows?: number;
+}
+
+const { 
+  placeholder = 'Placeholder Text', 
+  value = '',
+  disabled = false,
+  name,
+  id,
+  required = false,
+  type = 'text',
+  multiline = false,
+  rows = 4
+} = Astro.props;
+---
+
+<div class="input-wrapper">
+  {multiline ? (
+    <textarea
+      class="input-text input-textarea"
+      placeholder={placeholder}
+      disabled={disabled}
+      name={name}
+      id={id}
+      required={required}
+      rows={rows}
+    >{value}</textarea>
+  ) : (
+    <input
+      type={type}
+      class="input-text"
+      placeholder={placeholder}
+      value={value}
+      disabled={disabled}
+      name={name}
+      id={id}
+      required={required}
+    />
+  )}
+  
+  <!-- Border overlay - changes on hover/focus without affecting layout -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</div>
+
+<style>
+  .input-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .input-text {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-8);
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      to bottom,
+      var(--surface-light-background-start),
+      var(--surface-light-background-end)
+    );
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    box-shadow: var(--shadow-app-icon);
+    color: var(--on-surface-light-regular);
+    
+    /* Typography - body-md */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-md-size);
+    line-height: var(--body-md-line);
+    letter-spacing: var(--body-md-spacing);
+    
+    transition: all 0.2s ease;
+    cursor: text;
+  }
+
+  .input-text::placeholder {
+    color: var(--on-surface-light-faded);
+  }
+
+  /* Hover state - remove shadow */
+  .input-text:hover:not(:focus-visible):not(:disabled) {
+    box-shadow: none;
+  }
+
+  /* Focus state - remove shadow */
+  .input-text:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* Disabled state */
+  .input-text:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Textarea variant */
+  .input-textarea {
+    resize: vertical;
+    min-height: 100px;
+    transition: none;
+  }
+
+  /* Disable transition on border overlay when textarea is present */
+  .input-textarea ~ .border-overlay {
+    transition: none;
+  }
+
+  /* ========================================
+     BORDER OVERLAY
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    transition: all 0.2s ease;
+  }
+
+  /* Hover state - full primary border */
+  .input-text:hover:not(:focus-visible):not(:disabled) ~ .border-overlay {
+    border: var(--border-sm) solid var(--on-surface-light-primary);
+  }
+
+  /* Focus state - 2px regular border */
+  .input-text:focus-visible ~ .border-overlay {
+    border: var(--border-lg) solid var(--on-surface-light-regular);
+  }
+</style>

@@ -1,0 +1,210 @@
+/**
+ * ========================================
+ * PRIMITIVE COLOR TOKENS
+ * ========================================
+ * Base color palette from Figma Design Library
+ * Firefox Apps Archive Style Guide
+ * 
+ * These are the raw color values that semantic tokens reference.
+ * Do not use these directly in components - use semantic tokens instead.
+ */
+
+:root {
+  /* ========================================
+     GREEN SCALE
+     ======================================== */
+  
+  --green-05: #e3fff3;
+  --green-10: #d0ffed;
+  --green-20: #b3ffe3;
+  --green-30: #88ffd1;
+  --green-40: #53febe;
+  --green-50: #3fe1b0;
+  --green-60: #2bc4a2;
+  --green-70: #068989;
+  --green-80: #005e5d;
+  --green-90: #083f37;
+
+  /* ========================================
+     BLUE SCALE
+     ======================================== */
+  
+  --blue-05: #acf1ff;
+  --blue-10: #80eaff;
+  --blue-20: #00ddff;
+  --blue-30: #00b3f5;
+  --blue-40: #0290ee;
+  --blue-50: #0060e0;
+  --blue-60: #0250bc;
+  --blue-70: #063f96;
+  --blue-80: #073072;
+  --blue-90: #0a214d;
+
+  /* ========================================
+     VIOLET SCALE
+     ======================================== */
+  
+  --violet-05: #e6dfff;
+  --violet-10: #d9bfff;
+  --violet-20: #cc9eff;
+  --violet-30: #c588ff;
+  --violet-40: #ac71ff;
+  --violet-50: #9059ff;
+  --violet-60: #7543e3;
+  --violet-70: #582acb;
+  --violet-80: #46278e;
+  --violet-90: #321c64;
+
+  /* ========================================
+     PURPLE SCALE
+     ======================================== */
+  
+  --purple-05: #f7e3ff;
+  --purple-10: #f6b9ff;
+  --purple-20: #f690ff;
+  --purple-30: #f564ff;
+  --purple-40: #d64cf1;
+  --purple-50: #b933e1;
+  --purple-60: #962bb9;
+  --purple-70: #712290;
+  --purple-80: #4d1a69;
+  --purple-90: #2b1141;
+
+  /* ========================================
+     PINK SCALE
+     ======================================== */
+  
+  --pink-05: #ffdff0;
+  --pink-10: #ffb4db;
+  --pink-20: #ff8ac6;
+  --pink-30: #ff6bbb;
+  --pink-40: #fe4aa3;
+  --pink-50: #ff2a8a;
+  --pink-60: #e11586;
+  --pink-70: #c60184;
+  --pink-80: #7f165b;
+  --pink-90: #50134c;
+
+  /* ========================================
+     RED SCALE
+     ======================================== */
+  
+  --red-05: #ffe0e8;
+  --red-10: #ffbec6;
+  --red-20: #ff9aa2;
+  --red-30: #ff848c;
+  --red-40: #ff6a75;
+  --red-50: #ff505f;
+  --red-60: #e02950;
+  --red-70: #c50143;
+  --red-80: #800220;
+  --red-90: #440307;
+
+  /* ========================================
+     ORANGE SCALE
+     ======================================== */
+  
+  --orange-05: #fff4de;
+  --orange-10: #ffd6b2;
+  --orange-20: #ffb588;
+  --orange-30: #fea365;
+  --orange-40: #fe8a4f;
+  --orange-50: #ff7139;
+  --orange-60: #e25821;
+  --orange-70: #cd3d00;
+  --orange-80: #9d280c;
+  --orange-90: #7b1604;
+
+  /* ========================================
+     YELLOW SCALE
+     ======================================== */
+  
+  --yellow-05: #ffffcd;
+  --yellow-10: #feff95;
+  --yellow-20: #ffea7f;
+  --yellow-30: #ffd567;
+  --yellow-40: #ffbd4f;
+  --yellow-50: #ffa537;
+  --yellow-60: #e17f2e;
+  --yellow-70: #c45a28;
+  --yellow-80: #a7341f;
+  --yellow-90: #960f18;
+
+  /* ========================================
+     SPECIAL PURPOSE COLORS
+     ======================================== */
+  
+  /* Interactive */
+  --color-click: #0060df;
+  
+  /* Status Colors */
+  --color-success: #3fe1b0;
+  --color-warning: #ffea80;
+  --color-error: #ff6a75;
+
+  /* ========================================
+     NEUTRALS - STANDARD GRAYS
+     ======================================== */
+  
+  /* Base Neutrals */
+  --neutral-black: #161616;
+  --neutral-black-strong: #000000;
+  --neutral-white: #fafafa;
+  --neutral-white-strong: #ffffff;
+  
+  /* Gray Scale */
+  --neutral-gray: #b3b3b3;
+  --neutral-gray-light: #e8e8e8;
+  --neutral-gray-mid: #6d6d6d;
+  --neutral-gray-dark: #414141;
+
+  /* ========================================
+     NEUTRALS - MARKETING GRAY SCALE
+     ======================================== */
+  
+  --gray-marketing-10: #f9f9fa;
+  --gray-marketing-20: #ededf0;
+  --gray-marketing-30: #cdcdd4;
+  --gray-marketing-40: #b1b1bc;
+  --gray-marketing-50: #9595a2;
+  --gray-marketing-60: #7a7a8b;
+  --gray-marketing-70: #5e5e72;
+  --gray-marketing-80: #42425a;
+  --gray-marketing-90: #1f2033;
+  --gray-marketing-99: #20123a;
+
+  /* ========================================
+     NEUTRALS - INK SCALE (Brand Purple Shades)
+     ======================================== */
+  
+  --ink-05: #393473;
+  --ink-10: #342f6d;
+  --ink-20: #312a64;
+  --ink-30: #2e255d;
+  --ink-40: #2b2156;
+  --ink-50: #291d4f;
+  --ink-60: #271948;
+  --ink-70: #241541;
+  --ink-80: #20123a;
+  --ink-90: #1d1133;
+
+  /* ========================================
+     OPACITY VARIANTS
+     ======================================== */
+  
+  /* Black with Opacity */
+  --black-30: rgb(from var(--neutral-black) r g b / 0.3);
+  --black-strong-10: rgb(from var(--neutral-black-strong) r g b / 0.1);
+  
+  /* White with Opacity */
+  --white-30: rgb(from var(--neutral-white) r g b / 0.3);
+  --white-80: rgb(from var(--neutral-white) r g b / 0.8);
+  --white-strong-25: rgb(from var(--neutral-white-strong) r g b / 0.25);
+  
+  /* Marketing Gray with Opacity */
+  --gray-marketing-90-25: rgb(from var(--gray-marketing-90) r g b / 0.25);
+  
+  /* Ink with Opacity */
+  --ink-05-70: rgb(from var(--ink-05) r g b / 0.7);
+  --ink-05-20: rgb(from var(--ink-05) r g b / 0.2);
+}

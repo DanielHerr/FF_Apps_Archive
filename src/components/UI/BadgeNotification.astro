@@ -1,0 +1,59 @@
+---
+/**
+ * BadgeNotification Component
+ * Small circular badge indicator for notifications
+ * 
+ * Props:
+ * - variant: 'warning' | 'error' (default: 'warning')
+ * 
+ * Variants:
+ * - Warning: Yellow badge (#FFEA80)
+ * - Error: Red badge (#FF6A75)
+ * 
+ * Usage:
+ * - Typically used as an overlay indicator on icons or avatars
+ * - 8×8px fixed size
+ * - No interaction states (purely visual indicator)
+ */
+
+interface Props {
+  variant?: 'warning' | 'error';
+}
+
+const { variant = 'warning' } = Astro.props;
+---
+
+<div class={`badge-notification ${variant}`} data-variant={variant}>
+  <svg class="badge-svg" fill="none" viewBox="0 0 8 8">
+    <circle 
+      class="badge-circle"
+      cx="4" 
+      cy="4" 
+      r="4"
+    />
+  </svg>
+</div>
+
+<style>
+  .badge-notification {
+    width: var(--icon-xxxxs);
+    height: var(--icon-xxxxs);
+    position: relative;
+    display: inline-block;
+  }
+
+  .badge-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Badge circle colors using semantic tokens */
+  .badge-notification.warning .badge-circle {
+    fill: var(--attention-light-warning);
+  }
+
+  .badge-notification.error .badge-circle {
+    fill: var(--attention-error);
+  }
+</style>

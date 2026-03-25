@@ -1,0 +1,46 @@
+---
+/**
+ * H1 Component
+ * Main heading element with Metropolis Bold typography
+ * 
+ * Props:
+ * @param text - The heading text content (default: "Header H1")
+ * 
+ * Usage:
+ * <H1 />
+ * <H1 text="My Custom Heading" />
+ */
+
+interface Props {
+  text?: string;
+}
+
+const { text = "Header H1" } = Astro.props;
+---
+
+<h1 class="heading">
+  {text}
+</h1>
+
+<style>
+  .heading {
+    /* Typography - Metropolis Bold, 20px/24px */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxs-size);
+    line-height: var(--heading-xxs-line);
+    font-style: normal;
+    
+    /* Color - Primary text on surface */
+    color: var(--on-surface-light-regular);
+    
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    white-space: nowrap;
+    margin: 0;
+
+    transition: all 0.2s ease;
+  }
+</style>

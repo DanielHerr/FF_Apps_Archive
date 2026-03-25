@@ -1,0 +1,119 @@
+---
+import Base from "../layouts/base.astro"
+
+import SectionHeadline from "../components/UI/SectionHeadline.astro"
+import InputText from "../components/UI/InputText.astro"
+import RadioButton from "../components/UI/RadioButton.astro"
+import Link from "../components/UI/Link.astro"
+import Button from "../components/UI/Button.astro"
+---
+
+<Base title="Contact Us">
+	<SectionHeadline slot="header" variant="inline" headerText="Contact Us" subHeaderText="" pagefindMeta="title" />
+	<link slot="imports" rel="stylesheet" href="/contact.css">
+		<form name="FFAA Contact" method="post" action="/Contacted" netlify>
+			
+			<div class="name-fields">
+				<InputText name="firstname" placeholder="First Name *" required/>
+				<InputText name="lastname" placeholder="Last Name *" required/>
+			</div>
+			
+			<InputText name="email" placeholder="Email *" type="email" required/>
+			
+			<fieldset>
+				<legend class="label-text">Reason *</legend>
+				<RadioButton name="reason" value="questions" label="Question" />
+				<RadioButton name="reason" value="feedback" label="Feedback" />
+				<RadioButton name="reason" value="copyright" label="Copyright" required/>
+				<RadioButton name="reason" value="other" label="Other" />
+			</fieldset>
+			
+			<InputText name="message" placeholder="Message *" multiline required/>
+			
+			<div class="form-footer">
+				<Link href="/privacy" label="Privacy Policy" />
+				<Button type="submit" label="Send" />
+			</div>
+		</form>
+</Base>
+
+<style>
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-24);
+		padding: var(--spacing-24) 0;
+	}
+
+	fieldset {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: var(--spacing-12);
+		justify-content: left;
+		padding: 0 var(--spacing-8);
+	}
+
+	:global(.input-wrapper) {
+		width: 100%;
+	}
+
+	legend {
+		margin-bottom: var(--spacing-4);
+	}
+
+	.name-fields {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-24);
+	}
+
+	.label-text {
+		font-family: var(--font-inter);
+		font-size: var(--font-size-body-md);
+		line-height: var(--font-line-height-body-md);
+		font-weight: var(--font-weight-regular);
+		
+		display: block;
+		width: 100%;
+	}
+
+	.form-footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		gap: var(--spacing-24);
+	}
+
+	.form-footer :global(.button) {
+		width: 100%;
+	}
+
+	/* Typography override for footer link */
+	.form-footer :global(.link) {
+		font-family: var(--font-inter);
+		font-weight: var(--font-weight-regular);
+		font-size: var(--body-xxs-sc-size);
+		line-height: var(--body-xxs-sc-line);
+		letter-spacing: var(--body-xxs-sc-spacing);
+		text-transform: uppercase;
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+	}
+
+	@media (min-width: 769px) {
+		.name-fields {
+			flex-direction: row;
+		}
+		.form-footer :global(.button) {
+			width: 230px;
+		}
+		.form-footer {
+			flex-direction: row;
+			justify-content: space-between;
+		}
+	}
+</style>

@@ -1,0 +1,320 @@
+---
+/**
+ * SectionAppDetail Component
+ * 
+ * A detailed app header section with gradient background, app icon, title, ratings, 
+ * status tag, and publisher link. Features blur effect background and gradient icon.
+ * 
+ * Uses 4 nested components: AppIcon, H1, TagAppStatus, Link
+ * 
+ * @component
+ * @example
+ * ```astro
+ * <!-- With background image -->
+ * <SectionAppDetail 
+ *   appName="Photo Editor Pro"
+ *   appIconSrc="https://example.com/icon.png"
+ *   starRating="4.8"
+ *   userCount="2.5k"
+ *   appType="Live"
+ *   publisherName="Creative Studio"
+ *   publisherUrl="https://creativestudio.com"
+ * />
+ * 
+ * <!-- With gradient fallback -->
+ * <SectionAppDetail 
+ *   appName="Photo Editor Pro"
+ *   starRating="4.8"
+ *   userCount="2.5k"
+ *   appType="Packaged"
+ *   publisherName="Creative Studio"
+ *   publisherUrl="https://creativestudio.com"
+ * />
+ * ```
+ */
+
+// Import nested components
+import AppIcon from './AppIcon.astro';
+import H1 from './H1.astro';
+import TagAppStatus from './TagAppStatus.astro';
+import Link from './Link.astro';
+import IconStar from '../icons/ratings/IconStar.astro';
+import IconUsers from '../icons/ratings/IconUsers.astro';
+
+// Import app type status icons
+import IconCloud from '../icons/app-types/IconCloud.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+import IconDownload from '../icons/app-types/IconDownload.astro';
+import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
+
+// App type to status icon mapping
+const appTypeIconMap: Record<string, any> = {
+  'Packaged': IconPackage,
+  'Privileged': IconDownload,
+  'Live': IconCloud,
+  'Dead': IconSmileyXEyes,
+};
+
+interface Props {
+  appName: string;
+  appIconSrc?: string;
+  starRating: string;
+  userCount: string;
+  appType?: 'Packaged' | 'Privileged' | 'Live' | 'Dead';
+  publisherName: string;
+  publisherUrl: string;
+}
+
+const {
+  appName,
+  appIconSrc,
+  starRating,
+  userCount,
+  appType = 'Live',
+  publisherName,
+  publisherUrl
+} = Astro.props;
+
+// Map appType to status properties
+const statusConfig = {
+  'Packaged': {
+    text: 'Packaged',
+    showHostedChip: false,
+    hostedChipVariant: 'live' as const
+  },
+  'Privileged': {
+    text: 'Privileged',
+    showHostedChip: false,
+    hostedChipVariant: 'live' as const
+  },
+  'Live': {
+    text: 'Hosted',
+    showHostedChip: true,
+    hostedChipVariant: 'live' as const
+  },
+  'Dead': {
+    text: 'Hosted',
+    showHostedChip: true,
+    hostedChipVariant: 'dead' as const
+  }
+};
+
+const statusProps = statusConfig[appType] || statusConfig['Live'];
+const StatusIcon = appTypeIconMap[appType] || IconCloud;
+---
+
+<section class="section-app-detail">
+  <div class={`background-blur ${appIconSrc ? 'background-blur-image' : 'background-blur-gradient'}`}>
+    {appIconSrc && (
+      <img src={appIconSrc} alt="" class="background-image" />
+    )}
+  </div>
+  <div class="content">
+    <AppIcon 
+      src={appIconSrc}
+      alt={appName}
+      size="md"
+    />
+    <div class="info">
+      <div class="app-title">
+        <H1 text={appName} />
+        <div class="stars-and-ratings">
+          <div class="stars">
+            <span class="body-xxs">{starRating}</span>
+            <div class="star-icon">
+              <IconStar />
+            </div>
+          </div>
+          <div class="ratings">
+            <span class="body-xxs">{userCount}</span>
+            <div class="users-icon">
+              <IconUsers />
+            </div>
+          </div>
+        </div>
+        <TagAppStatus 
+          text={statusProps.text}
+          variant="page"
+          showHostedChip={statusProps.showHostedChip}
+          hostedChipVariant={statusProps.hostedChipVariant}
+        >
+          <StatusIcon slot="icon" />
+        </TagAppStatus>
+      </div>
+      <div class="publisher-link">
+        <Link label={publisherName} href={publisherUrl} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-app-detail {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .background-blur {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(144, 89, 255, 0.15) 0%,
+      rgba(255, 80, 95, 0.15) 100%
+    );
+    pointer-events: none;
+  }
+
+  .background-blur-gradient {
+    filter: blur(12.5px);
+  }
+
+  .background-blur-image {
+    background: none;
+    filter: none;
+  }
+
+  .background-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.15;
+    filter: blur(12.5px) contrast(1.2);
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    gap: var(--spacing-24);
+    align-items: flex-start;
+    padding-top: var(--spacing-40);
+    padding-bottom: var(--spacing-8);
+    width: 100%;
+    flex: 1 0 0;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    flex: 1 0 0;
+    min-width: 0;
+  }
+
+  .app-title {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .stars-and-ratings {
+    display: flex;
+    gap: var(--spacing-8);
+    align-items: center;
+    width: 100%;
+  }
+
+  .stars,
+  .ratings {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .stars .body-xxs,
+  .ratings .body-xxs {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: var(--letter-spacing-xs);
+    color: var(--on-surface-light-regular);
+  }
+
+  .star-icon,
+  .users-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-regular);
+  }
+
+  .star-icon {
+    width: var(--icon-xxxs);
+    height: var(--icon-xxxs);
+  }
+
+  .users-icon {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+  }
+
+  .publisher-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  /* Override Link component typography with body-sm tokens */
+  .publisher-link :global(.link) {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+  }
+
+  /* Override H1 component typography to heading-xs */
+  .app-title :global(.heading) {
+    font-size: var(--heading-xs-size);
+    line-height: var(--heading-xs-line);
+  }
+
+  /* ========================================
+     RESPONSIVE: DESKTOP (769px and above)
+     ======================================== */
+  @media (min-width: 769px) {
+    .content {
+      padding-top: var(--spacing-16);
+    }
+    /* AppIcon: md -> lg */
+    .content :global(.app-icon-md) {
+      width: var(--app-icon-lg);
+      height: var(--app-icon-lg);
+    }
+
+    /* App Title: heading-xs -> heading-sm */
+    .app-title :global(.heading) {
+      font-size: var(--heading-sm-size);
+      line-height: var(--heading-sm-line);
+    }
+
+    /* Star and Ratings text: body-xs -> body-lg */
+    .stars .body-xxs,
+    .ratings .body-xxs {
+      font-size: var(--body-lg-size);
+      line-height: var(--body-lg-line);
+    }
+    .star-icon {
+      width: var(--icon-sm);
+      height: var(--icon-sm);
+    }
+
+    .users-icon {
+      width: var(--icon-md);
+      height: var(--icon-md);
+    }
+
+    /* Status Tag text: body-xxs -> body-sm */
+    .app-title :global(.tag-text) {
+      font-size: var(--body-sm-size);
+      line-height: var(--body-sm-line);
+    }
+  }
+</style>

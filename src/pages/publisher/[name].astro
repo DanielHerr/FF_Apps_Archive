@@ -1,0 +1,131 @@
+---
+/**
+ * Publisher Page - FF Apps Archive
+ * Shows all apps from a specific publisher/author
+ */
+import * as Content from "astro:content"
+
+import Base from "../../layouts/base.astro"
+import AppsList from "../../components/apps_list.astro"
+
+import LinkPublisher from "../../components/UI/LinkPublisher.astro"
+
+import { live } from "../../validate_hosted_apps.js"
+
+// Helper to create URL-safe slug from author name
+function slugifyAuthor(name: string): string {
+	return name
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+}
+
+export async function getStaticPaths() {
+	// Get all apps (packaged + live hosted)
+	let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+	let allApps = packaged.concat(live)
+	
+	// Extract unique authors
+	const authorsMap = new Map<string, string>()
+	allApps.forEach(app => {
+		const author = app.data.author
+		if (author) {
+			const slug = author
+				.toLowerCase()
+				.replace(/[^a-z0-9]+/g, '-')
+				.replace(/^-+|-+$/g, '')
+			authorsMap.set(slug, author)
+		}
+	})
+	
+	// Generate paths for each unique author
+	return Array.from(authorsMap.entries()).map(([slug, author]) => ({
+		params: { name: slug },
+		props: { authorName: author }
+	}))
+}
+
+const { name } = Astro.params
+const { authorName } = Astro.props
+
+// Get all apps by this author
+let packaged = await Content.getCollection("metadata", app => app.data.app_type != "hosted")
+let allApps = packaged.concat(live)
+
+let apps = allApps.filter(app => {
+	const authorSlug = app.data.author
+		?.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+	return authorSlug === name
+})
+
+// Sort apps alphabetically by name
+apps.sort((a, b) => {
+	const nameA = a.data.name["en-US"] ?? a.data.name.en ?? a.data.name[a.data.default_locale]
+	const nameB = b.data.name["en-US"] ?? b.data.name.en ?? b.data.name[b.data.default_locale]
+	return nameA.localeCompare(nameB)
+})
+
+// Find publisher website from their apps (homepage or support_url)
+let publisherWebsite: string | null = null
+for (const app of apps) {
+	const homepage = app.data.homepage 
+		? app.data.homepage["en-US"] ?? app.data.homepage.en ?? app.data.homepage[app.data.default_locale] 
+		: null
+	const supportUrl = app.data.support_url 
+		? app.data.support_url["en-US"] ?? app.data.support_url.en ?? app.data.support_url[app.data.default_locale] 
+		: null
+	
+	if (homepage) {
+		publisherWebsite = homepage
+		break
+	}
+	if (supportUrl && !publisherWebsite) {
+		publisherWebsite = supportUrl
+	}
+}
+---
+
+<Base title={authorName} subtitle="Publisher" searchable>
+	
+	<Fragment slot="imports">
+		<link rel="stylesheet" href="/lists.css">
+	</Fragment>
+
+	<div class="app-list-header">
+        { publisherWebsite && <LinkPublisher href={publisherWebsite} /> }
+		<span class="app-count">{apps.length} {apps.length === 1 ? 'APP' : 'APPS'}</span>
+	</div>
+
+	<AppsList apps={apps} />
+</Base>
+
+<style>
+	.app-list-header {
+		display: flex;
+		justify-content: space-between;
+        width: 100%;
+	}
+
+	.app-count {
+		font-family: var(--font-inter);
+		font-weight: var(--font-weight-regular);
+		font-size: var(--body-xxs-sc-size);
+        line-height: var(--body-xxs-sc-line);
+		text-transform: uppercase;
+		letter-spacing: var(--body-xxs-sc-spacing);
+		color: var(--on-surface-light-faded);
+        padding-bottom: var(--spacing-4);
+		border-bottom: 1px solid var(--on-surface-light-border-high);
+	}
+
+	/* Override AppsList component styles */
+	:global(#apps_list > li) {
+		width: 100%;
+	}
+
+	:global(#apps_list .card-app) {
+		width: 100%;
+	}
+</style>

@@ -1,0 +1,522 @@
+---
+/**
+ * Screen Gallery Section Component
+ * 
+ * Displays a gallery of app screenshots with two responsive variants.
+ * 
+ * Variants:
+ * - mobile: Horizontal scrolling strip of images with tap-to-enlarge overlay
+ * - desktop: Preview area with navigation + thumbnails strip below
+ * 
+ * Props:
+ * @param variant - Display mode: 'mobile' | 'desktop' (default: 'desktop')
+ * @param images - Array of image URLs to display in gallery
+ * @param initialIndex - Starting selected image index for desktop variant (default: 0)
+ * 
+ * Usage:
+ * <SectionScreenGallery 
+ *   variant="desktop"
+ *   images={['/image1.png', '/image2.png', '/image3.png']}
+ *   initialIndex={0}
+ * />
+ * 
+ * Design System Notes:
+ * - Border overlay (top/bottom) uses --on-surface-light-border-high
+ * - Selected thumbnail border uses --on-surface-light-primary
+ * - Image aspect ratio is 960:640 (3:2) with object-fit cover
+ * - Mobile variant: horizontal scroll with momentum scrolling
+ * - Mobile overlay: fullscreen lightbox on tap, tap again or Escape to close
+ * - Desktop variant: preview with nav buttons + clickable thumbnail strip
+ */
+
+import ButtonGalleryNav from './ButtonGalleryNav.astro';
+
+interface Props {
+  variant?: 'mobile' | 'desktop';
+  images: string[];
+  initialIndex?: number;
+}
+
+const { 
+  variant = 'desktop',
+  images = [],
+  initialIndex = 0
+} = Astro.props;
+
+// Generate unique ID for this instance
+const uniqueId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<section 
+  class="section-screen-gallery" 
+  data-variant={variant}
+  data-gallery-id={uniqueId}
+  data-initial-index={initialIndex}
+>
+  {variant === 'mobile' ? (
+    <!-- Mobile Variant: Horizontal Scrolling Gallery -->
+    <div class="mobile-gallery">
+      {images.map((image, index) => (
+        <button 
+          class="mobile-image-wrapper"
+          data-mobile-image-index={index}
+          aria-label={`View screenshot ${index + 1} fullscreen`}
+        >
+          <img src={image} alt="App screenshot" class="mobile-image" />
+        </button>
+      ))}
+    </div>
+    
+    <!-- Mobile Fullscreen Overlay -->
+    <div class="mobile-overlay" data-mobile-overlay aria-hidden="true">
+      <button class="mobile-overlay-backdrop" aria-label="Close fullscreen view">
+        <img src="" alt="App screenshot fullscreen" class="mobile-overlay-image" data-overlay-image />
+      </button>
+    </div>
+  ) : (
+    <!-- Desktop Variant: Preview + Thumbnails -->
+    <div class="desktop-gallery">
+      <!-- Preview Section -->
+      <div class="preview-section">
+        <div class="preview-image-wrapper">
+          <img 
+            src={images[initialIndex] || images[0]} 
+            alt="App screenshot preview" 
+            class="preview-image" 
+            data-preview-image
+          />
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-button-left">
+          <ButtonGalleryNav variant="previous" />
+        </div>
+        <div class="nav-button-right">
+          <ButtonGalleryNav variant="next" />
+        </div>
+      </div>
+      
+      <!-- Thumbnails Section -->
+      <div class="thumbnails-section">
+        <div class="thumbnails-container">
+          {images.map((image, index) => (
+            <button 
+              class="thumbnail-wrapper"
+              data-thumbnail-index={index}
+              data-selected={index === initialIndex ? 'true' : 'false'}
+              aria-label={`View screenshot ${index + 1}`}
+            >
+              <img src={image} alt={`Screenshot ${index + 1}`} class="thumbnail-image" />
+              <div class="thumbnail-border" aria-hidden="true"></div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+  
+  <!-- Border Overlay (top and bottom borders) -->
+  <div aria-hidden="true" class="border-overlay"></div>
+</section>
+
+<script>
+  function initScreenGalleries() {
+    const galleries = document.querySelectorAll('.section-screen-gallery[data-variant="desktop"]');
+    
+    galleries.forEach((gallery) => {
+      const galleryId = gallery.getAttribute('data-gallery-id');
+      const images = Array.from(gallery.querySelectorAll('[data-thumbnail-index]')) as HTMLButtonElement[];
+      const previewImage = gallery.querySelector('[data-preview-image]') as HTMLImageElement;
+      const prevButton = gallery.querySelector('.nav-button-left button') as HTMLButtonElement;
+      const nextButton = gallery.querySelector('.nav-button-right button') as HTMLButtonElement;
+      
+      if (!images.length || !previewImage || !prevButton || !nextButton) return;
+      
+      let currentIndex = parseInt(gallery.getAttribute('data-initial-index') || '0');
+      
+      // Update preview and selection state
+      function updateGallery(newIndex: number) {
+        // Clamp index to valid range
+        currentIndex = Math.max(0, Math.min(newIndex, images.length - 1));
+        
+        // Update preview image
+        const selectedThumbnail = images[currentIndex];
+        const imgSrc = selectedThumbnail.querySelector('img')?.getAttribute('src');
+        if (imgSrc) {
+          previewImage.src = imgSrc;
+        }
+        
+        // Update thumbnail selection states
+        images.forEach((thumb, index) => {
+          thumb.setAttribute('data-selected', index === currentIndex ? 'true' : 'false');
+        });
+        
+        // Scroll selected thumbnail into view
+        selectedThumbnail.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'nearest'
+        });
+        
+        // Update button disabled states
+        prevButton.disabled = currentIndex === 0;
+        nextButton.disabled = currentIndex === images.length - 1;
+      }
+      
+      // Initialize button states
+      updateGallery(currentIndex);
+      
+      // Previous button handler
+      prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          updateGallery(currentIndex - 1);
+        }
+      });
+      
+      // Next button handler
+      nextButton.addEventListener('click', () => {
+        if (currentIndex < images.length - 1) {
+          updateGallery(currentIndex + 1);
+        }
+      });
+      
+      // Thumbnail click handlers
+      images.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', () => {
+          updateGallery(index);
+        });
+      });
+    });
+  }
+  
+  // Initialize on page load
+  initScreenGalleries();
+  
+  // Re-initialize on navigation (for Astro view transitions)
+  document.addEventListener('astro:page-load', initScreenGalleries);
+
+  // Mobile overlay functionality
+  function initMobileOverlays() {
+    const mobileGalleries = document.querySelectorAll('.section-screen-gallery[data-variant="mobile"]');
+    
+    mobileGalleries.forEach((gallery) => {
+      const overlay = gallery.querySelector('[data-mobile-overlay]') as HTMLElement;
+      const overlayImage = gallery.querySelector('[data-overlay-image]') as HTMLImageElement;
+      const mobileImages = gallery.querySelectorAll('[data-mobile-image-index]') as NodeListOf<HTMLButtonElement>;
+      
+      if (!overlay || !overlayImage || !mobileImages.length) return;
+      
+      // Open overlay when mobile image is tapped
+      mobileImages.forEach((imageButton) => {
+        imageButton.addEventListener('click', () => {
+          const img = imageButton.querySelector('img') as HTMLImageElement;
+          if (img) {
+            overlayImage.src = img.src;
+            overlay.setAttribute('aria-hidden', 'false');
+            overlay.setAttribute('data-visible', 'true');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+      
+      // Close overlay when backdrop is tapped
+      overlay.addEventListener('click', () => {
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.removeAttribute('data-visible');
+        document.body.style.overflow = '';
+      });
+      
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.getAttribute('data-visible') === 'true') {
+          overlay.setAttribute('aria-hidden', 'true');
+          overlay.removeAttribute('data-visible');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  }
+  
+  // Initialize mobile overlays
+  initMobileOverlays();
+  document.addEventListener('astro:page-load', initMobileOverlays);
+
+  // Close all mobile overlays on resize (e.g., switching to desktop view)
+  function closeAllMobileOverlays() {
+    const overlays = document.querySelectorAll('[data-mobile-overlay][data-visible="true"]') as NodeListOf<HTMLElement>;
+    overlays.forEach((overlay) => {
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.removeAttribute('data-visible');
+    });
+    if (overlays.length > 0) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  window.addEventListener('resize', closeAllMobileOverlays);
+</script>
+
+<style>
+  /* ========================================
+     SECTION WRAPPER
+     ======================================== */
+  .section-screen-gallery {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* ========================================
+     BORDER OVERLAY (top and bottom)
+     Semantic color for translucency
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-top: var(--border-sm) solid var(--on-surface-light-border-high);
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-high);
+    pointer-events: none;
+  }
+
+  /* ========================================
+     MOBILE VARIANT
+     ======================================== */
+  .mobile-gallery {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    padding: var(--spacing-8);
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .mobile-gallery::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  .mobile-image-wrapper {
+    height: 100%;
+    aspect-ratio: 960 / 640; /* 3:2 ratio - width calculated from height */
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+
+  .mobile-image-wrapper:active {
+    transform: scale(0.98);
+  }
+
+  .mobile-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    border-radius: var(--radius-xs);
+  }
+
+  /* ========================================
+     DESKTOP VARIANT
+     ======================================== */
+  .desktop-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    padding: var(--spacing-8) 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0; /* Allow flex child to shrink below content size */
+    height: 100%;
+    overflow: hidden; /* Prevent children from stretching parent */
+  }
+
+  /* ========================================
+     PREVIEW SECTION
+     ======================================== */
+  .preview-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1 0 0;
+    min-height: 1px;
+    min-width: 1px;
+    padding: 0 60px; /* Space for nav buttons */
+  }
+
+  .preview-image-wrapper {
+    aspect-ratio: 960 / 640;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+  }
+
+  .preview-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  /* Navigation Buttons */
+  .nav-button-left,
+  .nav-button-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
+
+  .nav-button-left {
+    left: var(--spacing-8);
+  }
+
+  .nav-button-right {
+    right: var(--spacing-8);
+  }
+
+  /* ========================================
+     THUMBNAILS SECTION
+     ======================================== */
+  .thumbnails-section {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    flex-shrink: 0;
+    min-width: 0; /* Allow flex child to shrink below content size */
+    overflow: hidden; /* Constrain child for overflow-x to work */
+  }
+
+  .thumbnails-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    padding: 0 var(--spacing-20);
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .thumbnails-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  /* ========================================
+     THUMBNAIL
+     ======================================== */
+  .thumbnail-wrapper {
+    position: relative;
+    aspect-ratio: 960 / 640;
+    height: 100%;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+    transition: opacity 0.2s ease;
+  }
+
+  .thumbnail-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Thumbnail Border Overlay */
+  .thumbnail-border {
+    position: absolute;
+    inset: 0;
+    border: var(--border-lg) solid transparent;
+    border-radius: var(--radius-xs);
+    pointer-events: none;
+    transition: border-color 0.2s ease;
+  }
+
+  /* Selected State - Primary border */
+  .thumbnail-wrapper[data-selected="true"] .thumbnail-border {
+    border-color: var(--on-surface-light-primary);
+  }
+
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+
+  /* Hover State - overridden by focus */
+  .thumbnail-wrapper:hover:not(:focus-visible) {
+    opacity: 0.8;
+  }
+
+  /* Active State - Click feedback */
+  .thumbnail-wrapper:active {
+    transform: scale(0.98);
+  }
+
+  /* Focus State - takes precedence over hover */
+  .thumbnail-wrapper:focus-visible {
+    outline: var(--border-lg) solid var(--on-surface-light-faded);
+    outline-offset: 2px;
+    opacity: 0.8;
+  }
+
+  /* ========================================
+     MOBILE OVERLAY (Fullscreen Lightbox)
+     ======================================== */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .mobile-overlay[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-overlay-backdrop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-16);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-overlay-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    pointer-events: none;
+  }
+</style>

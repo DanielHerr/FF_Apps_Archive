@@ -1,0 +1,1507 @@
+---
+import '../styles/fonts.css'
+import '../styles/design-tokens.css'
+import '../styles/colors-primitives.css'
+import '../styles/colors-semantic.css'
+
+// Layout Import
+import Layout from '../layouts/base.astro';
+
+// Import all icons
+import * as Icons from '../components/icons/index.js';
+import IconRocketColor from '../components/icons/brand/IconRocketColor.astro';
+import IconHeaderLogo from '../components/icons/brand/IconHeaderLogo.astro';
+import IconRocketColorGradient from '../components/icons/brand/IconRocketColorGradient.astro';
+import IconHeaderLogoGradient from '../components/icons/brand/IconHeaderLogoGradient.astro';
+
+// Typography Tokens
+const fontFamilies = [
+  { name: 'Metropolis', variable: '--font-metropolis', value: "'Metropolis', sans-serif" },
+  { name: 'Inter', variable: '--font-inter', value: "'Inter', sans-serif" },
+  { name: 'Public Sans', variable: '--font-public-sans', value: "'Public Sans', sans-serif" },
+];
+
+const headingTokens = [
+  { name: 'Heading XXL', sizeVar: '--heading-xxl-size', lineVar: '--heading-xxl-line', weightVar: '--font-weight-bold', size: '4rem', line: '4.5rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XL', sizeVar: '--heading-xl-size', lineVar: '--heading-xl-line', weightVar: '--font-weight-bold', size: '3.5rem', line: '4rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading LG', sizeVar: '--heading-lg-size', lineVar: '--heading-lg-line', weightVar: '--font-weight-bold', size: '3rem', line: '3.5rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading MD', sizeVar: '--heading-md-size', lineVar: '--heading-md-line', weightVar: '--font-weight-bold', size: '2.5rem', line: '2.75rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading SM', sizeVar: '--heading-sm-size', lineVar: '--heading-sm-line', weightVar: '--font-weight-bold', size: '2rem', line: '2.25rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XS', sizeVar: '--heading-xs-size', lineVar: '--heading-xs-line', weightVar: '--font-weight-bold', size: '1.5rem', line: '1.75rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XXS', sizeVar: '--heading-xxs-size', lineVar: '--heading-xxs-line', weightVar: '--font-weight-bold', size: '1.25rem', line: '1.5rem', weight: '700', font: 'Metropolis' },
+  { name: 'Heading XXXS', sizeVar: '--heading-xxxs-size', lineVar: '--heading-xxxs-line', weightVar: '--font-weight-bold', size: '1rem', line: '1.25rem', weight: '700', font: 'Metropolis' },
+  { name: 'Billboard', sizeVar: '--heading-billboard-size', lineVar: '--heading-billboard-line', weightVar: '--font-weight-bold', size: '8rem', line: 'auto', weight: '700', font: 'Metropolis' },
+];
+
+const bodyTokens = [
+  { name: 'Body LG', sizeVar: '--body-lg-size', lineVar: '--body-lg-line', weightVar: '--font-weight-regular', size: '1.125rem', line: '2.25rem', weight: '400', font: 'Inter' },
+  { name: 'Body MD', sizeVar: '--body-md-size', lineVar: '--body-md-line', weightVar: '--font-weight-regular', size: '1rem', line: '1.5rem', weight: '400', font: 'Inter' },
+  { name: 'Body SM', sizeVar: '--body-sm-size', lineVar: '--body-sm-line', weightVar: '--font-weight-regular', size: '0.875rem', line: '1.375rem', weight: '400', font: 'Inter' },
+  { name: 'Body XS', sizeVar: '--body-xs-size', lineVar: '--body-xs-line', weightVar: '--font-weight-regular', size: '0.75rem', line: '1.125rem', weight: '400', font: 'Inter' },
+  { name: 'Body XXS', sizeVar: '--body-xxs-size', lineVar: '--body-xxs-line', weightVar: '--font-weight-regular', size: '0.625rem', line: '1rem', weight: '400', font: 'Inter' },
+];
+
+const brandTokens = [
+  { name: 'Brand Bold MD', sizeVar: '--brand-bold-md-size', lineVar: '--brand-bold-md-line', weightVar: '--font-weight-bold', size: '1.5rem', line: '1.25rem', weight: '700', font: 'Public Sans' },
+  { name: 'Brand Regular MD', sizeVar: '--brand-regular-md-size', lineVar: '--brand-regular-md-line', weightVar: '--font-weight-regular', size: '1.25rem', line: '1.25rem', weight: '400', font: 'Public Sans' },
+  { name: 'Brand Bold SM', sizeVar: '--brand-bold-sm-size', lineVar: '--brand-bold-sm-line', weightVar: '--font-weight-bold', size: '1.125rem', line: '1.25rem', weight: '700', font: 'Public Sans' },
+  { name: 'Brand Regular SM', sizeVar: '--brand-regular-sm-size', lineVar: '--brand-regular-sm-line', weightVar: '--font-weight-regular', size: '1rem', line: '1.25rem', weight: '400', font: 'Public Sans' },
+];
+
+// Spacing Tokens
+const spacingTokens = [
+  { name: 'Spacing 2', variable: '--spacing-2', value: '2px' },
+  { name: 'Spacing 4', variable: '--spacing-4', value: '4px' },
+  { name: 'Spacing 8', variable: '--spacing-8', value: '8px' },
+  { name: 'Spacing 12', variable: '--spacing-12', value: '12px' },
+  { name: 'Spacing 16', variable: '--spacing-16', value: '16px' },
+  { name: 'Spacing 20', variable: '--spacing-20', value: '20px' },
+  { name: 'Spacing 24', variable: '--spacing-24', value: '24px' },
+  { name: 'Spacing 28', variable: '--spacing-28', value: '28px' },
+  { name: 'Spacing 32', variable: '--spacing-32', value: '32px' },
+  { name: 'Spacing 36', variable: '--spacing-36', value: '36px' },
+  { name: 'Spacing 40', variable: '--spacing-40', value: '40px' },
+  { name: 'Spacing 44', variable: '--spacing-44', value: '44px' },
+  { name: 'Spacing 48', variable: '--spacing-48', value: '48px' },
+  { name: 'Spacing 52', variable: '--spacing-52', value: '52px' },
+  { name: 'Spacing 56', variable: '--spacing-56', value: '56px' },
+  { name: 'Spacing 60', variable: '--spacing-60', value: '60px' },
+  { name: 'Spacing 64', variable: '--spacing-64', value: '64px' },
+];
+
+// Icon Size Tokens
+const iconTokens = [
+  { name: 'Icon XXXXS', variable: '--icon-xxxxs', value: '8px' },
+  { name: 'Icon XXXS', variable: '--icon-xxxs', value: '10px' },
+  { name: 'Icon XXS', variable: '--icon-xxs', value: '12px' },
+  { name: 'Icon XS', variable: '--icon-xs', value: '14px' },
+  { name: 'Icon SM', variable: '--icon-sm', value: '16px' },
+  { name: 'Icon MD', variable: '--icon-md', value: '24px' },
+  { name: 'Icon LG', variable: '--icon-lg', value: '32px' },
+];
+
+// App Icon Size Tokens
+const appIconTokens = [
+  { name: 'App Icon SM', variable: '--app-icon-sm', value: '52px' },
+  { name: 'App Icon MD', variable: '--app-icon-md', value: '92px' },
+  { name: 'App Icon LG', variable: '--app-icon-lg', value: '138px' },
+];
+
+// Border & Radius Tokens
+const borderTokens = {
+  radius: [
+    { name: 'Radius MD', variable: '--radius-md', value: '4px' },
+    { name: 'Radius LG', variable: '--radius-lg', value: '12px' },
+  ],
+  thickness: [
+    { name: 'Border SM', variable: '--border-sm', value: '0.5px' },
+    { name: 'Border MD', variable: '--border-md', value: '1px' },
+    { name: 'Border LG', variable: '--border-lg', value: '2px' },
+    { name: 'Border XL', variable: '--border-xl', value: '4px' },
+  ],
+};
+
+// Effect Tokens
+const effectTokens = {
+  blur: [
+    { name: 'App Header Blur', variable: '--blur-app-header', value: '25px' },
+  ],
+  shadow: [
+    { name: 'App Icon Shadow', variable: '--shadow-app-icon', value: '0px 1px 1px 0px rgb(from var(--neutral-black-strong) r g b / 0.1)' },
+  ],
+  opacity: [
+    { name: 'App Image Opacity', variable: '--opacity-app-image', value: '0.15' },
+    { name: 'Contrast Opacity', variable: '--opacity-contrast', value: '1' },
+  ],
+};
+
+// Group icons by category
+const iconGroups = [
+  { name: 'App Types', icons: Icons.AppTypesIcons },
+  { name: 'Brand', icons: Icons.BrandIcons },
+  { name: 'Categories', icons: Icons.CategoryIcons },
+  { name: 'Labels', icons: Icons.LabelIcons },
+  { name: 'Navigation', icons: Icons.NavigationIcons },
+  { name: 'Ratings', icons: Icons.RatingIcons },
+];
+
+// Primitive Colors
+const primitiveColors = [
+  // Green Scale
+  { group: 'Green', name: 'green-05', value: '#e3fff3' },
+  { group: 'Green', name: 'green-10', value: '#d0ffed' },
+  { group: 'Green', name: 'green-20', value: '#b3ffe3' },
+  { group: 'Green', name: 'green-30', value: '#88ffd1' },
+  { group: 'Green', name: 'green-40', value: '#53febe' },
+  { group: 'Green', name: 'green-50', value: '#3fe1b0' },
+  { group: 'Green', name: 'green-60', value: '#2bc4a2' },
+  { group: 'Green', name: 'green-70', value: '#068989' },
+  { group: 'Green', name: 'green-80', value: '#005e5d' },
+  { group: 'Green', name: 'green-90', value: '#083f37' },
+  // Blue Scale
+  { group: 'Blue', name: 'blue-05', value: '#acf1ff' },
+  { group: 'Blue', name: 'blue-10', value: '#80eaff' },
+  { group: 'Blue', name: 'blue-20', value: '#00ddff' },
+  { group: 'Blue', name: 'blue-30', value: '#00b3f5' },
+  { group: 'Blue', name: 'blue-40', value: '#0290ee' },
+  { group: 'Blue', name: 'blue-50', value: '#0060e0' },
+  { group: 'Blue', name: 'blue-60', value: '#0250bc' },
+  { group: 'Blue', name: 'blue-70', value: '#063f96' },
+  { group: 'Blue', name: 'blue-80', value: '#073072' },
+  { group: 'Blue', name: 'blue-90', value: '#0a214d' },
+  // Violet Scale
+  { group: 'Violet', name: 'violet-05', value: '#e6dfff' },
+  { group: 'Violet', name: 'violet-10', value: '#d9bfff' },
+  { group: 'Violet', name: 'violet-20', value: '#cc9eff' },
+  { group: 'Violet', name: 'violet-30', value: '#c588ff' },
+  { group: 'Violet', name: 'violet-40', value: '#ac71ff' },
+  { group: 'Violet', name: 'violet-50', value: '#9059ff' },
+  { group: 'Violet', name: 'violet-60', value: '#7543e3' },
+  { group: 'Violet', name: 'violet-70', value: '#582acb' },
+  { group: 'Violet', name: 'violet-80', value: '#46278e' },
+  { group: 'Violet', name: 'violet-90', value: '#321c64' },
+  // Purple Scale
+  { group: 'Purple', name: 'purple-05', value: '#f7e3ff' },
+  { group: 'Purple', name: 'purple-10', value: '#f6b9ff' },
+  { group: 'Purple', name: 'purple-20', value: '#f690ff' },
+  { group: 'Purple', name: 'purple-30', value: '#f564ff' },
+  { group: 'Purple', name: 'purple-40', value: '#d64cf1' },
+  { group: 'Purple', name: 'purple-50', value: '#b933e1' },
+  { group: 'Purple', name: 'purple-60', value: '#962bb9' },
+  { group: 'Purple', name: 'purple-70', value: '#712290' },
+  { group: 'Purple', name: 'purple-80', value: '#4d1a69' },
+  { group: 'Purple', name: 'purple-90', value: '#2b1141' },
+  // Pink Scale
+  { group: 'Pink', name: 'pink-05', value: '#ffdff0' },
+  { group: 'Pink', name: 'pink-10', value: '#ffb4db' },
+  { group: 'Pink', name: 'pink-20', value: '#ff8ac6' },
+  { group: 'Pink', name: 'pink-30', value: '#ff6bbb' },
+  { group: 'Pink', name: 'pink-40', value: '#fe4aa3' },
+  { group: 'Pink', name: 'pink-50', value: '#ff2a8a' },
+  { group: 'Pink', name: 'pink-60', value: '#e11586' },
+  { group: 'Pink', name: 'pink-70', value: '#c60184' },
+  { group: 'Pink', name: 'pink-80', value: '#7f165b' },
+  { group: 'Pink', name: 'pink-90', value: '#50134c' },
+  // Red Scale
+  { group: 'Red', name: 'red-05', value: '#ffe0e8' },
+  { group: 'Red', name: 'red-10', value: '#ffbec6' },
+  { group: 'Red', name: 'red-20', value: '#ff9aa2' },
+  { group: 'Red', name: 'red-30', value: '#ff848c' },
+  { group: 'Red', name: 'red-40', value: '#ff6a75' },
+  { group: 'Red', name: 'red-50', value: '#ff505f' },
+  { group: 'Red', name: 'red-60', value: '#e02950' },
+  { group: 'Red', name: 'red-70', value: '#c50143' },
+  { group: 'Red', name: 'red-80', value: '#800220' },
+  { group: 'Red', name: 'red-90', value: '#440307' },
+  // Orange Scale
+  { group: 'Orange', name: 'orange-05', value: '#fff4de' },
+  { group: 'Orange', name: 'orange-10', value: '#ffd6b2' },
+  { group: 'Orange', name: 'orange-20', value: '#ffb588' },
+  { group: 'Orange', name: 'orange-30', value: '#fea365' },
+  { group: 'Orange', name: 'orange-40', value: '#fe8a4f' },
+  { group: 'Orange', name: 'orange-50', value: '#ff7139' },
+  { group: 'Orange', name: 'orange-60', value: '#e25821' },
+  { group: 'Orange', name: 'orange-70', value: '#cd3d00' },
+  { group: 'Orange', name: 'orange-80', value: '#9d280c' },
+  { group: 'Orange', name: 'orange-90', value: '#7b1604' },
+  // Yellow Scale
+  { group: 'Yellow', name: 'yellow-05', value: '#ffffcd' },
+  { group: 'Yellow', name: 'yellow-10', value: '#feff95' },
+  { group: 'Yellow', name: 'yellow-20', value: '#ffea7f' },
+  { group: 'Yellow', name: 'yellow-30', value: '#ffd567' },
+  { group: 'Yellow', name: 'yellow-40', value: '#ffbd4f' },
+  { group: 'Yellow', name: 'yellow-50', value: '#ffa537' },
+  { group: 'Yellow', name: 'yellow-60', value: '#e17f2e' },
+  { group: 'Yellow', name: 'yellow-70', value: '#c45a28' },
+  { group: 'Yellow', name: 'yellow-80', value: '#a7341f' },
+  { group: 'Yellow', name: 'yellow-90', value: '#960f18' },
+  // Special Purpose
+  { group: 'Special Purpose', name: 'color-click', value: '#0060df' },
+  { group: 'Special Purpose', name: 'color-success', value: '#3fe1b0' },
+  { group: 'Special Purpose', name: 'color-warning', value: '#ffea80' },
+  { group: 'Special Purpose', name: 'color-error', value: '#ff6a75' },
+  // Neutrals - Base
+  { group: 'Neutrals - Base', name: 'neutral-black', value: '#161616' },
+  { group: 'Neutrals - Base', name: 'neutral-black-strong', value: '#000000' },
+  { group: 'Neutrals - Base', name: 'neutral-white', value: '#fafafa' },
+  { group: 'Neutrals - Base', name: 'neutral-white-strong', value: '#ffffff' },
+  // Neutrals - Gray Scale
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray', value: '#b3b3b3' },
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray-light', value: '#e8e8e8' },
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray-mid', value: '#6d6d6d' },
+  { group: 'Neutrals - Gray Scale', name: 'neutral-gray-dark', value: '#414141' },
+  // Marketing Gray Scale
+  { group: 'Marketing Gray', name: 'gray-marketing-10', value: '#f9f9fa' },
+  { group: 'Marketing Gray', name: 'gray-marketing-20', value: '#ededf0' },
+  { group: 'Marketing Gray', name: 'gray-marketing-30', value: '#cdcdd4' },
+  { group: 'Marketing Gray', name: 'gray-marketing-40', value: '#b1b1bc' },
+  { group: 'Marketing Gray', name: 'gray-marketing-50', value: '#9595a2' },
+  { group: 'Marketing Gray', name: 'gray-marketing-60', value: '#7a7a8b' },
+  { group: 'Marketing Gray', name: 'gray-marketing-70', value: '#5e5e72' },
+  { group: 'Marketing Gray', name: 'gray-marketing-80', value: '#42425a' },
+  { group: 'Marketing Gray', name: 'gray-marketing-90', value: '#1f2033' },
+  { group: 'Marketing Gray', name: 'gray-marketing-99', value: '#20123a' },
+  // Ink Scale
+  { group: 'Ink', name: 'ink-05', value: '#393473' },
+  { group: 'Ink', name: 'ink-10', value: '#342f6d' },
+  { group: 'Ink', name: 'ink-20', value: '#312a64' },
+  { group: 'Ink', name: 'ink-30', value: '#2e255d' },
+  { group: 'Ink', name: 'ink-40', value: '#2b2156' },
+  { group: 'Ink', name: 'ink-50', value: '#291d4f' },
+  { group: 'Ink', name: 'ink-60', value: '#271948' },
+  { group: 'Ink', name: 'ink-70', value: '#241541' },
+  { group: 'Ink', name: 'ink-80', value: '#20123a' },
+  { group: 'Ink', name: 'ink-90', value: '#1d1133' },
+  // Opacity Variants
+  { group: 'Opacity Variants', name: 'black-30', value: 'rgb(from var(--neutral-black) r g b / 0.3)' },
+  { group: 'Opacity Variants', name: 'black-strong-10', value: 'rgb(from var(--neutral-black-strong) r g b / 0.1)' },
+  { group: 'Opacity Variants', name: 'white-30', value: 'rgb(from var(--neutral-white) r g b / 0.3)' },
+  { group: 'Opacity Variants', name: 'white-80', value: 'rgb(from var(--neutral-white) r g b / 0.8)' },
+  { group: 'Opacity Variants', name: 'white-strong-25', value: 'rgb(from var(--neutral-white-strong) r g b / 0.25)' },
+  { group: 'Opacity Variants', name: 'gray-marketing-90-25', value: 'rgb(from var(--gray-marketing-90) r g b / 0.25)' },
+  { group: 'Opacity Variants', name: 'ink-05-70', value: 'rgb(from var(--ink-05) r g b / 0.7)' },
+  { group: 'Opacity Variants', name: 'ink-05-20', value: 'rgb(from var(--ink-05) r g b / 0.2)' },
+];
+
+// Semantic Colors
+const semanticColors = [
+  // Surface / Light Mode
+  { group: 'Surface / Light', name: 'surface-light-primary-gradient-start', value: 'var(--violet-60)' },
+  { group: 'Surface / Light', name: 'surface-light-primary-gradient-end', value: 'var(--violet-70)' },
+  { group: 'Surface / Light', name: 'surface-light-primary-low', value: 'var(--violet-05)' },
+  { group: 'Surface / Light', name: 'surface-light-secondary-low', value: 'var(--pink-10)' },
+  { group: 'Surface / Light', name: 'surface-light-high', value: 'var(--neutral-gray-light)' },
+  { group: 'Surface / Light', name: 'surface-light-mid', value: 'var(--neutral-white-strong)' },
+  { group: 'Surface / Light', name: 'surface-light-low', value: 'var(--neutral-white)' },
+  { group: 'Surface / Light', name: 'surface-light-background-start', value: 'var(--neutral-white)' },
+  { group: 'Surface / Light', name: 'surface-light-background-end', value: 'var(--neutral-white-strong)' },
+  // Surface / Dark Mode
+  { group: 'Surface / Dark', name: 'surface-dark-primary-gradient-start', value: 'var(--violet-50)' },
+  { group: 'Surface / Dark', name: 'surface-dark-primary-gradient-end', value: 'var(--violet-60)' },
+  { group: 'Surface / Dark', name: 'surface-dark-primary', value: 'var(--violet-80)' },
+  { group: 'Surface / Dark', name: 'surface-dark-secondary', value: 'var(--pink-80)' },
+  { group: 'Surface / Dark', name: 'surface-dark-high', value: 'var(--ink-30)' },
+  { group: 'Surface / Dark', name: 'surface-dark-mid', value: 'var(--gray-marketing-90)' },
+  { group: 'Surface / Dark', name: 'surface-dark-low', value: 'var(--gray-marketing-80)' },
+  { group: 'Surface / Dark', name: 'surface-dark-background-start', value: 'var(--gray-marketing-90)' },
+  { group: 'Surface / Dark', name: 'surface-dark-background-end', value: 'var(--gray-marketing-80)' },
+  // On Surface / Light Mode
+  { group: 'On Surface / Light', name: 'on-surface-light-regular', value: 'var(--ink-05)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-faded', value: 'var(--ink-05-70)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-border-low', value: 'var(--ink-05-20)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-border-high', value: 'var(--ink-05-20)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-primary', value: 'var(--violet-70)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-on-primary', value: 'var(--neutral-white-strong)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-app-header-stroke', value: 'var(--gray-marketing-90-25)' },
+  { group: 'On Surface / Light', name: 'on-surface-light-scrollbar', value: 'var(--black-30)' },
+  // On Surface / Dark Mode
+  { group: 'On Surface / Dark', name: 'on-surface-dark-regular', value: 'var(--gray-marketing-20)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-faded', value: 'var(--gray-marketing-30)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-border-low', value: 'var(--gray-marketing-99)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-border-high', value: 'var(--gray-marketing-50)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-primary', value: 'var(--violet-50)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-on-primary', value: 'var(--neutral-white-strong)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-app-header-stroke', value: 'var(--gray-marketing-90-25)' },
+  { group: 'On Surface / Dark', name: 'on-surface-dark-scrollbar', value: 'var(--white-30)' },
+  // On Surface / Any Mode
+  { group: 'On Surface / Any', name: 'on-surface-any-blue', value: 'var(--blue-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-yellow', value: 'var(--yellow-70)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-purple', value: 'var(--purple-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-orange', value: 'var(--orange-60)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-red', value: 'var(--red-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-gradient-start', value: 'var(--violet-50)' },
+  { group: 'On Surface / Any', name: 'on-surface-any-gradient-end', value: 'var(--red-50)' },
+  // App Icon Background / Light Mode
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-blue', value: 'var(--blue-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-yellow', value: 'var(--yellow-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-purple', value: 'var(--purple-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-orange', value: 'var(--orange-05)' },
+  { group: 'App Icon BG / Light', name: 'app-icon-bg-light-red', value: 'var(--red-05)' },
+  // App Icon Background / Dark Mode
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-blue', value: 'var(--blue-50)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-yellow', value: 'var(--yellow-70)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-purple', value: 'var(--purple-50)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-orange', value: 'var(--orange-60)' },
+  { group: 'App Icon BG / Dark', name: 'app-icon-bg-dark-red', value: 'var(--red-50)' },
+  // Card Gradient / Light Mode
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-blue-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-blue-end', value: 'rgb(from var(--blue-50) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-yellow-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-yellow-end', value: 'rgb(from var(--yellow-70) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-purple-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-purple-end', value: 'rgb(from var(--purple-50) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-orange-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-orange-end', value: 'rgb(from var(--orange-60) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-red-start', value: 'rgb(from var(--neutral-white) r g b / 0.03)' },
+  { group: 'Card Gradient / Light', name: 'card-gradient-light-red-end', value: 'rgb(from var(--red-50) r g b / 0.03)' },
+  // Card Gradient / Dark Mode
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-blue-start', value: 'rgb(from var(--blue-50) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-blue-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-yellow-start', value: 'rgb(from var(--yellow-70) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-yellow-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-purple-start', value: 'rgb(from var(--purple-50) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-purple-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-orange-start', value: 'rgb(from var(--orange-60) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-orange-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-red-start', value: 'rgb(from var(--red-50) r g b / 0.15)' },
+  { group: 'Card Gradient / Dark', name: 'card-gradient-dark-red-end', value: 'rgb(from var(--gray-marketing-90) r g b / 0.15)' },
+  // Attention / Light Mode
+  { group: 'Attention / Light', name: 'attention-light-warning', value: 'var(--color-warning)' },
+  // Attention / Dark Mode
+  { group: 'Attention / Dark', name: 'attention-dark-warning', value: 'var(--yellow-30)' },
+  // Attention / Any Mode
+  { group: 'Attention / Any', name: 'attention-click', value: 'var(--color-click)' },
+  { group: 'Attention / Any', name: 'attention-success', value: 'var(--color-success)' },
+  { group: 'Attention / Any', name: 'attention-error', value: 'var(--color-error)' },
+  // Legacy Aliases
+  { group: 'Legacy Aliases', name: 'color-purple', value: 'var(--ink-05)' },
+  { group: 'Legacy Aliases', name: 'color-light', value: 'var(--neutral-white)' },
+  { group: 'Legacy Aliases', name: 'color-white', value: 'var(--neutral-white-strong)' },
+  { group: 'Legacy Aliases', name: 'color-border', value: 'var(--ink-05-20)' },
+  { group: 'Legacy Aliases', name: 'gradient-start', value: 'var(--violet-50)' },
+  { group: 'Legacy Aliases', name: 'gradient-end', value: 'var(--red-50)' },
+];
+
+// Group colors by category
+const groupedPrimitiveColors = primitiveColors.reduce((acc, color) => {
+  if (!acc[color.group]) acc[color.group] = [];
+  acc[color.group].push(color);
+  return acc;
+}, {} as Record<string, typeof primitiveColors>);
+
+const groupedSemanticColors = semanticColors.reduce((acc, color) => {
+  if (!acc[color.group]) acc[color.group] = [];
+  acc[color.group].push(color);
+  return acc;
+}, {} as Record<string, typeof semanticColors>);
+---
+
+<Layout title="Style Guide">
+    <style is:global>
+      body { 
+        padding: 0;
+        margin: 0;
+        font-family: var(--font-inter); 
+        color: var(--on-surface-light-regular);
+        background: var(--surface-light-low);
+        min-height: 100vh;
+      }
+
+      .style-guide {
+        background: var(--surface-light-low);
+        min-height: 100vh;
+        padding: var(--spacing-24);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-36);
+      }
+
+      /* Page Header */
+      .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+
+      .page-header h1 {
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-lg-size);
+        line-height: var(--heading-lg-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+        margin: 0;
+      }
+
+      .page-header p {
+        font-family: var(--font-inter);
+        font-size: var(--body-lg-size);
+        line-height: var(--body-lg-line);
+        color: var(--on-surface-light-faded);
+        margin: 0;
+      }
+
+      .text-faded {
+        color: var(--on-surface-light-faded);
+      }
+
+      /* Divider */
+      .divider {
+        height: var(--border-md);
+        background: var(--on-surface-light-border-low);
+        width: 100%;
+      }
+
+      /* Component Section (collapsible sections) */
+      .component-section {
+        display: flex;
+        flex-direction: column;
+        border: var(--border-sm) solid var(--on-surface-light-border-low);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background: var(--surface-light-mid);
+        padding: var(--spacing-16) var(--spacing-20);
+        cursor: pointer;
+        transition: background 0.2s ease;
+        border: none;
+        text-align: left;
+      }
+
+      .section-header:hover {
+        background: var(--surface-light-high);
+      }
+
+      .section-header h2 {
+        margin: 0;
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-md-size);
+        line-height: var(--heading-md-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+      }
+
+      .toggle-icon {
+        flex-shrink: 0;
+        color: var(--on-surface-light-regular);
+        transition: transform 0.2s ease;
+      }
+
+      .section-header[aria-expanded="false"] .toggle-icon {
+        transform: rotate(-90deg);
+      }
+
+      .section-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+      }
+
+      .section-content[aria-hidden="false"] {
+        display: block;
+        max-height: 10000px;
+      }
+
+      .section-content[aria-hidden="true"] {
+        display: block;
+        max-height: 0;
+        padding: 0 var(--spacing-16);
+      }
+
+      .content-inner {
+        padding: var(--spacing-24) var(--spacing-16);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-36);
+      }
+
+      /* Section */
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-16);
+      }
+
+      .section h3 {
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-xs-size);
+        line-height: var(--heading-xs-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+        margin: 0;
+      }
+
+      p, .description {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        line-height: var(--body-md-line);
+        font-weight: var(--font-weight-regular);
+        color: var(--on-surface-light-regular);
+      }
+
+      .token-swatch { 
+        display: flex; 
+        align-items: center; 
+        gap: 1rem; 
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+        font-size: var(--body-sm-size);
+        font-family: var(--font-inter);
+      }
+      .token-box { 
+        width: 3rem; 
+        height: 3rem; 
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .color-group {
+        margin-bottom: 2rem;
+      }
+      .color-group h2 {
+        font-size: var(--heading-sm-size);
+        line-height: var(--heading-sm-line);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .colors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      .icon-grid { 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 1rem; 
+        margin-top: 1rem; 
+      }
+      .icon-item { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        width: 5rem; 
+        font-size: var(--body-xs-size);
+        font-family: var(--font-inter);
+        text-align: center; 
+      }
+      .color-name {
+        font-family: var(--font-inter);
+        font-weight: var(--font-weight-bold);
+      }
+      .color-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.8;
+      }
+      .typography-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 1rem;
+      }
+      .typography-sample {
+        padding: 1.5rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .typography-preview {
+        margin-bottom: 1rem;
+      }
+      .typography-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        font-size: var(--body-sm-size);
+        opacity: 0.8;
+      }
+      .typography-info-item {
+        font-family: var(--font-inter);
+      }
+      .typography-info-label {
+        font-weight: var(--font-weight-bold);
+        display: block;
+        opacity: 0.7;
+        font-size: var(--body-xs-size);
+      }
+      .font-families-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .font-family-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .font-family-preview {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        font-weight: var(--font-weight-bold);
+      }
+      .font-family-name {
+        font-family: var(--font-inter);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.25rem;
+        font-size: var(--body-md-size);
+      }
+      .font-family-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+      }
+      .spacing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .spacing-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .spacing-visual {
+        background: var(--violet-50);
+        margin-bottom: 1rem;
+        border-radius: 4px;
+      }
+      .spacing-label {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.5rem;
+      }
+      .spacing-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+        margin-bottom: 0.25rem;
+      }
+      .spacing-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.9;
+      }
+      .size-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .size-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        text-align: center;
+      }
+      .size-visual {
+        background: var(--violet-50);
+        margin: 0 auto 1rem auto;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        color: var(--ink-05);
+        margin-bottom: 1rem;
+      }
+      .size-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.5rem;
+      }
+      .size-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+        margin-bottom: 0.25rem;
+      }
+      .size-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.9;
+      }
+      .effects-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 1rem;
+      }
+      .effect-section h3 {
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-sm-size);
+        line-height: var(--heading-sm-line);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 1rem;
+      }
+      .effect-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      .effect-item {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+      }
+      .effect-item-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.5rem;
+      }
+      .effect-item-variable {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.7;
+        margin-bottom: 0.25rem;
+      }
+      .effect-item-value {
+        font-family: monospace;
+        font-size: var(--body-xs-size);
+        opacity: 0.9;
+        word-break: break-all;
+      }
+      .logo-section {
+        margin-bottom: 3rem;
+      }
+      .logo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+      }
+      .logo-variants {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+      .logo-variant {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        flex: 1;
+      }
+      .logo-variant-gradient {
+        background: var(--surface-light-low);
+      }
+      .logo-variant-primary {
+        background: var(--surface-light-low);
+      }
+      .logo-display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 120px;
+        margin-bottom: 1rem;
+      }
+      .logo-variant-primary .logo-display {
+        color: var(--violet-60);
+      }
+      .logo-variant-gradient .logo-display {
+        color: var(--surface-light-primary-gradient-start);
+      }
+      .logo-variant-label {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        font-weight: var(--font-weight-bold);
+        text-align: center;
+      }
+      .logo-variant-primary .logo-variant-label {
+        color: var(--on-surface-light-border-high);
+      }
+      .logo-variant-gradient .logo-variant-label {
+        color: var(--on-surface-light-regular);
+      }
+      /* Icon cards (consistent with other token cards) */
+      .icon-group {
+        margin-bottom: 2rem;
+      }
+      .icon-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .icon-card {
+        padding: 1rem;
+        background: var(--surface-light-low);
+        border: 1px solid var(--on-surface-light-border-high);
+        border-radius: 6px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .icon-card-visual {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(0,0,0,0);
+        margin-bottom: 0.25rem;
+      }
+      .icon-card-visual svg { width: 48px; height: 48px; }
+      .icon-card-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-xs-size);
+        color: var(--on-surface-light-regular);
+        word-break: break-word;
+      }
+
+      /* Border Radius Styles */
+      .border-radius-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-20);
+      }
+      .border-radius-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+      .border-radius-visual {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .border-radius-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+      }
+      .border-radius-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+      }
+      .border-radius-variable {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-faded);
+      }
+      .border-radius-value {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-regular);
+      }
+
+      /* Border Thickness Styles */
+      .border-thickness-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-20);
+      }
+      .border-thickness-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+      .border-thickness-visual {
+        width: 100%;
+        height: 120px;
+        background: var(--surface-light-mid);
+      }
+      .border-thickness-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+      }
+      .border-thickness-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+      }
+      .border-thickness-variable {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-faded);
+      }
+      .border-thickness-value {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-regular);
+      }
+
+      /* Effect Visual Styles */
+      .effect-visual-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-20);
+        margin-bottom: var(--spacing-32);
+      }
+      .effect-visual-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+      .effect-visual-demo {
+        width: 100%;
+        height: 160px;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        position: relative;
+        border: var(--border-md) solid var(--on-surface-light-border-high);
+      }
+      .effect-visual-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+      }
+      .effect-visual-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+      }
+      .effect-visual-variable {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-faded);
+      }
+      .effect-visual-value {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-regular);
+      }
+
+      /* Blur Demo */
+      .blur-demo {
+        background: var(--surface-light-mid);
+      }
+      .blur-background {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--violet-50), var(--pink-50), var(--blue-50));
+        opacity: 0.8;
+      }
+      .blur-layer {
+        position: absolute;
+        inset: var(--spacing-24);
+        background: rgb(from var(--neutral-white-strong) r g b / 0.3);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Shadow Demo */
+      .shadow-demo {
+        background: var(--surface-light-mid);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .shadow-box {
+        width: 100px;
+        height: 100px;
+        background: var(--surface-light-mid);
+        border-radius: var(--radius-lg);
+      }
+
+      /* Opacity Demo */
+      .opacity-demo {
+        background: var(--surface-light-mid);
+      }
+      .opacity-background {
+        position: absolute;
+        inset: 0;
+        background: repeating-conic-gradient(var(--neutral-gray-light) 0% 25%, var(--neutral-white-strong) 0% 50%) 50% / var(--spacing-20) var(--spacing-20);
+      }
+      .opacity-layer {
+        position: absolute;
+        inset: 0;
+        background: var(--violet-50);
+      }
+    </style>
+
+<div class="style-guide">
+    <main class="container">
+    <header class="page-header">
+        <h1>Style Guide</h1>
+        <p>A comprehensive guide to the design tokens and assets used in our projects.</p>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- Logos Section -->
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Logos</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Icon Rocket Color</h2>
+            <div class="logo-variants">
+            <div class="logo-variant logo-variant-gradient">
+                <div class="logo-display">
+                <IconRocketColorGradient size={100} />
+                </div>
+                <div class="logo-variant-label">Brand Gradient</div>
+            </div>
+            <div class="logo-variant logo-variant-primary">
+                <div class="logo-display">
+                <IconRocketColor size={100} />
+                </div>
+                <div class="logo-variant-label">Primary Color</div>
+            </div>
+            </div>
+
+            <h2>Header Logo</h2>
+            <div class="logo-variants">
+            <div class="logo-variant logo-variant-gradient">
+                <div class="logo-display">
+                <IconHeaderLogoGradient size={100} />
+                </div>
+                <div class="logo-variant-label">Brand Gradient</div>
+            </div>
+            <div class="logo-variant logo-variant-primary">
+                <div class="logo-display">
+                <IconHeaderLogo size={100} />
+                </div>
+                <div class="logo-variant-label">Primary Color</div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Typography</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Font Families</h2>
+            <div class="font-families-grid">
+            {fontFamilies.map(font => (
+                <div class="font-family-item">
+                <div class="font-family-preview" style={`font-family: ${font.value}`}>{font.name}</div>
+                <div class="font-family-name">{font.name}</div>
+                <div class="font-family-variable">{font.variable}</div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Heading Styles (Metropolis Bold)</h2>
+            <div class="typography-grid">
+            {headingTokens.map(token => (
+                <div class="typography-sample">
+                <div class="typography-preview" style={`font-family: var(--font-metropolis); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+                    {token.name}
+                </div>
+                <div class="typography-info">
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size Variable</span>
+                    {token.sizeVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size</span>
+                    {token.size}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height Variable</span>
+                    {token.lineVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height</span>
+                    {token.line}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight Variable</span>
+                    {token.weightVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight</span>
+                    {token.weight}
+                    </div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Body Styles (Inter Regular)</h2>
+            <div class="typography-grid">
+            {bodyTokens.map(token => (
+                <div class="typography-sample">
+                <div class="typography-preview" style={`font-family: var(--font-inter); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+                    The quick brown fox jumps over the lazy dog
+                </div>
+                <div class="typography-info">
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Name</span>
+                    {token.name}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size Variable</span>
+                    {token.sizeVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size</span>
+                    {token.size}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height Variable</span>
+                    {token.lineVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height</span>
+                    {token.line}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight Variable</span>
+                    {token.weightVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight</span>
+                    {token.weight}
+                    </div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Brand Styles (Public Sans)</h2>
+            <div class="typography-grid">
+            {brandTokens.map(token => (
+                <div class="typography-sample">
+                <div class="typography-preview" style={`font-family: var(--font-public-sans); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+                    {token.name}
+                </div>
+                <div class="typography-info">
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size Variable</span>
+                    {token.sizeVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size</span>
+                    {token.size}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height Variable</span>
+                    {token.lineVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height</span>
+                    {token.line}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight Variable</span>
+                    {token.weightVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight</span>
+                    {token.weight}
+                    </div>
+                </div>
+                </div>
+            ))}
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Primitive Colors</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            {Object.entries(groupedPrimitiveColors).map(([groupName, colors]) => (
+            <div class="color-group">
+                <h2>{groupName}</h2>
+                <div class="colors-grid">
+                {colors.map(token => (
+                    <div class="token-swatch">
+                    <div class="token-box" style={`background: ${token.value}`}></div>
+                    <div>
+                        <div class="color-name">{token.name}</div>
+                        <div class="color-value">{token.value}</div>
+                    </div>
+                    </div>
+                ))}
+                </div>
+            </div>
+            ))}
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Semantic Colors</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            {Object.entries(groupedSemanticColors).map(([groupName, colors]) => (
+            <div class="color-group">
+                <h2>{groupName}</h2>
+                <div class="colors-grid">
+                {colors.map(token => (
+                    <div class="token-swatch">
+                    <div class="token-box" style={`background: ${token.value}`}></div>
+                    <div>
+                        <div class="color-name">{token.name}</div>
+                        <div class="color-value">{token.value}</div>
+                    </div>
+                    </div>
+                ))}
+                </div>
+            </div>
+            ))}
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Icons</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            {iconGroups.map(group => (
+            <div class="icon-group">
+                <h2>{group.name}</h2>
+                <div class="icon-cards-grid">
+                {Object.entries(group.icons).map(([name, IconComponent]) => (
+                    <div class="icon-card">
+                    <div class="icon-card-visual">
+                        <IconComponent title={name} />
+                    </div>
+                    <div class="icon-card-name">{name}</div>
+                    </div>
+                ))}
+                </div>
+            </div>
+            ))}
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Spacing</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <div class="spacing-grid">
+            {spacingTokens.map(token => (
+                <div class="spacing-item">
+                <div class="spacing-visual" style={`height: ${token.value}`}></div>
+                <div class="spacing-label">{token.name}</div>
+                <div class="spacing-variable">{token.variable}</div>
+                <div class="spacing-value">{token.value}</div>
+                </div>
+            ))}
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Borders & Radius Section -->
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Borders & Radius</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Border Radius</h2>
+            <div class="border-radius-grid">
+            {borderTokens.radius.map(token => (
+                <div class="border-radius-item">
+                <div class="border-radius-visual" style={`border-radius: var(${token.variable}); background: var(--surface-light-primary-gradient-start); border: var(--border-md) solid var(--on-surface-light-border-high);`}></div>
+                <div class="border-radius-info">
+                    <div class="border-radius-name">{token.name}</div>
+                    <div class="border-radius-variable">{token.variable}</div>
+                    <div class="border-radius-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Border Thickness</h2>
+            <div class="border-thickness-grid">
+            {borderTokens.thickness.map(token => (
+                <div class="border-thickness-item">
+                <div class="border-thickness-visual" style={`border: var(${token.variable}) solid var(--on-surface-light-primary); border-radius: var(--radius-md);`}></div>
+                <div class="border-thickness-info">
+                    <div class="border-thickness-name">{token.name}</div>
+                    <div class="border-thickness-variable">{token.variable}</div>
+                    <div class="border-thickness-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Sizing</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Icon Sizes</h2>
+            <div class="size-grid">
+            {iconTokens.map(token => (
+                <div class="size-item">
+                <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
+                <div class="size-name">{token.name}</div>
+                <div class="size-variable">{token.variable}</div>
+                <div class="size-value">{token.value}</div>
+                </div>
+            ))}
+            </div>
+
+            <h2>App Icon Sizes</h2>
+            <div class="size-grid">
+            {appIconTokens.map(token => (
+                <div class="size-item">
+                <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
+                <div class="size-name">{token.name}</div>
+                <div class="size-variable">{token.variable}</div>
+                <div class="size-value">{token.value}</div>
+                </div>
+            ))}
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Effects</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Blur</h2>
+            <div class="effect-visual-grid">
+            {effectTokens.blur.map(token => (
+                <div class="effect-visual-item">
+                <div class="effect-visual-demo blur-demo">
+                    <div class="blur-background"></div>
+                    <div class="blur-layer" style={`backdrop-filter: blur(var(${token.variable})); -webkit-backdrop-filter: blur(var(${token.variable}));`}></div>
+                </div>
+                <div class="effect-visual-info">
+                    <div class="effect-visual-name">{token.name}</div>
+                    <div class="effect-visual-variable">{token.variable}</div>
+                    <div class="effect-visual-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Shadow</h2>
+            <div class="effect-visual-grid">
+            {effectTokens.shadow.map(token => (
+                <div class="effect-visual-item">
+                <div class="effect-visual-demo shadow-demo">
+                    <div class="shadow-box" style={`box-shadow: var(${token.variable});`}></div>
+                </div>
+                <div class="effect-visual-info">
+                    <div class="effect-visual-name">{token.name}</div>
+                    <div class="effect-visual-variable">{token.variable}</div>
+                    <div class="effect-visual-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Opacity</h2>
+            <div class="effect-visual-grid">
+            {effectTokens.opacity.map(token => (
+                <div class="effect-visual-item">
+                <div class="effect-visual-demo opacity-demo">
+                    <div class="opacity-background"></div>
+                    <div class="opacity-layer" style={`opacity: var(${token.variable});`}></div>
+                </div>
+                <div class="effect-visual-info">
+                    <div class="effect-visual-name">{token.name}</div>
+                    <div class="effect-visual-variable">{token.variable}</div>
+                    <div class="effect-visual-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
+        </div>
+        </div>
+    </div>
+</main>
+</div>
+  <script>
+    // Toggle section content
+    function toggleSection(event) {
+      const header = event.target.closest('.section-header');
+      if (header) {
+        const content = header.nextElementSibling;
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        
+        header.setAttribute('aria-expanded', String(!isExpanded));
+        content.setAttribute('aria-hidden', String(isExpanded));
+      }
+    }
+
+    // Initialize toggle handlers
+    document.querySelectorAll('[data-toggle-section]').forEach(button => {
+      button.addEventListener('click', toggleSection);
+    });
+  </script>
+</Layout>

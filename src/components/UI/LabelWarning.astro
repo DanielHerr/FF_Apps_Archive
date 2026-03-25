@@ -1,0 +1,91 @@
+---
+/**
+ * Label - Warning Component
+ * Inline label with warning icon and customizable text
+ * 
+ * Props:
+ * @param text - The warning text to display (default: "Warning text")
+ * 
+ * Usage:
+ * <LabelWarning />
+ * <LabelWarning text="Custom warning message" />
+ * <LabelWarning text="Alert!" />
+ * 
+ * COLOR EXCEPTION:
+ * This component uses the primitive token --ink-05 for text/icon color
+ * instead of the semantic token --on-surface-light-regular.
+ * This is intentional per the Figma design specification.
+ */
+
+import IconWarning from '../icons/labels/IconWarning.astro';
+
+interface Props {
+  text?: string;
+}
+
+const { text = "Warning text" } = Astro.props;
+---
+
+<div class="label-warning">
+  <div class="icon-wrapper">
+    <IconWarning size={14} />
+  </div>
+  <p class="label-text">{text}</p>
+</div>
+
+<style>
+  .label-warning {
+    /* Layout */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-4);
+    padding: var(--spacing-8);
+    width: 100%;
+    
+    /* Background - Warning color */
+    background: var(--attention-light-warning);
+    
+    /* Border radius */
+    border-radius: var(--radius-md);
+  }
+  
+  .icon-wrapper {
+    /* Layout */
+    flex-shrink: 0;
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+    
+    /* Icon color - EXCEPTION: Using primitive token */
+    color: var(--ink-05);
+  }
+  
+  .icon-wrapper svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .label-text {
+    /* Typography - Inter Regular, 12px/18px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    font-style: normal;
+    letter-spacing: normal;
+    
+    /* Color - EXCEPTION: Using primitive token */
+    color: var(--ink-05);
+    
+    /* Layout */
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  @media (min-width: 769px) {
+    .label-warning {
+      width: fit-content;
+    }
+  }
+</style>

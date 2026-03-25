@@ -1,0 +1,108 @@
+---
+/**
+ * SectionReleaseNotes Component
+ * 
+ * Displays release notes section with heading and body text.
+ * 
+ * Props:
+ * @param releaseNotes - Release notes text content (string)
+ * 
+ * Usage:
+ * <SectionReleaseNotes 
+ *   releaseNotes="Lorem ipsum dolor sit amet..."
+ * />
+ */
+
+import H2 from './H2.astro';
+
+interface Props {
+  releaseNotes: string;
+}
+
+const { 
+  releaseNotes
+} = Astro.props;
+---
+
+<section class="section-release-notes">
+  <div class="release-notes-heading">
+    <H2 text="Release Notes" />
+  </div>
+  
+  <div class="release-notes-body">
+    {releaseNotes}
+  </div>
+</section>
+
+<style>
+  /* ========================================
+     SECTION WRAPPER
+     ======================================== */
+  .section-release-notes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 16px 0;
+  }
+
+  /* ========================================
+     HEADING
+     ======================================== */
+  .release-notes-heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .heading-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    
+    /* Typography - Heading XXXS (16px/20px) with Metropolis Bold */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxxs-size);
+    line-height: var(--heading-xxxs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     BODY TEXT
+     ======================================== */
+  .release-notes-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    flex-shrink: 0;
+    white-space: pre-wrap;
+    transition: all 0.3s ease;
+    
+    /* Typography - Body XS (12px/18px) with Inter Regular */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: normal;
+    
+    /* Semantic color */
+    color: var(--on-surface-light-faded);
+  }
+
+  @media (min-width: 769px) {
+     .release-notes-body {
+       font-size: var(--body-sm-size);
+       line-height: var(--body-sm-line);
+     }
+   }
+</style>

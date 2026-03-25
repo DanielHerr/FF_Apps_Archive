@@ -1,15 +1,36 @@
-div {
-	display: -moz-box;
-	display: flex;
+h1 {
+	font-size: 2em;
+}
+h2 {
+	font-size: 3em;
+}
+@media(max-width: 800px) {
+	h2 {
+		font-size: 2em;
+} }
+
+#screenshots_list {
+	display: -moz-box; display: -webkit-box;
+	display: flex; display: -webkit-flex;
 	overflow: auto;
+	clear: both;
 }
 img {
 	display: block;
-	flex-shrink: 0;
+	flex-shrink: 0; -webkit-flex-shrink: 0;
+	max-width: 100%;
 }
-button {
+#action_buttons > * {
 	display: block;
-	font-size: large;
-	padding: 0.5em 5em;
-	/* border-radius: 10em; */
+	width: 100%;
+	font-size: 1.5em;
+	padding: 0.5em 2em;
+	margin-bottom: 1em;
+	border: thin solid lightgrey;
+	border-radius: 10em;
+	text-align: center;
+	text-decoration: none;
+}
+.app_text_blocks {
+	white-space: pre-wrap;
 }

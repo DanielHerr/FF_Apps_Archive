@@ -1,0 +1,77 @@
+---
+/**
+ * Label - Section Number Component
+ * Bordered label displaying a section number with Metropolis Bold typography
+ * 
+ * Props:
+ * @param number - The section number text to display (default: "1")
+ * 
+ * Usage:
+ * <LabelSectionNumber />
+ * <LabelSectionNumber number="2" />
+ * <LabelSectionNumber number="12" />
+ */
+
+interface Props {
+  number?: string;
+}
+
+const { number = "1" } = Astro.props;
+---
+
+<div class="label-container">
+  <!-- Border overlay -->
+  <div class="border-overlay" aria-hidden="true"></div>
+  
+  <div class="label-content">
+    <p class="label-text">{number}</p>
+  </div>
+</div>
+
+<style>
+  .label-container {
+    /* Layout */
+    position: relative;
+    width: 24px;
+    height: 24px;
+    
+    /* Border radius */
+    border-radius: var(--radius-md);
+  }
+  
+  .border-overlay {
+    /* Border overlay pattern */
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: var(--border-md) solid var(--on-surface-light-faded);
+    border-radius: var(--radius-md);
+  }
+  
+  .label-content {
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .label-text {
+    /* Typography - Metropolis Bold, 16px/20px */
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--heading-xxxs-size);
+    line-height: var(--heading-xxxs-line);
+    font-style: normal;
+    letter-spacing: normal;
+    
+    /* Color - Faded text */
+    color: var(--on-surface-light-faded);
+    
+    /* Layout */
+    text-align: center;
+    margin: 0;
+  }
+</style>
