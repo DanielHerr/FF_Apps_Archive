@@ -295,7 +295,6 @@ const IconComponent = variant === 'label'
   .variant-block .text-label {
     font-size: var(--body-xxs-size);
     line-height: var(--body-xxs-line);
-    white-space: nowrap;
     margin-top: -1px;
   }
 
@@ -432,8 +431,8 @@ const IconComponent = variant === 'label'
      VARIANT: BLOCK
      ======================================== */
   .variant-block {
-    width: 90px;
-    height: 76px;
+    min-width: 90px;
+    min-height: 76px;
     align-items: center;
     justify-content: center;
     padding: var(--spacing-4);
