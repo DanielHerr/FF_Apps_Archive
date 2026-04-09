@@ -40,8 +40,8 @@
     gap: var(--spacing-16);
     justify-content: flex-end;
     margin-top: var(--spacing-36);
-    height: 40px;
-    max-height: 40px;
+    min-height: 2.5rem;
+    max-height: 2.5rem;
     background: var(--surface-light-mid);
     padding-top: var(--spacing-8);
     top: -4px;
@@ -51,6 +51,8 @@
 .pagefind-ui__drawer 
 .pagefind-ui__filter-block {
     width: stretch;
+    width: -moz-available;
+    width: -webkit-fill-available;
     min-width: 140px;
     border: var(--border-sm) solid var(--on-surface-light-border-high);
     border-radius: var(--radius-md);
@@ -69,6 +71,9 @@
     line-height: var(--body-sm-line);
     font-weight: var(--font-weight-bold);
     color: var(--on-surface-light-regular);
+    height: auto;
+    min-width: fit-content;
+    padding-right: var(--spacing-24);
 }
 
 .pagefind-ui .pagefind-ui__filter-panel 
@@ -76,6 +81,7 @@
 .pagefind-ui__filter-group {
     padding: var(--spacing-20) var(--spacing-12);
     width: 100%;
+    min-width: fit-content;
     gap: var(--spacing-24);
 
     font-family: var(--font-inter);
@@ -95,6 +101,7 @@
     letter-spacing: var(--body-xxs-sc-spacing);
     text-transform: uppercase;
     color: var(--on-surface-light-regular);
+    word-break: break-word;
 }
 
 /* Filters: checkbox accent */
@@ -207,7 +214,8 @@
     .pagefind-ui 
     .pagefind-ui__drawer 
     .pagefind-ui__filter-block {
-        width: 160px;
+        min-width: 160px;
+        width: fit-content;
     }
 
     .pagefind-ui .pagefind-ui__filter-panel 
@@ -215,6 +223,7 @@
     .pagefind-ui__filter-group {
         padding: var(--spacing-12) 0;
         gap: var(--spacing-12);
+        min-width: fit-content;
     }
 
     .pagefind-ui .pagefind-ui__filter-panel .pagefind-ui__filter-block .pagefind-ui__filter-group

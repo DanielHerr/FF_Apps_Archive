@@ -32,8 +32,8 @@ const { number = "1" } = Astro.props;
   .label-container {
     /* Layout */
     position: relative;
-    width: 24px;
-    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
     
     /* Border radius */
     border-radius: var(--radius-md);
@@ -54,8 +54,6 @@ const { number = "1" } = Astro.props;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
   }
   
   .label-text {

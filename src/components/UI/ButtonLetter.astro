@@ -75,7 +75,7 @@ const isLink = href && !selected && !disabled;
     align-items: center;
     justify-content: center;
     min-width: 44px;
-    height: 44px;
+    min-height: 44px;
     padding: var(--spacing-4) var(--spacing-12);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-app-icon);
@@ -97,14 +97,14 @@ const isLink = href && !selected && !disabled;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: 100%;
+    min-width: fit-content;
     text-align: center;
     
     /* Typography - Explicit tokens per guidelines */
     font-family: var(--font-metropolis);
     font-weight: var(--font-weight-bold);
-    font-size: 16px;
-    line-height: 20px;
+    font-size: var(--heading-xxxs-size);
+    line-height: var(--heading-xxxs-line);
     letter-spacing: normal;
     
     /* Default text color */
@@ -169,7 +169,7 @@ const isLink = href && !selected && !disabled;
 
   @media (min-width: 769px) {
     .button-letter {
-      height: var(--spacing-28);
+      min-height: 28px;
     }
   }
 </style>

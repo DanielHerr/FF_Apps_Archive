@@ -279,6 +279,10 @@ const IconComponent = variant === 'label'
     font-weight: var(--font-weight-regular);
   }
 
+  .variant-label {
+    width: fit-content;
+  }
+
   /* Variant-specific typography */
   .variant-label .text-label {
     font-size: var(--body-sm-size);
@@ -302,6 +306,7 @@ const IconComponent = variant === 'label'
   .icon-wrapper {
     flex-shrink: 0;
     color: var(--on-surface-light-faded);
+    display: inline-flex;
   }
   
   .icon-wrapper svg {
