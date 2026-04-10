@@ -186,6 +186,72 @@ const uniqueId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
           updateGallery(index);
         });
       });
+      
+      // ===== Swipe & Wheel Support on Preview Area =====
+      const previewSection = gallery.querySelector('.preview-section') as HTMLElement;
+      if (!previewSection) return;
+      
+      let pointerDown = false;
+      let startX = 0;
+      const swipeThreshold = 50;
+      
+      let wheelAccum = 0;
+      const wheelThreshold = 120;
+      let wheelResetTimer: NodeJS.Timeout | null = null;
+      
+      // Prevent image drag
+      previewImage.addEventListener('dragstart', (e) => e.preventDefault());
+      
+      // Pointer events
+      previewSection.addEventListener('pointerdown', (e) => {
+        pointerDown = true;
+        startX = e.clientX;
+        try { previewSection.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      
+      previewSection.addEventListener('pointermove', (e) => {
+        // Track movement for potential future use (e.g., visual feedback)
+      });
+      
+      previewSection.addEventListener('pointerup', (e) => {
+        if (!pointerDown) return;
+        pointerDown = false;
+        try { previewSection.releasePointerCapture(e.pointerId); } catch (err) {}
+        
+        const deltaX = e.clientX - startX;
+        if (Math.abs(deltaX) >= swipeThreshold) {
+          if (deltaX < 0 && currentIndex < images.length - 1) {
+            updateGallery(currentIndex + 1);
+          } else if (deltaX > 0 && currentIndex > 0) {
+            updateGallery(currentIndex - 1);
+          }
+        }
+      });
+      
+      previewSection.addEventListener('pointercancel', () => {
+        pointerDown = false;
+      });
+      
+      // Wheel support
+      previewSection.addEventListener('wheel', (e) => {
+        // Only react to predominantly-horizontal motion
+        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+        
+        e.preventDefault();
+        wheelAccum += e.deltaX;
+        
+        if (wheelAccum >= wheelThreshold && currentIndex < images.length - 1) {
+          updateGallery(currentIndex + 1);
+          wheelAccum = 0;
+        } else if (wheelAccum <= -wheelThreshold && currentIndex > 0) {
+          updateGallery(currentIndex - 1);
+          wheelAccum = 0;
+        }
+        
+        // Reset accumulator after short delay
+        if (wheelResetTimer) clearTimeout(wheelResetTimer);
+        wheelResetTimer = setTimeout(() => { wheelAccum = 0; }, 200);
+      }, { passive: false });
     });
   }
   
