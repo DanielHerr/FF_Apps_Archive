@@ -28,7 +28,6 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 	<Fragment slot="imports">
 		<link rel="stylesheet" href="/details.css">
 		{ app.data.app_type != "privileged" && <script src="/install.js" defer nomodule></script> }
-		{ app.data.app_type == "hosted" && pwa && <script src="/install.mjs" type="module"></script> }
 	</Fragment>
 	<link slot="icon" rel="icon" href={ "/app/" + app.data.slug + "/" + app.data.id + "-128.png" } type="image/png" data-pagefind-meta="image[href]">
 
@@ -40,10 +39,11 @@ let releasenotes = app.data.release_notes ? app.data.release_notes["en-US"] ?? a
 	</Fragment>
 
 	<div id="action_buttons">
-		{ app.data.app_type == "hosted" && <button id="install_button" disabled data-manifest={ manifest } data-pwa-page={ pwa && pwa.install_page } data-pwa-id={ pwa && pwa.id } data-pwa-manifest={ pwa && pwa.manifest_url }>Install</button> }
-		{ app.data.app_type == "packaged" && <button id="install_button" disabled data-manifest={ manifest }>Install</button> }
+		{ app.data.app_type == "hosted" && pwa && <install installurl={ pwa.install_page } manifestid={ pwa.id } data-pwa-manifest={ pwa.manifest_url } ><button id="install_button" disabled data-manifest={ manifest } >Install</button></install> }
+		{ app.data.app_type == "hosted" && !pwa && <button id="install_button" disabled data-manifest={ manifest } >Install</button> }
+		{ app.data.app_type == "packaged" && <button id="install_button" disabled data-manifest={ manifest } >Install</button> }
 		{ app.data.app_type == "privileged" && <a href="/sideloading">Installation Instructions</a> }
-		{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() }>Download</a> }
+		{ app.data.package_path && <a download href={ app.data.package_path.split("/").pop() } >Download</a> }
 	</div>
 	<div id="screenshots_list">
 		{ app.data.previews.map(preview => <img src={ "screenshots/" + preview.id + ".png" } alt="">) }
