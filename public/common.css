@@ -28,16 +28,23 @@ body > header {
 	padding: 5px;
 	anchor-name: --header;
 }
+body > header > * {
+	vertical-align: middle;
+}
 body > header a {
 	display: inline-block;
 	padding: 10px;
 	border-radius: 10px;
 	text-decoration: none;
 }
+body > header img {
+	vertical-align: middle;
+}
 body > header h1 {
 	display: inline;
 	margin: 0;
 	margin-left: 10px;
+	vertical-align: middle;
 }
 body > header label {
 	background: buttonface;

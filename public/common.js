@@ -1,6 +1,6 @@
 /* apply theme classes to html as selected */
 
-if(navigator.install) {
+if(self.HTMLInstallElement) {
 	pwas_link.hidden = false
 }
 search_unavailable_label.hidden = true

@@ -15,21 +15,30 @@ h2 {
 	overflow: auto;
 	clear: both;
 }
-img {
+main img {
 	display: block;
 	flex-shrink: 0; -webkit-flex-shrink: 0;
 	max-width: 100%;
 }
 #action_buttons > * {
 	display: block;
-	width: 100%;
 	font-size: 1.5em;
-	padding: 0.5em 2em;
 	margin-bottom: 1em;
-	border: thin solid lightgrey;
+	/*border: thin solid lightgrey;*/
 	border-radius: 10em;
 	text-align: center;
 	text-decoration: none;
+}
+#action_buttons button {
+	padding: 0.5em 2em;
+}
+install {
+	background: ButtonFace;
+}
+install button {
+	font-size: 1em;
+	width: 100%;
+	border-radius: 10em;
 }
 .app_text_blocks {
 	white-space: pre-wrap;
